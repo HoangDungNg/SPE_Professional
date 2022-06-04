@@ -11,7 +11,6 @@ const app = express();
 const bodyParser = require('body-parser') 
 
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors()); //Install cors so that client can access 
@@ -34,11 +33,14 @@ app.get("/getTable",  (req, res) => {
 app.post("/login", async (req, res) => {
   // console.log('login requested')
   var data = req.body;
-  console.log(data.username);
+  console.log("Received: + \n" + " " + 
+                "Username: " + data.username + "\n " +
+                "Password: " + data.password
+                );
   console.log()
   try{
     const result = await db.promise().query(`SELECT * FROM usertest WHERE email = "${data.username}" AND password = "${data.password}";`);
-    console.log("Result: \n" + " " + 
+    console.log("Matching database result: \n" + " " + 
                   "Email: " + result[0][0].email + "\n " + 
                   "Role: " + result[0][0].role + "\n " +  
                   "Name: " + result[0][0].name 
