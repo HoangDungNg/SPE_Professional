@@ -13,7 +13,7 @@ import IntroCard from '../Card/IntroCard';
 function SPEOne() {
 
   const [fsValue, setFsValue] = useState([]);
-  const [txtValue, setTxtValue] = useState({txt1: '', txt2: ''});
+  // const [txtValue, setTxtValue] = useState({txt1: '', txt2: ''});
   // const [fs0Value, setFs0Value] = useState('')
   // const [fs1Value, setFs1Value] = useState('')
   // const [fs2Value, setFs2Value] = useState('')
@@ -26,8 +26,8 @@ function SPEOne() {
     const {name, value} = e.target
     setFsValue({...fsValue, [name]: value});
 
-    if(name === 'txtarea0') setTxtValue(value);
-    if(name === 'txtarea1') setTxtValue(value);
+    // if(name === 'txtarea0') setTxtValue(value);
+    // if(name === 'txtarea1') setTxtValue(value);
     // console.log(fsValue);
 
     // console.log('Radio ' + e.target.name + ' selected, with the value of: ' + e.target.value);

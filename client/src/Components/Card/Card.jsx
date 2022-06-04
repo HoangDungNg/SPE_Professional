@@ -20,8 +20,8 @@ function Card({question, inputType, id, handleChange}) {
             </fieldset>
             :
             <textarea
-              name={`txtarea${id}`}
-              id={`txtarea${id}`}
+              name={`txtarea${id+1}`}
+              id={`txtarea${id+1}`}
               onChange={handleChange}
               placeholder="Enter description here"
               className="w-full h-28 p-3 text-sm flex flex-row justify-around mt-[20px] text-left bg-[#F8F8FB]"

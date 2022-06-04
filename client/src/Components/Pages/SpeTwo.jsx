@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 import Card from "../Card/Card";
 import { SPE2Questions } from '../../js/list'
-import TFCard from '../Card/TFCard';
+// import TFCard from '../Card/TFCard';
 import IntroCard from '../Card/IntroCard';
 // import $ from 'jquery';
 
-const tfQuestions = [
-  {question: "Below add a brief description of how you believe you contributed to the project process over the whole semester."},
-  {question: "What skills and knowledge do you now know you need to develop for your future work in the IT industry and/or what issues of your own working style do you need to address?"}
-]
+// const tfQuestions = [
+//   {question: "Below add a brief description of how you believe you contributed to the project process over the whole semester."},
+//   {question: "What skills and knowledge do you now know you need to develop for your future work in the IT industry and/or what issues of your own working style do you need to address?"}
+// ]
 
 function SPEOne() {
 
   const [fsValue, setFsValue] = useState([]);
-  const [txtValue, setTxtValue] = useState({txt1: '', txt2: ''});
+  // const [txtValue, setTxtValue] = useState({txt1: '', txt2: ''});
   // const [fs0Value, setFs0Value] = useState('')
   // const [fs1Value, setFs1Value] = useState('')
   // const [fs2Value, setFs2Value] = useState('')
@@ -26,8 +26,8 @@ function SPEOne() {
     const {name, value} = e.target
     setFsValue({...fsValue, [name]: value});
 
-    if(name === 'txtarea0') setTxtValue(value);
-    if(name === 'txtarea1') setTxtValue(value);
+    // if(name === 'txtarea0') setTxtValue(value);
+    // if(name === 'txtarea1') setTxtValue(value);
     // console.log(fsValue);
 
     // console.log('Radio ' + e.target.name + ' selected, with the value of: ' + e.target.value);
@@ -104,18 +104,19 @@ function SPEOne() {
               <div id="SPEContainer" className="flex flex-col items-center">
                 <div id="cards">  
                   <form action="" onSubmit={handleSubmit} className="w-full" method="post" encType="multipart/form-data" id="myForm1">
-                    {
+                  {
                       SPE2Questions.map((question, index) => {
                         return <Card 
                                   question={question.question} 
+                                  inputType={question.inputType}
                                   key={index} 
                                   id={index} 
-                                  handleChange={handleChange} 
+                                  handleChange={handleChange}
                                  />                                
                       })                     
                     }
 
-                    {
+                    {/* {
                       tfQuestions.map((tfquestion, index) => {
                         return <TFCard 
                                   tfquestion={tfquestion.question} 
@@ -125,7 +126,7 @@ function SPEOne() {
                                   value={txtValue}
                                  /> 
                       })
-                    }
+                    } */}
                     <button type="submit" className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring">
                       <span className="absolute right-0 transition-transform translate-x-full group-hover:-translate-x-4">
                         <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

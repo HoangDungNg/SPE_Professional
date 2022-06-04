@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import SpeOne from "./Components/Pages/SpeOne";
 import NavBar from "./Components/NavBar/NavBar";
@@ -7,7 +7,7 @@ import SpeTwo from "./Components/Pages/SpeTwo";
 import Login from "./Components/Login";
 import { UserContext } from './context/UserContext';
 import { useContext, useEffect } from "react";
-import Content from "./Components/Content";
+// import Content from "./Components/Content";
 import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
         welcomeUser(user.name);
       })()
     
-  }, [user.auth])
+  }, [user.auth, user.name])
   
 
   return (

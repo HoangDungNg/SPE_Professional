@@ -33,7 +33,7 @@ app.get("/getTable",  (req, res) => {
 app.post("/login", async (req, res) => {
   // console.log('login requested')
   var data = req.body;
-  console.log("Received: + \n" + " " + 
+  console.log("Received: \n" + " " + 
                 "Username: " + data.username + "\n " +
                 "Password: " + data.password
                 );

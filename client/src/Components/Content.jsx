@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Card from "./Card/Card";
-import Home from "./Home";
-import NavBar from "./NavBar/NavBar";
+// import React, { useEffect, useState } from "react";
+// import Card from "./Card/Card";
+// import Home from "./Home";
+// import NavBar from "./NavBar/NavBar";
 
 function Content() {
 // const [login, setLogin] = useState(false);

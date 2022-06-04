@@ -2,10 +2,10 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
 function Login() {
-  const [lecturerData, setLecturerData] = useState(null);
-  const [lecturerRole, setlecturerRole] = useState(false);
-  const [studentData, setStudentData] = useState(null);
-  const [studentRole, setStudentRole] = useState(false);
+  // const [lecturerData, setLecturerData] = useState(null);
+  // const [lecturerRole, setlecturerRole] = useState(false);
+  // const [studentData, setStudentData] = useState(null);
+  // const [studentRole, setStudentRole] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -243,20 +243,20 @@ function Login() {
           </div>
         </div>
       </div>
-      {lecturerData && (
+      {/* {lecturerData && (
         <div>
           <p>Welcome {!lecturerData ? "Loading..." : lecturerData.username}!</p>
           <p>Role: {!lecturerData ? "Loading..." : lecturerData.role}</p>
           <p>User: {!lecturerData ? "Loading..." : lecturerData.user}</p>
         </div>
-      )}
-      {studentData && (
+      )} */}
+      {/* {studentData && (
         <div>
           <p>Welcome {!studentData ? "Loading..." : studentData.username}!</p>
           <p>Role: {!studentData ? "Loading..." : studentData.role}</p>
           <p>User: {!studentData ? "Loading..." : studentData.user}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
