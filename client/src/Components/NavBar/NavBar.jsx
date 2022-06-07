@@ -15,7 +15,7 @@ function NavBar() {
   // const { user, logout } = useContext(UserContext);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const [userDetails, setUserDetails] = useState({name: '', email: '', role: ''});
+  const [userDetails, setUserDetails] = useState({name: '', email: '', role: '', photoUrl:''});
 
   useEffect(() => {
     try{
@@ -26,8 +26,10 @@ function NavBar() {
           const emailData = doc.data().email;
           const nameData = doc.data().name;
           const roleData = doc.data().role;
+          const photoUrl = doc.data().photoUrl;
+          // console.log(doc.data())
 
-          setUserDetails({name: nameData, email: emailData, role: roleData})
+          setUserDetails({name: nameData, email: emailData, role: roleData, photoUrl: photoUrl})
         }
       })
     }
@@ -110,7 +112,7 @@ function NavBar() {
     
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
         <a href="/#" className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0">
-          <Avatar src={user.photoUrl}>
+          <Avatar src={userDetails.photoUrl}>
             {user.email[0].toUpperCase()}
           </Avatar>
     
