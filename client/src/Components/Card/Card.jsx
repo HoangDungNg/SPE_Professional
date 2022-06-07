@@ -11,8 +11,8 @@ function Card({question, inputType, id, handleChange}) {
         
         <div className="overflow-x-auto overflow-y-hidden">
           { inputType === 'fieldset'?
-            <fieldset id={`fs${id}`} onChange={handleChange} className="radioGroup flex flex-row justify-around mt-[20px] text-center bg-[#F8F8FB]">
-                <RatingButton rating="Very poor contribution" id={id} />
+            <fieldset  id={`fs${id}`} onChange={handleChange} className="radioGroup flex flex-row justify-around mt-[20px] text-center bg-[#F8F8FB]">
+                <RatingButton required rating="Very poor contribution" id={id} />
                 <RatingButton rating="Poor contribution" id={id} />
                 <RatingButton rating="Acceptable contribution" id={id} />
                 <RatingButton rating="Good contribution" id={id} />
@@ -24,7 +24,8 @@ function Card({question, inputType, id, handleChange}) {
               id={`txtarea${id+1}`}
               onChange={handleChange}
               placeholder="Enter description here"
-              className="w-full h-28 p-3 text-sm flex flex-row justify-around mt-[20px] text-left bg-[#F8F8FB]"
+              className="w-full h-28 p-3 text-sm flex flex-row justify-around mt-[20px] text-left bg-[#F8F8FB] outline-none"
+              required
             ></textarea>
           }
         </div>

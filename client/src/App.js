@@ -1,63 +1,41 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./Components/Home";
-import SpeOne from "./Components/Pages/SpeOne";
-import NavBar from "./Components/NavBar/NavBar";
-import SpeTwo from "./Components/Pages/SpeTwo";
-import Login from "./Components/Login";
-import { UserContext } from './context/UserContext';
-import { useContext, useEffect } from "react";
-// import Content from "./Components/Content";
-import toast, { Toaster } from 'react-hot-toast';
+import Login from "./Components/Pages/Login";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "./features/userSlice";
+import { auth } from "./firebase";
+import Content from "./Components/Content";
 
 function App() {
-  const { user } = useContext(UserContext);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // console.log(isLoggedIn);
-  // var isLoggedIn = true;
-  //Test
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
-  const welcomeUser = (userName, toastHandler = toast) => {
-    toastHandler.success(
-      `Welcome,  ${userName}!`,
-    {
-      icon: '👋',
-      style: {
-        borderRadius: '10px',
-        background: '#333',
-        color: '#fff',
-      }
-    })
-  }
 
   useEffect(() => {
-    if(!user.auth) return;
-
-      (() => {
-        welcomeUser(user.name);
-      })()
-    
-  }, [user.auth, user.name])
-  
+    auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        dispatch(
+          login({
+            email: userAuth.email,
+            uid: userAuth.uid,
+            displayName: userAuth.displayName,
+            photoUrl: userAuth.photoURL,
+          })
+        );
+      } else {
+        dispatch(logout());
+      }
+    });
+  }, []);
 
   return (
-    user.auth ?
-    <div className="App flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
-      <BrowserRouter>
-        <NavBar />
-
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/spe1" element={<SpeOne />} />
-          <Route path="/spe2" element={<SpeTwo />} />
-        </Routes>
-        
-      </BrowserRouter>
-      <Toaster position="bottom-center" reverse={false} />
+    <div className="App">
+      {!user ? (
+        <Login />
+      ) : (
+        <Content />
+      )}
     </div>
-    : (
-      <Login />
-    )
   );
 }
 
