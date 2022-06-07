@@ -16,6 +16,7 @@ function NavBar() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState({name: '', email: '', role: '', photoUrl:''});
+  const [unitGroup, setUnitGroup] = useState([])
 
   useEffect(() => {
     try{
@@ -36,8 +37,28 @@ function NavBar() {
     catch(err){
       console.log(err)
     }
-    
-    
+  }, [])
+
+  useEffect(() => {
+    try{
+      db.collection("unit").doc('ICT302').get()
+      .then((doc) => {
+        if(doc.exists){
+
+          // const emailData = doc.data().email;
+          // const nameData = doc.data().name;
+          // const roleData = doc.data().role;
+          // const photoUrl = doc.data().photoUrl;
+          // console.log(doc.data().group)
+          setUnitGroup(doc.data().group)
+
+          // setUserDetails({name: nameData, email: emailData, role: roleData, photoUrl: photoUrl})
+        }
+      })
+    }
+    catch(err){
+      console.log(err)
+    }
   }, [])
   
 
@@ -69,8 +90,13 @@ function NavBar() {
               </summary>
       
               <nav className="mt-1.5 ml-8 flex flex-col">
-                <NavButton  link={"/group1"} icon={svgIcons[2].groupIcon} text={svgIcons[2].groupText1} />
-                <NavButton  link={"/group2"} icon={svgIcons[2].groupIcon} text={svgIcons[2].groupText2} />
+                {
+                  unitGroup.map((group, index) => {
+                    return (
+                      <NavButton key={index} link={`/group${index+1}`} icon={svgIcons[2].groupIcon} text={group} />
+                    )
+                  })
+                }
               </nav>
             </details>
           }

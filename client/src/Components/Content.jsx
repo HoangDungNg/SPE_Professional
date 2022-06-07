@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Home from "./Pages/Home";
 import { useEffect } from "react";
 import { db } from '../firebase';
+import Group1 from "./Pages/Group1";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -64,6 +65,7 @@ function Content() {
           <Route exact path="/" element={<Home />} />
           <Route path="/spe1" element={<SpeOne />} />
           <Route path="/spe2" element={<SpeTwo />} />
+          <Route path="/group1" element={<Group1 />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" reverse={false} />
