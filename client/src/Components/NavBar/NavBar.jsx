@@ -7,6 +7,7 @@ import { auth, db } from '../../firebase';
 import { logout } from "../../features/userSlice"
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../features/userSlice';
+import { Avatar } from '@mui/material';
 
 
 function NavBar() {
@@ -109,7 +110,9 @@ function NavBar() {
     
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
         <a href="/#" className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0">
-          <img className="object-cover w-10 h-10 rounded-full" src="https://www.hyperui.dev/photos/man-4.jpeg" alt="jingwei" />
+          <Avatar src={user.photoUrl}>
+            {user.email[0].toUpperCase()}
+          </Avatar>
     
           <div className="ml-1.5 text-left">
             <p className="text-xs">
