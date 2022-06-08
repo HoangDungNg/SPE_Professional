@@ -10,17 +10,23 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import toast, { Toaster } from "react-hot-toast";
 import Home from "./Pages/Home";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { db } from '../firebase';
-import Group1 from "./Pages/Group1";
+import Group from "./Pages/Group";
 
 function Content() {
   // const [login, setLogin] = useState(false);
   // const [data, setData] = useState({username:'', role:''});
   const user = useSelector(selectUser);
+  const [unitGroupName, setUnitGroupName] = useState([])
+  const [unitGroupNum, setUnitGroupNum] = useState([])
+  const [unitGroup, setUnitGroup] = useState([])
+  const [members, setMembers] = useState("");
+  const [userInfo, setUserInfo] = useState("");
   // const dispatch = useDispatch();
   // const [userDetails, setUserDetails] = useState({name: '', email: '', role: ''});
 
+  //Welcome toast
   const welcomeUser = (userName, toastHandler = toast) => {
     toastHandler.success(
       `Welcome,  ${userName}!`,
@@ -34,6 +40,7 @@ function Content() {
     })
   }
 
+  //Get the current logged in user from firebase and send a welcome toast message
   useEffect(() => {
     if (!user) return;
 
@@ -52,12 +59,61 @@ function Content() {
       console.log(err)
     }
   }, []);
+
+  //Get the unit ICT302 
+  useEffect(() => {
+    try {
+      db.collection("unit")
+        .doc("ICT302")
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            console.log(doc.data())
+
+            //Set unit group number
+            doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
+
+            //Set unit group names
+            doc.data().group.map((group) => setUnitGroupName((unitGroup) => [...unitGroup, group.groupName]))          
+
+            //Set unit group members
+            doc.data().group.map((group) => {
+              group.member.map((member) => {
+                setMembers((members) => [...members, member])
+              })
+            });
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+   useEffect(() => {
+    if(!members) return;
+    try {
+      members.map((member) => {
+        return db.collection("users")
+          .doc(member.id)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              setUserInfo((userInfo) => [...userInfo, doc.data()]);
+            }
+          });
+      });
+    }
+    catch(err){
+      console.log(err)
+    }
+  }, [members]);
+
+ 
+
   return (
-    // <div className="content flex flex-[80] h-screen justify-center overflow-auto">
-
-    // </div>
-
     <div className="app_body flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
+      {/* {unitGroup && unitGroup.map((group) => group.group.map((groupName) => console.log(groupName.groupName)))} */}
+      {console.log(unitGroup)}
       <BrowserRouter>
         <NavBar />
 
@@ -65,7 +121,9 @@ function Content() {
           <Route exact path="/" element={<Home />} />
           <Route path="/spe1" element={<SpeOne />} />
           <Route path="/spe2" element={<SpeTwo />} />
-          <Route path="/group1" element={<Group1 />} />
+          <Route path="/group"> 
+            <Route path=":groupId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" reverse={false} />

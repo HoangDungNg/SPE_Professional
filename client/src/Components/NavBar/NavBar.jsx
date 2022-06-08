@@ -12,7 +12,6 @@ import { Avatar } from '@mui/material';
 
 function NavBar() {
 
-  // const { user, logout } = useContext(UserContext);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState({name: '', email: '', role: '', photoUrl:''});
@@ -28,7 +27,7 @@ function NavBar() {
           const nameData = doc.data().name;
           const roleData = doc.data().role;
           const photoUrl = doc.data().photoUrl;
-          // console.log(doc.data())
+
 
           setUserDetails({name: nameData, email: emailData, role: roleData, photoUrl: photoUrl})
         }
@@ -44,15 +43,12 @@ function NavBar() {
       db.collection("unit").doc('ICT302').get()
       .then((doc) => {
         if(doc.exists){
+          const groupData = doc.data().group;
+          // console.log(groupData)
+          groupData.map((group) => { setUnitGroup((unitGroup) => [...unitGroup, group.groupNumber]);})
+          // console.log(doc.data().group[0].groupNumber)
+          // setUnitGroup(doc.data().group)
 
-          // const emailData = doc.data().email;
-          // const nameData = doc.data().name;
-          // const roleData = doc.data().role;
-          // const photoUrl = doc.data().photoUrl;
-          // console.log(doc.data().group)
-          setUnitGroup(doc.data().group)
-
-          // setUserDetails({name: nameData, email: emailData, role: roleData, photoUrl: photoUrl})
         }
       })
     }
@@ -61,6 +57,7 @@ function NavBar() {
     }
   }, [])
   
+  // console.log(unitGroup)
 
   const logoutofPortal = (e) => {
     dispatch(logout());
@@ -93,7 +90,7 @@ function NavBar() {
                 {
                   unitGroup.map((group, index) => {
                     return (
-                      <NavButton key={index} link={`/group${index+1}`} icon={svgIcons[2].groupIcon} text={group} />
+                      <NavButton key={index} link={`/group/${index+1}`} icon={svgIcons[2].groupIcon} text={`Group ${group}`} />
                     )
                   })
                 }
