@@ -44,11 +44,7 @@ function NavBar() {
       .then((doc) => {
         if(doc.exists){
           const groupData = doc.data().group;
-          // console.log(groupData)
           groupData.map((group) => { setUnitGroup((unitGroup) => [...unitGroup, group.groupNumber]);})
-          // console.log(doc.data().group[0].groupNumber)
-          // setUnitGroup(doc.data().group)
-
         }
       })
     }
@@ -60,6 +56,7 @@ function NavBar() {
   // console.log(unitGroup)
 
   const logoutofPortal = (e) => {
+    window.location.href="/"; //Change the url to root path before logout
     dispatch(logout());
     auth.signOut();
   }
@@ -118,7 +115,7 @@ function NavBar() {
             <nav className="mt-1.5 ml-8 flex flex-col">
               <NavButton  link={"/details"} icon={svgIcons[5].detailsIcon} text={svgIcons[5].detailsText} />
 
-              <form action="/" onSubmit={logoutofPortal}>
+              <form onSubmit={logoutofPortal}>
                 <button 
                   type="submit" 
                   id="logoutBtn" 
@@ -141,8 +138,7 @@ function NavBar() {
     
           <div className="ml-1.5 text-left">
             <p className="text-xs">
-              <strong className="block font-semibold">{userDetails.name}</strong>
-    
+              <strong className="block font-semibold">{userDetails.name}</strong>   
               <span> {user.email} </span>
             </p>
           </div>

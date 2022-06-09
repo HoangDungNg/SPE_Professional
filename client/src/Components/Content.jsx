@@ -68,7 +68,7 @@ function Content() {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            console.log(doc.data())
+            // console.log(doc.data())
 
             //Set unit group number
             doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
@@ -113,7 +113,6 @@ function Content() {
   return (
     <div className="app_body flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
       {/* {unitGroup && unitGroup.map((group) => group.group.map((groupName) => console.log(groupName.groupName)))} */}
-      {console.log(unitGroup)}
       <BrowserRouter>
         <NavBar />
 
