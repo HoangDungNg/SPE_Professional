@@ -1,0 +1,8 @@
+[
+    {
+    "unitCode": 'ICT302',
+     "classCode": ['FTA', 'FTB']
+    }
+    
+    [ICT302 ['FTA', 'FTB]]
+]

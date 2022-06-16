@@ -1,14 +1,14 @@
 import React from "react";
 
-function IntroCard({SPENumber}) {
+function IntroCard({ SPENumber, unitCode }) {
   return (
     <div className=" mx-auto bg-[#FFFFFF] rounded-lg text-xl my-4 w-3/5">
-      <div className="rounded-t-lg bg-[#607C8A] h-2.5"></div>
+      <div className="rounded-t-lg bg-[#E12945] h-2.5">{/*bg-[#607C8A]*/}</div> 
 
       <div className="divide-y divide-slate-200">
         <div className="flex flex-wrap items-center">
           <span className="p-5 font-normal text-3xl">
-            Self and Peer Evaluation {SPENumber}
+            Self and Peer Evaluation {SPENumber} for {unitCode}
           </span>
         </div>
         {/* <div className="border border-[#dadce0] width-full"></div> */}

@@ -1,4 +1,5 @@
 import React from 'react'
+import HomeSection from '../HomeSection'
 // import Content from './Content';
 // import Login from './Login';
 // import NavBar from './NavBar/NavBar';
@@ -12,7 +13,13 @@ function Home() {
   // var isLoggedIn = true;
   return (
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
-      <h1>Home page</h1>
+      <div className="flex flex-col w-full">
+        <HomeSection title={'Initiation'} />
+        <HomeSection title={'Control'} />
+        <HomeSection title={'Dashboard'} />
+        <HomeSection title={'Output'} />
+      </div>
+      
     </div>
 
 

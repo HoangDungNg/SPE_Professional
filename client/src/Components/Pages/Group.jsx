@@ -31,7 +31,7 @@ function Group({ userInfo, groupName, groupNum}) {
 
             <tbody className="divide-y divide-gray-100">
               {userInfo 
-                ? userInfo.map((member, index) => { //If there userInfo map it
+                ? userInfo.map((member, index) => { //If there's userInfo map it
 
                   return (
                     member.group === "Group " + groupId ? //If there's member.group and groupId of nagivation useParams matches return TableRow component

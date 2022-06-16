@@ -182,6 +182,27 @@ const svgIcons = [
 
     logoutText: <span className="ml-3 text-sm font-medium"> Logout </span>,
   },
+  {
+    formIcon:(
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="icon icon-tabler icon-tabler-notes w-5 h-5 opacity-75"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+        stroke="currentColor"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+        <line x1="9" y1="7" x2="15" y2="7"></line>
+        <line x1="9" y1="11" x2="15" y2="11"></line>
+        <line x1="9" y1="15" x2="13" y2="15"></line>
+      </svg>
+    ),
+    formText: <span className="ml-3 text-sm font-medium">Add/Update Forms</span> 
+  }
 ];
 
 export { svgIcons };

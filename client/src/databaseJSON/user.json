@@ -1,0 +1,42 @@
+{
+    "students":{
+        "BwRM5xwIF8horEe4pD6THYKnzAy2": {
+            "FirstName": "Jingwei",
+            "LastName": "Ow",
+            "ctNo": "34053405",
+            "unitCode": "ICT302",
+            "classCode": "FTA",        
+            "email": "jingwei950@hotmail.sg",
+            "teamId": "Firebase generated ID",
+            "survey1Id": "123",
+            "survey2Id": "456"
+        },
+        "lQt2ilxhnGPCeeesNEOgJwgW6nD2": {
+            "FirstName": "Mary",
+            "LastName": "Sim",
+            "ctNo": "34055043",
+            "unitCode": "ICT302",
+            "classCode": "FTA",        
+            "email": "Marysim@hotmail.com",
+            "teamId": "Firebase generated ID",
+            "survey1Id": "Firebase generated ID",
+            "survey2Id": "Firebase generated ID"
+        }
+    },
+
+    "teams": {
+        "BwRM5xwIF8horEe4pD6THYKnzAy2":{
+            "teamName": "Squinted Eyed Scoundrels"
+        },
+        "vQH0fbj8MoeMqfR2npaPmjgTCcv2":{
+            "teamName": "Strepcils"
+        }
+    },
+
+    "studentTeams": {
+        "J02HGUBBaxdZpFBBlfRBOJzLbEU2": {
+            "BwRM5xwIF8horEe4pD6THYKnzAy2": "JingWei",
+            "lQt2ilxhnGPCeeesNEOgJwgW6nD2": "Alice"
+        }
+    }
+}

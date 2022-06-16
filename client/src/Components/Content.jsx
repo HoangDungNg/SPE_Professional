@@ -13,6 +13,8 @@ import Home from "./Pages/Home";
 import { useEffect, useState } from "react";
 import { db } from '../firebase';
 import Group from "./Pages/Group";
+import AddSPE1 from "./Pages/AddSPE1";
+import AddSPE2 from "./Pages/AddSPE2";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -78,8 +80,8 @@ function Content() {
 
             //Set unit group members
             doc.data().group.map((group) => {
-              group.member.map((member) => {
-                setMembers((members) => [...members, member])
+             return group.member.map((member) => {
+                return setMembers((members) => [...members, member])
               })
             });
           }
@@ -108,7 +110,56 @@ function Content() {
     }
   }, [members]);
 
- 
+  //Test code
+  useEffect(() => {
+    try {
+      db.collection("unit").where("trimesterCode", "==", "TMA2022")
+        // .doc("ICT302")
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.map((doc) => {
+            // console.log(doc.data().group)
+            return doc.data().group.map((group) => console.log(group.member))
+          })
+        })
+        // .then((doc) => {
+        //   if (doc.exists) {
+        //     console.log(doc.data())
+
+            //Set unit group number
+            // doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
+
+            //Set unit group names
+            // doc.data().group.map((group) => setUnitGroupName((unitGroup) => [...unitGroup, group.groupName]))          
+
+            //Set unit group members
+            // doc.data().group.map((group) => {
+            //   group.member.map((member) => {
+            //     setMembers((members) => [...members, member])
+            //   })
+            // });
+          // }
+        // });
+      // const teamId = db.collection("unit").where("unitCode", "==", "ICT302").get()
+      // .then((snapshot) => {
+      //   const id = snapshot.docs.map((doc) => (
+      //     doc.id
+      //   ));
+      //   console.log(id)
+      // });
+      // db.collection(teamId).get().then((snapshot) => {
+      //   console.log(snapshot)
+        // const id = snapshot.docs.map((doc) => (
+        //   doc.id
+        // ));
+        // console.log(id)
+      // });
+      
+
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   return (
     <div className="app_body flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
@@ -120,9 +171,11 @@ function Content() {
           <Route exact path="/" element={<Home />} />
           <Route path="/spe1" element={<SpeOne />} />
           <Route path="/spe2" element={<SpeTwo />} />
+          <Route path="/addSPE1" element={<AddSPE1 />} />
+          <Route path="/addSPE2" element={<AddSPE2 />} />
           <Route path="/group"> 
             <Route path=":groupId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
-          </Route>
+          </Route>         
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" reverse={false} />

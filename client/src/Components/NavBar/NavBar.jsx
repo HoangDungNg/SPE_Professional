@@ -53,7 +53,7 @@ function NavBar() {
     }
   }, [])
   
-  // console.log(unitGroup)
+  console.log(unitGroup)
 
   const logoutofPortal = (e) => {
     window.location.href="/"; //Change the url to root path before logout
@@ -100,11 +100,24 @@ function NavBar() {
 
           {
             //When it is lecturer, they can only see units, SPE forms on nav bar cannot be seen
-            userDetails.role === 'lecturer' ? null : 
+            // userDetails.role === 'lecturer' ? null : 
             <div>
               <NavButton  link={"/spe1"} icon={svgIcons[3].speIcon} text={svgIcons[3].speText1} />
               <NavButton  link={"/spe2"} icon={svgIcons[3].speIcon} text={svgIcons[3].speText2} />
             </div>
+          }
+
+          {
+            userDetails.role === 'student' ? null : 
+            <details className="group">
+              <summary id="formBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
+                {svgIcons[7].formIcon} {svgIcons[7].formText} {svgIcons[1].groupCatDropDownIcon}
+              </summary>
+              <nav className="mt-1.5 ml-8 flex flex-col">
+                <NavButton link={"/addSPE1"} icon={svgIcons[3].speIcon} text={'Add/Update SPE 1 Form'} />
+                <NavButton link={"/addSPE2"} icon={svgIcons[3].speIcon} text={'Add/Update SPE 2 Form'} />
+              </nav>
+            </details>
           }
 
           <details className="group">

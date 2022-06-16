@@ -20,6 +20,7 @@ function App() {
             uid: userAuth.uid,
             displayName: userAuth.displayName,
             photoUrl: userAuth.photoURL,
+            // attendingUnit: userAuth.attendingUnit
           })
         );
       } else {

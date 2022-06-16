@@ -2,12 +2,12 @@ import React from 'react'
 import Card from './Card/Card';
 import IntroCard from './Card/IntroCard';
 
-function SPEContent({SPEQuestions, handleSubmit, handleChange, formNumber}) {
+function SPEContent({SPEQuestions, handleSubmit, handleChange, formNumber, unitCode}) {
   return (
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
       <div className="flex items-center flex-col p-10 ">
         <div className=" p-8 pt-0 flex flex-col items-center border-black-100 border-2">
-          <IntroCard SPENumber={formNumber} />
+          <IntroCard SPENumber={formNumber} unitCode={unitCode} />
 
           <div id="SPEContainer" className="flex flex-col items-center">
             <div id="cards">
@@ -21,6 +21,26 @@ function SPEContent({SPEQuestions, handleSubmit, handleChange, formNumber}) {
               >
                 {SPEQuestions.map((question, index) => {
                   return (
+                    question.inputType === 'textarea' ? 
+                    <Card
+                      question={question.question}
+                      inputType={question.inputType}
+                      key={index}
+                      id={index}
+                      handleChange={handleChange}
+                    />
+                    : 
+                    <Card
+                    question={question.question}
+                    inputType={question.inputType}
+                    key={index}
+                    id={index}
+                    handleChange={handleChange}
+                  />
+                  );
+                })}
+                {/* {SPEQuestions.map((question, index) => {
+                  return (
                     <Card
                       question={question.question}
                       inputType={question.inputType}
@@ -29,7 +49,7 @@ function SPEContent({SPEQuestions, handleSubmit, handleChange, formNumber}) {
                       handleChange={handleChange}
                     />
                   );
-                })}
+                })} */}
                 <button
                   type="submit"
                   className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"
