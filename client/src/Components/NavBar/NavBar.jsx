@@ -16,7 +16,9 @@ function NavBar() {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState({name: '', email: '', role: '', photoUrl:''});
   const [unitGroup, setUnitGroup] = useState([])
+  const [units, setUnits] = useState([])
 
+  //UseEffect for getting user's email, name, role and photoUrl from firebase
   useEffect(() => {
     try{
       db.collection("users").doc(user.uid).get()
@@ -38,6 +40,7 @@ function NavBar() {
     }
   }, [])
 
+  //UseEffect for getting the module groups under the specified unit
   useEffect(() => {
     try{
       db.collection("unit").doc('ICT302').get()
@@ -52,9 +55,32 @@ function NavBar() {
       console.log(err)
     }
   }, [])
-  
-  console.log(unitGroup)
 
+  //Newly added code 18/6/22 for setting the unit and classes on navigation
+  useEffect(() => {
+    db.collection("module")
+      // .where("unitCode", "==", "ICT123")
+      .where("trimesterCode", "==", "TMA2022")
+      .get()
+      .then((snapshot) => {
+        const data = snapshot.docs.map((doc) => doc.data());
+        console.log(data);
+        data.forEach((unit) => {
+          // console.log(unit.trimesterCode)
+
+          setUnits((navUnit) => [
+            ...navUnit,
+            {
+              unitCode: unit.unitCode,
+              classCode: unit.classes,
+              trimesterCode: unit.trimesterCode
+            }
+          ]);
+        });
+      });
+  },[])
+  
+  //Function for logging out of the portal and firebase authentication using redux
   const logoutofPortal = (e) => {
     window.location.href="/"; //Change the url to root path before logout
     dispatch(logout());
@@ -78,12 +104,35 @@ function NavBar() {
           { 
             //When it is student, they can only see SPE forms, cannot see units with other groups
             userDetails.role === 'student' ? null :
-            <details className="group">
-              <summary id="groupBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
-                {svgIcons[1].groupCatIcon} {svgIcons[1].groupCatText} {svgIcons[1].groupCatDropDownIcon}
-              </summary>
+            // <details className="group">
+            //   <summary id="groupBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
+            //     {svgIcons[1].groupCatIcon} <span className="ml-3 text-sm font-medium">ICT123</span> {svgIcons[1].groupCatDropDownIcon}
+            //   </summary>
       
+            //   <nav className="mt-1.5 ml-8 flex flex-col">
+            //     {
+            //       unitGroup.map((group, index) => {
+            //         return (
+            //           <NavButton key={index} link={`/group/${index+1}`} icon={svgIcons[2].groupIcon} text={`Group ${group}`} />
+            //         )
+            //       })
+            //     }
+            //   </nav>
+            // </details>
+
+            units.map((unit) => (
+              <details className="group">
+              <summary id="groupBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
+                {svgIcons[1].groupCatIcon} <span className="ml-3 text-sm font-medium">{unit.unitCode}</span> {svgIcons[1].groupCatDropDownIcon}
+              </summary>
+              
               <nav className="mt-1.5 ml-8 flex flex-col">
+                {unit.classCode.map((eachClass, index) => (
+                  <NavButton key={index} link={`/group/${index+1}`} icon={svgIcons[2].groupIcon} text={eachClass} />
+                ))}
+              </nav>
+      
+              {/* <nav className="mt-1.5 ml-8 flex flex-col">
                 {
                   unitGroup.map((group, index) => {
                     return (
@@ -91,8 +140,11 @@ function NavBar() {
                     )
                   })
                 }
-              </nav>
+              </nav> */}
             </details>
+            ))
+            
+            
           }
           
           {/* Place another details of other units here eg. <details>ICT123</details> with the copy of above code*/}
@@ -108,6 +160,7 @@ function NavBar() {
           }
 
           {
+            //Navigation buttons for addSPE1 and addSPE2
             userDetails.role === 'student' ? null : 
             <details className="group">
               <summary id="formBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
