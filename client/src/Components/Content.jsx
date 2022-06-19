@@ -15,6 +15,8 @@ import { db } from '../firebase';
 import Group from "./Pages/Group";
 import AddSPE1 from "./Pages/AddSPE1";
 import AddSPE2 from "./Pages/AddSPE2";
+import RegisterUnit from "./Pages/RegisterUnit";
+import RegisterTeam from "./Pages/RegisterTeam";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -171,6 +173,8 @@ function Content() {
           <Route exact path="/" element={<Home />} />
           <Route path="/spe1" element={<SpeOne />} />
           <Route path="/spe2" element={<SpeTwo />} />
+          <Route path="/registerUnit" element={<RegisterUnit />} />
+          <Route path="/registerTeam" element={<RegisterTeam />} />
           <Route path="/addSPE1" element={<AddSPE1 />} />
           <Route path="/addSPE2" element={<AddSPE2 />} />
           <Route path="/group"> 

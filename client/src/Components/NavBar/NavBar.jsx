@@ -8,7 +8,8 @@ import { logout } from "../../features/userSlice"
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../features/userSlice';
 import { Avatar } from '@mui/material';
-
+import { GiBookshelf } from 'react-icons/gi'
+import { AiOutlineEdit } from 'react-icons/ai'
 
 function NavBar() {
 
@@ -47,7 +48,7 @@ function NavBar() {
       .then((doc) => {
         if(doc.exists){
           const groupData = doc.data().group;
-          groupData.map((group) => { setUnitGroup((unitGroup) => [...unitGroup, group.groupNumber]);})
+          groupData.map((group) =>  setUnitGroup((unitGroup) => [...unitGroup, group.groupNumber]))
         }
       })
     }
@@ -64,7 +65,7 @@ function NavBar() {
       .get()
       .then((snapshot) => {
         const data = snapshot.docs.map((doc) => doc.data());
-        console.log(data);
+        // console.log(data);
         data.forEach((unit) => {
           // console.log(unit.trimesterCode)
 
@@ -100,10 +101,40 @@ function NavBar() {
 
         <nav className="flex flex-col mt-6 space-y-1">
           <NavButton link={"/"} icon={svgIcons[0].homeIcon} text={svgIcons[0].homeText} />
-    
+
+          
+          {
+            //Place another details of other units here eg. <details>ICT123</details> with the copy of below code
+            //Get the units from database 
+
+            //TODO: add a conditional check whether students finishes the forms, if they finished
+            //show only the form they have not finish
+
+            // userDetails.role === 'lecturer' ? null : 
+            <div>
+              <NavButton  link={"/spe1"} icon={svgIcons[3].speIcon} text={svgIcons[3].speText1} />
+              <NavButton  link={"/spe2"} icon={svgIcons[3].speIcon} text={svgIcons[3].speText2} />
+            </div>
+          }
           { 
             //When it is student, they can only see SPE forms, cannot see units with other groups
             userDetails.role === 'student' ? null :
+            units.map((unit, index) => (
+              <details className="group" key={index}>
+              <summary id="groupBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
+                <GiBookshelf size={20} color="#9B9FA9" /> 
+                <span className="ml-3 text-sm font-medium">{unit.unitCode}</span> 
+                {svgIcons[1].groupCatDropDownIcon}
+              </summary>
+
+              <nav className="mt-1.5 ml-8 flex flex-col">
+                {unit.classCode.map((eachClass, index) => (
+                  <NavButton key={index} link={`/group/${index+1}`} icon={svgIcons[2].groupIcon} text={eachClass} />
+                ))}
+              </nav>
+            </details>
+
+            //Old code
             // <details className="group">
             //   <summary id="groupBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
             //     {svgIcons[1].groupCatIcon} <span className="ml-3 text-sm font-medium">ICT123</span> {svgIcons[1].groupCatDropDownIcon}
@@ -119,44 +150,19 @@ function NavBar() {
             //     }
             //   </nav>
             // </details>
-
-            units.map((unit) => (
-              <details className="group">
-              <summary id="groupBtn" className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
-                {svgIcons[1].groupCatIcon} <span className="ml-3 text-sm font-medium">{unit.unitCode}</span> {svgIcons[1].groupCatDropDownIcon}
-              </summary>
-              
-              <nav className="mt-1.5 ml-8 flex flex-col">
-                {unit.classCode.map((eachClass, index) => (
-                  <NavButton key={index} link={`/group/${index+1}`} icon={svgIcons[2].groupIcon} text={eachClass} />
-                ))}
-              </nav>
-      
-              {/* <nav className="mt-1.5 ml-8 flex flex-col">
-                {
-                  unitGroup.map((group, index) => {
-                    return (
-                      <NavButton key={index} link={`/group/${index+1}`} icon={svgIcons[2].groupIcon} text={`Group ${group}`} />
-                    )
-                  })
-                }
-              </nav> */}
-            </details>
             ))
             
             
           }
-          
-          {/* Place another details of other units here eg. <details>ICT123</details> with the copy of above code*/}
-          {/* Get the units from database */}
 
           {
-            //When it is lecturer, they can only see units, SPE forms on nav bar cannot be seen
-            // userDetails.role === 'lecturer' ? null : 
-            <div>
-              <NavButton  link={"/spe1"} icon={svgIcons[3].speIcon} text={svgIcons[3].speText1} />
-              <NavButton  link={"/spe2"} icon={svgIcons[3].speIcon} text={svgIcons[3].speText2} />
-            </div>
+            //Navigation button for Register units
+            <NavButton link={"/registerUnit"} icon={<AiOutlineEdit size={20} color="#9B9FA9" />} text={'Register/Update units'} />
+          }
+
+          {
+            //Navigation button for Register teams
+            <NavButton link={"/registerTeam"} icon={<AiOutlineEdit size={20} color="#9B9FA9" />} text={'Register/Update teams'} />
           }
 
           {

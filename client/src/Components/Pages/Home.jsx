@@ -1,5 +1,5 @@
 import React from 'react'
-import HomeSection from '../HomeSection'
+import HomeSection from '../HomeComponents/HomeSection'
 // import Content from './Content';
 // import Login from './Login';
 // import NavBar from './NavBar/NavBar';
