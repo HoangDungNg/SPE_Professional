@@ -17,6 +17,7 @@ import AddSPE1 from "./Pages/AddSPE1";
 import AddSPE2 from "./Pages/AddSPE2";
 import RegisterUnit from "./Pages/RegisterUnit";
 import RegisterTeam from "./Pages/RegisterTeam";
+import SPEOne from "../Components/Pages/SpeOne";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -27,8 +28,7 @@ function Content() {
   const [unitGroup, setUnitGroup] = useState([])
   const [members, setMembers] = useState("");
   const [userInfo, setUserInfo] = useState("");
-  // const dispatch = useDispatch();
-  // const [userDetails, setUserDetails] = useState({name: '', email: '', role: ''});
+  const [attendingUnits, setAttendingUnits] = useState("");
 
   //Welcome toast
   const welcomeUser = (userName, toastHandler = toast) => {
@@ -53,6 +53,8 @@ function Content() {
       .then((doc) => {
         if(doc.exists){
           const nameData = doc.data().name;
+          const attendingUnits = doc.data().attendingUnits;
+          setAttendingUnits(attendingUnits);
           return nameData
         }
       }).then((nameData) => {
@@ -111,6 +113,7 @@ function Content() {
       console.log(err)
     }
   }, [members]);
+  
 
   //Test code
   // useEffect(() => {
@@ -166,13 +169,18 @@ function Content() {
   return (
     <div className="app_body flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
       {/* {unitGroup && unitGroup.map((group) => group.group.map((groupName) => console.log(groupName.groupName)))} */}
+      {/* {console.log(userInfo)} */}
       <BrowserRouter>
         <NavBar />
 
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/spe1" element={<SpeOne />} />
-          <Route path="/spe2" element={<SpeTwo />} />
+          <Route path="/spe1">
+            <Route path=":spe1UnitCode" element={<SPEOne attendingUnits={attendingUnits} />} />  
+          </Route>
+          <Route path="/spe2">
+            <Route path=":spe2UnitCode" element={<SpeTwo />} /> 
+          </Route>
           <Route path="/registerUnit" element={<RegisterUnit />} />
           <Route path="/registerTeam" element={<RegisterTeam />} />
           <Route path="/addSPE1" element={<AddSPE1 />} />

@@ -8,11 +8,11 @@ function SectionContent({ content }) {
       {content === "Initiation" ? (
         <div>
           <section>
-            <div class=" px-4 py-16 sm:px-6 lg:px-8">
+            <div className=" px-4 py-16 sm:px-6 lg:px-8">
 
-                <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                     <SectionButton title={'Add/Update form for SPE 1'} link={'/addSpe1'} content={'Lorem ipsum dolor sit amet consectetur.'}/>
-                    <SectionButton title={'Add/Update form for SPE 2'} link={'/spe2'} content={'Lorem ipsum dolor sit amet consectetur.'}/>
+                    <SectionButton title={'Add/Update form for SPE 2'} link={'/addSpe2'} content={'Lorem ipsum dolor sit amet consectetur.'}/>
                     <SectionButton title={'Upload student details file'} link={'/uploadStudDetails'} content={'Lorem ipsum dolor sit amet consectetur.'}/>                 
                 </div>
 
@@ -22,9 +22,9 @@ function SectionContent({ content }) {
       ) : content === "Control" ? (
         <div>
             <section>
-                <div class=" px-4 py-16 sm:px-6 lg:px-8">
+                <div className=" px-4 py-16 sm:px-6 lg:px-8">
 
-                    <div class="grid grid-cols-2 gap-4 lg:grid-cols-2 sm:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-4 lg:grid-cols-2 sm:grid-cols-3">
                         <SectionButton title={'Set up a new due date for SPE 1'} link={'/setSpe1Due'} content={'Lorem ipsum dolor sit amet consectetur.'}/>
                         <SectionButton title={'View SPE 1 form'} link={'/spe1'} content={'Lorem ipsum dolor sit amet consectetur.'}/>
                         <SectionButton title={'Set up a new due date for SPE 2'} link={'/setSpe2Due'} content={'Lorem ipsum dolor sit amet consectetur.'}/>   
@@ -41,9 +41,9 @@ function SectionContent({ content }) {
       ) : content === "Output" ? (
         <div>
             <section>
-                <div class=" px-4 py-16 sm:px-6 lg:px-8">
+                <div className=" px-4 py-16 sm:px-6 lg:px-8">
 
-                    <div class="grid grid-cols-2 gap-4 lg:grid-cols-1 sm:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-4 lg:grid-cols-1 sm:grid-cols-3">
                         <SectionButton title={'Download output file (only available after due date)'} link={'/downloadSpe'} content={'Lorem ipsum dolor sit amet consectetur.'}/>                               
                     </div>
 

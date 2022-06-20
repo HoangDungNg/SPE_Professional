@@ -234,18 +234,18 @@ function RegisterTeam() {
                   disabled={cardID === 0}
                   className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group  focus:outline-none focus:ring"
                 >
-                  <span class="absolute left-0 transition-transform -translate-x-full group-hover:translate-x-4">
+                  <span className="absolute left-0 transition-transform -translate-x-full group-hover:translate-x-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="icon icon-tabler icon-tabler-arrow-narrow-left"
+                      className="icon icon-tabler icon-tabler-arrow-narrow-left"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
                       fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -268,15 +268,15 @@ function RegisterTeam() {
                   <span className="absolute right-0 transition-transform translate-x-full group-hover:-translate-x-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="icon icon-tabler icon-tabler-arrow-narrow-right"
+                      className="icon icon-tabler icon-tabler-arrow-narrow-right"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
-                      stroke-width="2"
+                      strokeWidth="2"
                       stroke="currentColor"
                       fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                       <line x1="5" y1="12" x2="19" y2="12"></line>

@@ -180,7 +180,7 @@ function RegisterUnit() {
                 {/* </div> */}
             </div>
 
-            <div class="w-full mt-4">
+            <div className="w-full mt-4">
                 <label className="block mx-2 text-left mb-2 text-sm font-semibold text-gray-600">
                 Number of classes:
                 </label>
