@@ -187,7 +187,10 @@ function Content() {
           <Route path="/addSPE2" element={<AddSPE2 />} />
           <Route path="/group"> 
             <Route path=":groupId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
-          </Route>         
+          </Route>    
+          <Route path="/class"> 
+            <Route path=":classId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
+          </Route>    
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" reverse={false} />

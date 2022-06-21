@@ -162,6 +162,7 @@ function NavBar() {
               ))
           }
           {
+            //SHOW UNIT AND CLASSES OF UNIT
             //When it is student, they can only see SPE forms, cannot see units with other groups
             userDetails.role === "student"
               ? null

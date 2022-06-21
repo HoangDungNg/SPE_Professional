@@ -13,6 +13,7 @@ function SPEOne() {
   const user = useSelector(selectUser);
   const [nameOfUser, setNameofUser] = useState("");
   const [studentID, setStudentID] = useState("");
+  const [loading, setLoading] = useState(true);
   const { spe2UnitCode } = useParams();
 
   useEffect(() => {
@@ -41,11 +42,19 @@ function SPEOne() {
         .get()
         .then((snapshot) => {
           const data = snapshot.docs.map((doc) => doc.data());
-          // console.log(data);
-          data[0].questions.map((question) =>
-            setSPEQuestions((prevItem) => [...prevItem, question])
-          );
-          setUnitCode(data[0].unitCode);
+
+          //If there is no data retrieved show page loading for 5ms
+          if (data.length === 0) {
+            setInterval(() => setLoading(false), 500)
+          } 
+          //if there is data retrieved set the item and don't show page loading
+          else if (data.length !== 0) { 
+            data[0].questions.map((question) =>
+              setSPEQuestions((prevItem) => [...prevItem, question])
+            );
+            setUnitCode(data[0].unitCode);
+            setLoading(false)
+          }
         });
     } catch (err) {
       console.log(err);
@@ -65,12 +74,20 @@ function SPEOne() {
     //TODO: Go to feed update user submitted spe form
   }
 
-  console.log(SPEQuestions);
+  // console.log(SPEQuestions);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col flex-[80] h-screen justify-center overflow-auto scroll-smooth">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col flex-[80] h-screen justify-center overflow-auto scroll-smooth">
       {SPEQuestions.length === 0 ? (
-        <div className="h-screen w-full flex flex-col justify-center items-center bg-white">
+        <div className="h-screen w-full flex flex-col justify-center items-center bg-[#E6ECEF]">
           <h1>SPE not available</h1>
           <h1 class="text-9xl font-extrabold text-[#1A2238] tracking-widest">
             404
