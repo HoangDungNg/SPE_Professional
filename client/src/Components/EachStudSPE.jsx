@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./Card/Card";
 
 function EachStudSPE({
@@ -15,7 +15,9 @@ function EachStudSPE({
       {nameOfUser ? (
         <div>
           <div className="card mx-auto bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5">
-            <h1 className="text-3xl font-semibold text-center text-gray-800 underline">Self Evaluation</h1>
+            <h1 className="text-3xl font-semibold text-center text-gray-800 underline">
+              Self Evaluation
+            </h1>
             <span className="block text-left my-4 text-sm font-semibold text-gray-600">
               Your Name:
             </span>
@@ -40,14 +42,16 @@ function EachStudSPE({
       ) : (
         <div>
           <div className="card mx-auto bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5">
-            <h1 className="text-3xl font-semibold text-center text-gray-800 underline underline-offset-0">Evaluation of other group members</h1>
+            <h1 className="text-3xl font-semibold text-center text-gray-800 underline underline-offset-0">
+              Evaluation of other group members
+            </h1>
             <span className="block text-left my-4 text-sm font-semibold text-gray-600">
               Member {id} name:
             </span>
             <input
               type="text"
               onChange={handleChange}
-              value={fsValue === [] ? "asd" : fsValue[student + "name"]}
+              value={fsValue === [] ? "" : fsValue[student + "name"]}
               name={`${student}name`}
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
@@ -56,7 +60,7 @@ function EachStudSPE({
             </span>
             <input
               type="text"
-              value={fsValue === [] ? "asd" : fsValue[student + "ID"]}
+              value={fsValue === [] ? "" : fsValue[student + "ID"]}
               onChange={handleChange}
               name={`${student}ID`}
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"

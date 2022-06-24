@@ -8,7 +8,7 @@ import { logout } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { Avatar } from "@mui/material";
-import { GiBookshelf, GiConsoleController } from "react-icons/gi";
+import { GiBookshelf } from "react-icons/gi";
 import { AiOutlineEdit } from "react-icons/ai";
 
 function NavBar() {
@@ -179,11 +179,15 @@ function NavBar() {
                       {svgIcons[1].groupCatDropDownIcon}
                     </summary>
 
+                    {/* {console.log(unit)} */}
+
                     <nav className="mt-1.5 ml-8 flex flex-col">
                       {unit.classCode.map((eachClass, index) => (
+                        // console.log(`/${unit.unitCode}/${eachClass}`)
                         <NavButton
                           key={index}
-                          link={`/group/${index + 1}`}
+                          // link={`/class/${index + 1}`}
+                          link={`/class/${unit.unitCode}/${eachClass}`}
                           icon={svgIcons[2].groupIcon}
                           text={eachClass}
                         />

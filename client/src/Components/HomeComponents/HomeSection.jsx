@@ -1,19 +1,72 @@
-import React from 'react'
-import SectionContent from './SectionContent'
+import React from "react";
+import Feed from "../Feed";
+import SectionContent from "./SectionContent";
 
-function HomeSection({title}) {
+function HomeSection({ title, userRole, attendingUnits }) {
   return (
-    <div className='h-full'>
-        <div className='flex justify-center items-center bg-[#E12945] h-10 text-white'>
-          <h2>{title}</h2>
+    <div className="h-full mb-1 flex flex-row divide-x-2 divide-dotted divide-slate-400">
+      <div
+        className={`${
+          userRole === "student" ? "flex-[100%]" : "flex-[70%]"
+        } h-screen overflow-auto no-scrollbar`}
+      >
+        <div className="flex pl-10 py-8 justify-start items-center">
+          <h1>
+            <span className="underline underline-offset-1 decoration-[#E12945]">
+              Welcome
+            </span>{" "}
+            to Self & Peer Evaluation Portal
+          </h1>
         </div>
-        <div>
+
+        {userRole === "student" ? (
           <SectionContent
-            content={title}
-          />       
-        </div>       
+            content={"Control"}
+            userRole={userRole}
+            attendingUnits={attendingUnits}
+          />
+        ) : (
+          <>
+            <SectionContent
+              content={title}
+              userRole={userRole}
+              attendingUnits={attendingUnits}
+            />
+
+            <SectionContent
+              content={"Control"}
+              userRole={userRole}
+              attendingUnits={attendingUnits}
+            />
+
+            <SectionContent
+              content={"Output"}
+              userRole={userRole}
+              attendingUnits={attendingUnits}
+            />
+          </>
+        )}
+      </div>
+      {userRole === "student" ? null : (
+        <div className="flex-[30%] h-screen">
+          <div className="px-10 overflow-auto">
+            <div className="flex pl-10 py-8 justify-start items-center">
+              <h1>
+                <span className="underline underline-offset-1 decoration-[#E12945]">
+                  Recent
+                </span>{" "}
+                activities
+              </h1>
+            </div>
+
+            <div>
+              <Feed />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
-export default HomeSection
+export default HomeSection;

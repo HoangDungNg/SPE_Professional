@@ -18,6 +18,7 @@ import AddSPE2 from "./Pages/AddSPE2";
 import RegisterUnit from "./Pages/RegisterUnit";
 import RegisterTeam from "./Pages/RegisterTeam";
 import SPEOne from "../Components/Pages/SpeOne";
+import Class from "./Pages/Class";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -167,9 +168,11 @@ function Content() {
   // }, []);
 
   return (
-    <div className="app_body flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
-      {/* {unitGroup && unitGroup.map((group) => group.group.map((groupName) => console.log(groupName.groupName)))} */}
-      {/* {console.log(userInfo)} */}
+    <div className="app_body h-screen overflow-hidden">
+      <div className="flex flex-col bg-black text-white h-12 items-center justify-center">
+        <img src="https://myinfo.murdoch.edu.au/app_content/gen2/customer_override/static/web_style/student-default/mymurdoch.png" alt="" />
+      </div>
+      <div className="flex flex-row font-['Montserrat'] bg-[#E6ECEF]">
       <BrowserRouter>
         <NavBar />
 
@@ -189,11 +192,13 @@ function Content() {
             <Route path=":groupId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
           </Route>    
           <Route path="/class"> 
-            <Route path=":classId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
+            <Route path=":classId" element={<Class userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} /> 
           </Route>    
+          <Route path="/class/:unitId/:classId" element={<Class userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" reverse={false} />
+    </div>
     </div>
   );
 }

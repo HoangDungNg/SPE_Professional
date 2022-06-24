@@ -5,6 +5,7 @@ import { CgRemove, CgAdd } from "react-icons/cg";
 function AddSPE({ speFormName, speNo }) {
   const [unitCode, setUnitCode] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [trimesterCode, setTrimesterCode] = useState("");
 
   const ratingQArr = [
     {
@@ -79,7 +80,7 @@ function AddSPE({ speFormName, speNo }) {
     //Add to firebase
     db.collection(speFormName)
       .where("unitCode", "==", unitCode)
-      .where("trimesterCode", "==", "TMA2022")
+      .where("trimesterCode", "==", trimesterCode)
       .get()
       .then((snapshot) => {
         const [docID] = snapshot.docs.map((doc) => doc.id);
@@ -92,7 +93,7 @@ function AddSPE({ speFormName, speNo }) {
             .doc(docID)
             .set({
               unitCode: unitCode,
-              trimesterCode: "TMA2022",
+              trimesterCode: trimesterCode,
               dueDate: dueDate,
               questions: allQuestionsArr.map((input) => input),
             });
@@ -102,7 +103,7 @@ function AddSPE({ speFormName, speNo }) {
             .doc(docID)
             .update({
               unitCode: unitCode,
-              trimesterCode: "TMA2022",
+              trimesterCode: trimesterCode,
               dueDate: dueDate,
               questions: allQuestionsArr.map((input) => input),
             });
@@ -113,6 +114,7 @@ function AddSPE({ speFormName, speNo }) {
         setRatingArr(ratingQArr);
         setInputArr(inputQArr);
         setUnitCode("");
+        setTrimesterCode("");
         setDueDate("");
       });
   }, [allQuestionsArr]);
@@ -232,9 +234,6 @@ function AddSPE({ speFormName, speNo }) {
         <div className="bg-[#E12945] text-white h-10 flex justify-center items-center">
           <h2>Add/Update SPE {speNo} form</h2>
         </div>
-        {console.log(allQuestionsArr)}
-        {console.log(ratingArr)}
-        {console.log(inputArr)}
 
         {/* <div className="px-32 pb-32 pt-24"> */}
         <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md">
@@ -250,8 +249,8 @@ function AddSPE({ speFormName, speNo }) {
           <p className="mt-3 text-left text-gray-600">
             <strong>Please note: </strong>
             If you want to only update the due date of Self and Peer Evaluation
-            form please select the due date and press on "Update due date"
-            button only.
+            form please type in the unit code, select the due date and press
+            on "Update due date" button only.
           </p>
           <form className="mt-6 items-center md:flex flex-col">
             <h2 className="flex font-bold mt-4">
@@ -313,10 +312,20 @@ function AddSPE({ speFormName, speNo }) {
                   </span>
                 </button>
               </div>
+              <span className="block text-left my-2 text-sm font-semibold text-gray-600">
+                Trimester code:
+              </span>
+              <input
+                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                onChange={(e) => setTrimesterCode(e.target.value)}
+                value={trimesterCode}
+                size="50"
+                placeholder="Please enter the trimester code without spacing (Eg.TMA2022)"
+              />
               {/* </div> */}
               {ratingArr.map((item, i) => {
                 return (
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col w-full" key={i}>
                     <span className="block text-left my-4 text-sm font-semibold text-gray-600">
                       Question {i + 1}:{" "}
                     </span>
@@ -372,7 +381,7 @@ function AddSPE({ speFormName, speNo }) {
               </p>
               {inputArr.map((item, i) => {
                 return (
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col w-full" key={i}>
                     <span className="block text-left my-4 text-sm font-semibold text-gray-600">
                       Question {i + 1}:{" "}
                     </span>

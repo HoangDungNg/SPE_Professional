@@ -5,8 +5,12 @@ import { db } from "../../firebase";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { Link, useParams } from "react-router-dom";
+import firebase from "firebase/compat/app";
 
 function SPEOne() {
+  const [classCode, setClassCode] = useState("")
+  const [trimesterCode, setTrimesterCode] = useState("");
+  const [teamCode, setTeamCode] = useState("");
   const [fsValue, setFsValue] = useState([]);
   const [SPEQuestions, setSPEQuestions] = useState([]);
   const [unitCode, setUnitCode] = useState("");
@@ -61,6 +65,46 @@ function SPEOne() {
     }
   }, [spe2UnitCode]);
 
+  //UseEffect to get the trimesterCode and teamCode of the current user
+  useEffect(() => {
+    try {
+      db.collection("users")
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            const studentID = data.studentID;
+            return studentID
+          }
+        }).then((studentID) => {
+          try{
+            db.collection("teams")
+            .where("unitCode", "==", unitCode)
+            .where("trimesterCode", "==", "TMA2022")
+            .get()
+            .then((snapshot) => {
+              const [data] = snapshot.docs.map((doc) => doc.data())
+              // console.log(data.members)
+              data.members.forEach((member) => {
+                if(member.studentNo === studentID) {
+                  setClassCode(data.classCode)
+                  setTrimesterCode(data.trimesterCode)
+                  setTeamCode(data.teamCode)
+                }               
+              })
+            })
+          }
+          catch(err) {
+            console.log(err)
+          }
+          
+        });
+      } catch (err) {
+        console.log(err)
+      }
+  }, [unitCode])
+
   function handleChange(e) {
     const { name, value } = e.target;
     setFsValue({ ...fsValue, [name]: value });
@@ -70,8 +114,39 @@ function SPEOne() {
     e.preventDefault();
     console.log(fsValue);
 
-    //TODO: Go to user's collection update spe submission status
-    //TODO: Go to feed update user submitted spe form
+    //Go to user's collection update their spe submission status
+    try {
+      db.collection("users").doc(user.uid).update({
+        survey2Status: "submitted",
+      });
+
+      //Go to spe1submission collection add submitted form
+      db.collection("spe2submissions").add({
+        studentID: studentID,
+        userID: user.uid,
+        studentName: nameOfUser,
+        teamCode: teamCode,
+        classCode: classCode,
+        unitCode: spe2UnitCode,
+        trimesterCode: trimesterCode,
+        answers: fsValue,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      //Go to feed update user submitted spe form
+      db.collection("feed").add({
+        userID: user.uid,
+        studentID: studentID,
+        studentName: nameOfUser,
+        unitCode: spe2UnitCode,
+        classCode: classCode,
+        teamCode: teamCode,
+        submission: "SPE 2",
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // console.log(SPEQuestions);
@@ -89,20 +164,20 @@ function SPEOne() {
       {SPEQuestions.length === 0 ? (
         <div className="h-screen w-full flex flex-col justify-center items-center bg-[#E6ECEF]">
           <h1>SPE not available</h1>
-          <h1 class="text-9xl font-extrabold text-[#1A2238] tracking-widest">
+          <h1 className="text-9xl font-extrabold text-[#1A2238] tracking-widest">
             404
           </h1>
-          <div class="bg-[#E12945] px-2 text-sm rounded rotate-12 absolute">
+          <div className="bg-[#E12945] px-2 text-sm rounded rotate-12 absolute">
             Page Not Found
           </div>
-          <button class="mt-5">
+          <button className="mt-5">
             <Link
               to="/"
               className="relative inline-block text-sm font-medium text-[#E12945] group active:text-orange-500 focus:outline-none focus:ring"
             >
               <span className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"></span>
 
-              <span class="relative block px-8 py-3 bg-[#1A2238] border border-current">
+              <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
                 <router-link to="/">Go Home</router-link>
               </span>
             </Link>
