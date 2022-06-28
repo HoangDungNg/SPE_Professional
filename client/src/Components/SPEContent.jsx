@@ -3,6 +3,7 @@ import Card from "./Card/Card";
 import IntroCard from "./Card/IntroCard";
 import EachStudSPE from "./EachStudSPE";
 import toast, { Toaster } from "react-hot-toast";
+import $ from "jquery";
 
 function SPEContent({
   SPEQuestions,
@@ -13,7 +14,12 @@ function SPEContent({
   nameOfUser,
   studentID,
   fsValue,
+  setFsValue,
+  setUploadData
 }) {
+
+  const[testValue, setTestValue] = useState("")
+
   const emptyStudArr = [
     {
       studentNo: "",
@@ -106,78 +112,333 @@ function SPEContent({
       scrollUp();
     }
 
+    var radioArr = [];
+    var txtArr = [];
+    var checkedArr =[];
+    var filledArr = [];
+
     if (cardID === 1) {
-      fsValue.student1q1Rating === undefined ||
-      fsValue.student1q2Rating === undefined ||
-      fsValue.student1q3Rating === undefined ||
-      fsValue.student1q4Rating === undefined ||
-      fsValue.student1q5Rating === undefined ||
-      fsValue.student1q6txtarea === undefined ||
-      fsValue.student1q7txtarea === undefined
-        ? alert("Please fill up all the fields")
-        : setCardID((currPage) => currPage + 1);
-      scrollUp();
+
+      //Get all the radio buttons
+      $("*[id*=radioBtn]").each((i, e) => {
+        radioArr.push(e.name)
+      })
+      
+      //Get all the text area
+      $("*[id*=txtarea]").each((i, e) => {
+          txtArr.push(e.name)
+      })
+
+      //Set a new array of radio buttons with unique names only
+      const uniqueBtnArr = [...new Set(radioArr)]
+      
+      //Set the checked array with only checked radio buttons
+      $("*[id*=radioBtn]:checked").each((i,e) => {
+        checkedArr.push(e.name)
+      })
+
+      //Set the filled array with on filled text area
+      $("*[id*=txtarea]").each((i,e) => {
+        if(e.value !== ""){
+          filledArr.push(e.name)
+        }
+      })
+
+      //Check if the 2 arrays have the same length, otherwise alert user
+      if(uniqueBtnArr.length !== checkedArr.length || txtArr.length !== filledArr.length){
+        alert("Please check and fill up all the fields")
+        scrollUp();
+      }
+      else{
+        let studentArr = [];
+        let count = 0;
+  
+        Object.keys(fsValue).forEach(key => {
+          if(key.includes("Rating")){
+            // console.log(fsValue[key])
+            count++;
+            studentArr.push(parseFloat(fsValue[key]))
+          }
+          const total = studentArr.reduce((acc, curValue) =>{
+            return acc + curValue;
+          }, 0)
+
+          setFsValue({ ...fsValue, student1Avg: (total/count).toFixed(2) })
+        });
+
+        setCardID((currPage) => currPage + 1);
+        scrollUp();
+      } 
+
     } else if (cardID === 2) {
-      fsValue.student2q1Rating === undefined ||
-      fsValue.student2q2Rating === undefined ||
-      fsValue.student2q3Rating === undefined ||
-      fsValue.student2q4Rating === undefined ||
-      fsValue.student2q5Rating === undefined ||
-      fsValue.student2q6txtarea === undefined ||
-      fsValue.student2q7txtarea === undefined
-        ? alert("Please fill up all the fields")
-        : setCardID((currPage) => currPage + 1);
-      scrollUp();
+
+      //Get all the radio buttons
+      $("*[id*=radioBtn]").each((i, e) => {
+        radioArr.push(e.name)
+      })
+      
+      //Get all the text area
+      $("*[id*=txtarea]").each((i, e) => {
+          txtArr.push(e.name)
+      })
+
+      //Set a new array of radio buttons with unique names only
+      const uniqueBtnArr = [...new Set(radioArr)]
+      
+      //Set the checked array with only checked radio buttons
+      $("*[id*=radioBtn]:checked").each((i,e) => {
+        checkedArr.push(e.name)
+      })
+
+      //Set the filled array with on filled text area
+      $("*[id*=txtarea]").each((i,e) => {
+        if(e.value !== ""){
+          filledArr.push(e.name)
+        }
+      })
+
+      //Check if the 2 arrays have the same length, otherwise alert user
+      if(uniqueBtnArr.length !== checkedArr.length || txtArr.length !== filledArr.length){
+        alert("Please check and fill up all the fields")
+        scrollUp();
+      }
+      else{
+        let student1Arr = [];
+        let count = 0;
+  
+        Object.keys(fsValue).forEach(key => {
+          if(key.includes("student2") && key.includes("Rating")){
+
+            count++;
+            student1Arr.push(parseFloat(fsValue[key]))
+          }
+          const total = student1Arr.reduce((acc, curValue) =>{
+            return acc + curValue;
+          }, 0)
+          setFsValue({ ...fsValue, student2Avg: (total/count).toFixed(2) })
+        });
+
+        setCardID((currPage) => currPage + 1);
+        scrollUp();
+      }
     } else if (cardID === 3) {
-      console.log("card 3 triggered");
-      fsValue.student3q1Rating === undefined ||
-      fsValue.student3q2Rating === undefined ||
-      fsValue.student3q3Rating === undefined ||
-      fsValue.student3q4Rating === undefined ||
-      fsValue.student3q5Rating === undefined ||
-      fsValue.student3q6txtarea === undefined ||
-      fsValue.student3q7txtarea === undefined
-        ? alert("Please fill up all the fields")
-        : setCardID((currPage) => currPage + 1);
-      scrollUp();
+      
+      //Get all the radio buttons
+      $("*[id*=radioBtn]").each((i, e) => {
+        radioArr.push(e.name)
+      })
+      
+      //Get all the text area
+      $("*[id*=txtarea]").each((i, e) => {
+          txtArr.push(e.name)
+      })
+
+      //Set a new array of radio buttons with unique names only
+      const uniqueBtnArr = [...new Set(radioArr)]
+      
+      //Set the checked array with only checked radio buttons
+      $("*[id*=radioBtn]:checked").each((i,e) => {
+        checkedArr.push(e.name)
+      })
+
+      //Set the filled array with on filled text area
+      $("*[id*=txtarea]").each((i,e) => {
+        if(e.value !== ""){
+          filledArr.push(e.name)
+        }
+      })
+
+      //Check if the 2 arrays have the same length, otherwise alert user
+      if(uniqueBtnArr.length !== checkedArr.length || txtArr.length !== filledArr.length){
+        alert("Please check and fill up all the fields")
+        scrollUp();
+      }
+      else{
+        let studentArr = [];
+        let count = 0;
+  
+        Object.keys(fsValue).forEach(key => {
+          if(key.includes("student3") && key.includes("Rating")){
+            // console.log(fsValue[key])
+            count++;
+            studentArr.push(parseFloat(fsValue[key]))
+          }
+          const total = studentArr.reduce((acc, curValue) =>{
+            return acc + curValue;
+          }, 0)
+          setFsValue({ ...fsValue, student3Avg: (total/count).toFixed(2) })
+        });
+
+        setCardID((currPage) => currPage + 1);
+        scrollUp();
+      }
     } else if (cardID === 4) {
-      fsValue.student4q1Rating === undefined ||
-      fsValue.student4q2Rating === undefined ||
-      fsValue.student4q3Rating === undefined ||
-      fsValue.student4q4Rating === undefined ||
-      fsValue.student4q5Rating === undefined ||
-      fsValue.student4q6txtarea === undefined ||
-      fsValue.student4q7txtarea === undefined
-        ? alert("Please fill up all the fields")
-        : setCardID((currPage) => currPage + 1);
-      scrollUp();
+
+      //Get all the radio buttons
+      $("*[id*=radioBtn]").each((i, e) => {
+        radioArr.push(e.name)
+      })
+      
+      //Get all the text area
+      $("*[id*=txtarea]").each((i, e) => {
+          txtArr.push(e.name)
+      })
+
+      //Set a new array of radio buttons with unique names only
+      const uniqueBtnArr = [...new Set(radioArr)]
+      
+      //Set the checked array with only checked radio buttons
+      $("*[id*=radioBtn]:checked").each((i,e) => {
+        checkedArr.push(e.name)
+      })
+
+      //Set the filled array with on filled text area
+      $("*[id*=txtarea]").each((i,e) => {
+        if(e.value !== ""){
+          filledArr.push(e.name)
+        }
+      })
+
+      //Check if the 2 arrays have the same length, otherwise alert user
+      if(uniqueBtnArr.length !== checkedArr.length || txtArr.length !== filledArr.length){
+        alert("Please check and fill up all the fields")
+        scrollUp();
+      }
+      else{
+        let studentArr = [];
+        let count = 0;
+  
+        Object.keys(fsValue).forEach(key => {
+          if(key.includes("student4") && key.includes("Rating")){
+            // console.log(fsValue[key])
+            count++;
+            studentArr.push(parseFloat(fsValue[key]))
+          }
+          const total = studentArr.reduce((acc, curValue) =>{
+            return acc + curValue;
+          }, 0)
+          setFsValue({ ...fsValue, student4Avg: (total/count).toFixed(2) })
+        });
+
+        setCardID((currPage) => currPage + 1);
+        scrollUp();
+      }
     } else if (cardID === 5) {
-      fsValue.student5q1Rating === undefined ||
-      fsValue.student5q2Rating === undefined ||
-      fsValue.student5q3Rating === undefined ||
-      fsValue.student5q4Rating === undefined ||
-      fsValue.student5q5Rating === undefined ||
-      fsValue.student5q6txtarea === undefined ||
-      fsValue.student5q7txtarea === undefined
-        ? alert("Please fill up all the fields")
-        : setCardID((currPage) => currPage + 1);
-      scrollUp();
-    } else if (cardID === 6) {
-      console.log(fsValue);
-      fsValue.student6q1Rating === undefined ||
-      fsValue.student6q2Rating === undefined ||
-      fsValue.student6q3Rating === undefined ||
-      fsValue.student6q4Rating === undefined ||
-      fsValue.student6q5Rating === undefined ||
-      fsValue.student6q6txtarea === undefined ||
-      fsValue.student6q7txtarea === undefined
-        ? (() => alert("Please fill up all the fields"))()
-        : (() => {
-            handleSubmit(e);
-            setCardID(0);
-            sucessMsg(`Self & Peer Evaluation ${formNumber} form submitted!`);
-          })();
+      
+      //Get all the radio buttons
+      $("*[id*=radioBtn]").each((i, e) => {
+        radioArr.push(e.name)
+      })
+      
+      //Get all the text area
+      $("*[id*=txtarea]").each((i, e) => {
+          txtArr.push(e.name)
+      })
+
+      //Set a new array of radio buttons with unique names only
+      const uniqueBtnArr = [...new Set(radioArr)]
+      
+      //Set the checked array with only checked radio buttons
+      $("*[id*=radioBtn]:checked").each((i,e) => {
+        checkedArr.push(e.name)
+      })
+
+      //Set the filled array with on filled text area
+      $("*[id*=txtarea]").each((i,e) => {
+        if(e.value !== ""){
+          filledArr.push(e.name)
+        }
+      })
+
+      //Check if the 2 arrays have the same length, otherwise alert user
+      if(uniqueBtnArr.length !== checkedArr.length || txtArr.length !== filledArr.length){
+        alert("Please check and fill up all the fields")
+        scrollUp();
+      }
+      else{
+        let studentArr = [];
+        let count = 0;
+  
+        Object.keys(fsValue).forEach(key => {
+          if(key.includes("student5") && key.includes("Rating")){
+            // console.log(fsValue[key])
+            count++;
+            studentArr.push(parseFloat(fsValue[key]))
+          }
+          const total = studentArr.reduce((acc, curValue) =>{
+            return acc + curValue;
+          }, 0)
+          setFsValue({ ...fsValue, student5Avg: (total/count).toFixed(2) })
+          
+        });
+
+        setCardID((currPage) => currPage + 1);
+        scrollUp();
+      }
+    } 
+    
+    else if (cardID === 6) {
+
+      $("*[id*=radioBtn]").each((i, e) => {
+        radioArr.push(e.name)
+      })
+      
+      //Get all the text area
+      $("*[id*=txtarea]").each((i, e) => {
+          txtArr.push(e.name)
+      })
+
+      //Set a new array of radio buttons with unique names only
+      const uniqueBtnArr = [...new Set(radioArr)]
+      
+      //Set the checked array with only checked radio buttons
+      $("*[id*=radioBtn]:checked").each((i,e) => {
+        checkedArr.push(e.name)
+      })
+
+      //Set the filled array with on filled text area
+      $("*[id*=txtarea]").each((i,e) => {
+        if(e.value !== ""){
+          filledArr.push(e.name)
+        }
+      })
+
+      //Check if the 2 arrays have the same length, otherwise alert user
+      if(uniqueBtnArr.length !== checkedArr.length || txtArr.length !== filledArr.length){
+        alert("Please check and fill up all the fields")
+        scrollUp();
+      }
+      else{
+        let studentArr = [];
+        let count = 0;
+        let total = 0;
+  
+        Object.keys(fsValue).forEach(key => {
+          if(key.includes("student6") && key.includes("Rating")){
+            // console.log(fsValue[key])
+            count++;
+            studentArr.push(parseFloat(fsValue[key]))
+          }
+
+          total = studentArr.reduce((acc, curValue) =>{
+            return acc + curValue;
+          }, 0)
+        });
+
+
+        (() => {
+          setFsValue({ ...fsValue, student6Avg: (total/count).toFixed(2) })
+          setUploadData(true)
+        })()
+
+        
+        handleSubmit(e);
+        setCardID(0);
+        sucessMsg(`Self & Peer Evaluation ${formNumber} form submitted!`);
+      }
     }
+
+
   }
 
   return (
@@ -186,7 +447,6 @@ function SPEContent({
           <h2>Self & Peer Evaluation form {formNumber}</h2>
         </div>
         <div className=" p-8 flex flex-col items-center">
-
           <div id="SPEContainer" className="flex flex-col items-center">
             <div id="cards">
               <form

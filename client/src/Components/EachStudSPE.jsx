@@ -8,7 +8,7 @@ function EachStudSPE({
   student,
   studentID,
   fsValue,
-  id,
+  id
 }) {
   return (
     <div>
@@ -52,7 +52,7 @@ function EachStudSPE({
               type="text"
               onChange={handleChange}
               value={fsValue === [] ? "" : fsValue[student + "name"]}
-              name={`${student}name`}
+              name={`${student}Name`}
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
             <span className="block text-left my-4 text-sm font-semibold text-gray-600">

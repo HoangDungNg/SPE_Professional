@@ -8,13 +8,14 @@ import { Link, useParams } from "react-router-dom";
 import firebase from "firebase/compat/app";
 
 function SPEOne({ attendingUnits }) {
+  const [uploadData, setUploadData] = useState(false);
   const [classCode, setClassCode] = useState("");
   const [trimesterCode, setTrimesterCode] = useState("");
   const [teamCode, setTeamCode] = useState("");
-  const [fsValue, setFsValue] = useState([]);
   const [SPEQuestions, setSPEQuestions] = useState([]);
   const [unitCode, setUnitCode] = useState("");
   const user = useSelector(selectUser);
+  const [fsValue, setFsValue] = useState("");
   const [nameOfUser, setNameofUser] = useState("");
   const [studentID, setStudentID] = useState("");
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ function SPEOne({ attendingUnits }) {
             const studentID = data.studentID;
             setNameofUser(name);
             setStudentID(studentID);
+            setFsValue({ student1ID: studentID, student1Name: name });
           }
         });
       db.collection("spe1")
@@ -84,7 +86,7 @@ function SPEOne({ attendingUnits }) {
               .get()
               .then((snapshot) => {
                 const [data] = snapshot.docs.map((doc) => doc.data());
-                // console.log(data.members)
+
                 data.members.forEach((member) => {
                   if (member.studentNo === studentID) {
                     setClassCode(data.classCode);
@@ -102,50 +104,94 @@ function SPEOne({ attendingUnits }) {
     }
   }, [unitCode]);
 
+  useEffect(() => {
+    if (uploadData === true) {
+      //Uncomment below after calculation
+      //Go to user's collection update their spe submission status
+      try {
+        db.collection("users").doc(user.uid).update({
+          survey1Status: "submitted",
+        });
+
+        //Go to spe1submission collection add submitted form
+        db.collection("spe1submissions").add({
+          studentID: studentID,
+          userID: user.uid,
+          studentName: nameOfUser,
+          teamCode: teamCode,
+          classCode: classCode,
+          unitCode: spe1UnitCode,
+          trimesterCode: trimesterCode,
+          answers: fsValue,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        //Go to feed update user submitted spe form
+        db.collection("feed").add({
+          userID: user.uid,
+          studentID: studentID,
+          studentName: nameOfUser,
+          unitCode: spe1UnitCode,
+          classCode: classCode,
+          teamCode: teamCode,
+          submission: "SPE 1",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      setUploadData(false);
+    }
+  }, [fsValue]);
+
   function handleChange(e) {
     const { name, value } = e.target;
     setFsValue({ ...fsValue, [name]: value });
-    console.log(fsValue);
+    // console.log(fsValue);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(fsValue);
 
-    //Go to user's collection update their spe submission status
-    try {
-      db.collection("users").doc(user.uid).update({
-        survey1Status: "submitted",
-      });
+    // console.log(fsValue)
+    //Uncomment below after calculation
+    // Go to user's collection update their spe submission status
+    // try {
+    //   db.collection("users").doc(user.uid).update({
+    //     survey1Status: "submitted",
+    //   });
 
-      //Go to spe1submission collection add submitted form
-      db.collection("spe1submissions").add({
-        studentID: studentID,
-        userID: user.uid,
-        studentName: nameOfUser,
-        teamCode: teamCode,
-        classCode: classCode,
-        unitCode: spe1UnitCode,
-        trimesterCode: trimesterCode,
-        answers: fsValue,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    //   //Go to spe1submission collection add submitted form
+    //   db.collection("spe1submissions").add({
+    //     studentID: studentID,
+    //     userID: user.uid,
+    //     studentName: nameOfUser,
+    //     teamCode: teamCode,
+    //     classCode: classCode,
+    //     unitCode: spe1UnitCode,
+    //     trimesterCode: trimesterCode,
+    //     answers: fsValue,
+    //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    //   });
 
-      //Go to feed update user submitted spe form
-      db.collection("feed").add({
-        userID: user.uid,
-        studentID: studentID,
-        studentName: nameOfUser,
-        unitCode: spe1UnitCode,
-        classCode: classCode,
-        teamCode: teamCode,
-        submission: "SPE 1",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    //   //Go to feed update user submitted spe form
+    //   db.collection("feed").add({
+    //     userID: user.uid,
+    //     studentID: studentID,
+    //     studentName: nameOfUser,
+    //     unitCode: spe1UnitCode,
+    //     classCode: classCode,
+    //     teamCode: teamCode,
+    //     submission: "SPE 1",
+    //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    //   });
+    // } catch (err) {
+    //   console.log(err);
+    // }
   }
+
+  // console.log(fsValue)
 
   if (loading) {
     return (
@@ -188,6 +234,8 @@ function SPEOne({ attendingUnits }) {
           nameOfUser={nameOfUser}
           studentID={studentID}
           fsValue={fsValue}
+          setFsValue={setFsValue}
+          setUploadData={setUploadData}
           formNumber={1}
         />
       )}
