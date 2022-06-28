@@ -15,7 +15,7 @@ function Class({ userInfo, groupName, groupNum }) {
   //Get the unit
   useEffect(() => {
     setLoading(true)
-    setStudents([]);
+    // setStudents([]);
 
     try {
       db.collection("teams")
@@ -25,7 +25,7 @@ function Class({ userInfo, groupName, groupNum }) {
         .get()
         .then((snapshot) => {
           const data = snapshot.docs.map((doc) => doc.data());
-          // console.log(data);
+          console.log(data);
 
           if (data.length === 0) {
             setInterval(() => setLoading(false), 500);
@@ -117,7 +117,8 @@ function Class({ userInfo, groupName, groupNum }) {
                   </tr>
                 </thead>
 
-                {students && (
+                {
+                students && (
                   <tbody className="divide-y divide-gray-100">
                     {students.map((student, index) => (
                       <TableRow

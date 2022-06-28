@@ -206,20 +206,21 @@ function RegisterTeam() {
           <h2>Register Team</h2>
         </div>
 
-        <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md">
+        <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto mb-10 bg-white rounded-md shadow-lg">
           <h2 className="text-3xl font-semibold text-center text-gray-800">
             Register/Update team
           </h2>
-          <p className="mt-3 text-center text-gray-600 ">
+          <p className="mt-3 text-left text-gray-600">
             Please enter the unit code without spacing (eg. ICT302), trimester
             code with year without spacing (eg. TMA2022) and select the how many
             classes this unit is having.
           </p>
+          <p className="mt-3 text-left text-gray-600">
+          <strong>Please note: </strong>Please either upload CSV file OR enter team information.
+          </p>
           <form className="mt-6 items-center md:flex flex-col" action="">
             <div className="flex flex-col w-full">
               {formDisplay()}
-              {/* {console.log(students)} */}
-              {/* {console.log(cardID)} */}
             </div>
             <div
               id="btnContainer"

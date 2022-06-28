@@ -181,16 +181,12 @@ function SPEContent({
   }
 
   return (
-    // <div
-    //   className="flex flex-[80] h-screen justify-center overflow-auto scroll-smooth"
-    //   id="SPEContent"
-    // >
       <div className="flex items-center flex-col overflow-auto scroll-smooth pb-10" id="SPEContent">
         <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 text-white">
           <h2>Self & Peer Evaluation form {formNumber}</h2>
         </div>
         <div className=" p-8 flex flex-col items-center">
-          {/* <IntroCard SPENumber={formNumber} unitCode={unitCode} /> */}
+
           <div id="SPEContainer" className="flex flex-col items-center">
             <div id="cards">
               <form

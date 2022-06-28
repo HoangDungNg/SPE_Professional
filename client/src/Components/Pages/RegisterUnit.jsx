@@ -142,7 +142,7 @@ function RegisterUnit() {
         {/* <h1 className="text-3xl font-semibold text-center text-gray-800">Register units</h1> */}
         <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md">
             <h2 className="text-3xl font-semibold text-center text-gray-800">Register/Update units</h2>
-            <p className="mt-3 text-center text-gray-600 ">
+            <p className="mt-3 text-left text-gray-600 ">
                 Please enter the unit code without spacing (eg. ICT302), trimester code with year without spacing (eg. TMA2022) 
                 and select the how many classes this unit is having.
             </p>
