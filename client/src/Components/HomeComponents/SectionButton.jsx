@@ -12,6 +12,7 @@ function SectionButton({ title, content, unitCode, link, finalResult }) {
     { label: "Student ID", key: "studentID" },
     { label: "Student Name", key: "studentName" },
     { label: "Student average score", key: "studentAvg" },
+    { label: "Team Code", key: "teamCode" },
   ];
 
   //CSV file info
