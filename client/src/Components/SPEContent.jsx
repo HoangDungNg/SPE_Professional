@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Card from "./Card/Card";
 import IntroCard from "./Card/IntroCard";
 import EachStudSPE from "./EachStudSPE";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import $ from "jquery";
 
 function SPEContent({
@@ -17,8 +16,6 @@ function SPEContent({
   setFsValue,
   setUploadData
 }) {
-
-  const[testValue, setTestValue] = useState("")
 
   const emptyStudArr = [
     {
@@ -57,6 +54,7 @@ function SPEContent({
     });
   };
 
+
   //When the page is re-rendered, set the default state of cardID to show 1st page of form
   useEffect(() => {
     setCardID(0);
@@ -85,7 +83,6 @@ function SPEContent({
       );
     } else if (cardID >= 2) {
       const studForm = noOfStudents.map((student, index) => (
-        // console.log(index+2)
         <EachStudSPE
           key={index}
           SPEQuestions={SPEQuestions}
@@ -163,7 +160,7 @@ function SPEContent({
             return acc + curValue;
           }, 0)
 
-          setFsValue({ ...fsValue, student1Avg: (total/count).toFixed(2) })
+          setFsValue({ ...fsValue, student1Avg: (total/count).toFixed(2) })  
         });
 
         setCardID((currPage) => currPage + 1);
@@ -369,7 +366,6 @@ function SPEContent({
             return acc + curValue;
           }, 0)
           setFsValue({ ...fsValue, student5Avg: (total/count).toFixed(2) })
-          
         });
 
         setCardID((currPage) => currPage + 1);

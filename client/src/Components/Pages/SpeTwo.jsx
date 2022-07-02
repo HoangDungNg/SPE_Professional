@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { SPE2Questions } from "../../js/list";
 import SPEContent from "../SPEContent";
 import { db } from "../../firebase";
 import { useSelector } from "react-redux";
@@ -7,7 +6,8 @@ import { selectUser } from "../../features/userSlice";
 import { Link, useParams } from "react-router-dom";
 import firebase from "firebase/compat/app";
 
-function SPEOne() {
+function SPETwo() {
+  const [uploadData, setUploadData] = useState(false);
   const [classCode, setClassCode] = useState("")
   const [trimesterCode, setTrimesterCode] = useState("");
   const [teamCode, setTeamCode] = useState("");
@@ -31,12 +31,11 @@ function SPEOne() {
         .then((doc) => {
           if (doc.exists) {
             const data = doc.data();
-            // const [attendingUnits] = doc.data().attendingUnits;
             const name = data.name;
             const studentID = data.studentID;
             setNameofUser(name);
             setStudentID(studentID);
-            // return attendingUnits;
+            setFsValue({ student1ID: studentID, student1Name: name });
           }
         });
 
@@ -85,25 +84,67 @@ function SPEOne() {
             .get()
             .then((snapshot) => {
               const [data] = snapshot.docs.map((doc) => doc.data())
-              // console.log(data.members)
-              data.members.forEach((member) => {
-                if(member.studentNo === studentID) {
-                  setClassCode(data.classCode)
-                  setTrimesterCode(data.trimesterCode)
-                  setTeamCode(data.teamCode)
-                }               
+
+              data.forEach((team) => {
+                team.members.forEach((member) => {
+                  if (member.studentNo === studentID) {
+                    setClassCode(team.classCode);
+                    setTrimesterCode(team.trimesterCode);
+                    setTeamCode(team.teamCode);
+                  }
+                })
               })
             })
           }
           catch(err) {
             console.log(err)
           }
-          
         });
       } catch (err) {
         console.log(err)
       }
   }, [unitCode])
+
+  useEffect(() => {
+    if (uploadData === true) {
+      //Uncomment below after calculation
+      //Go to user's collection update their spe submission status
+      try {
+        db.collection("users").doc(user.uid).update({
+          survey2Status: "submitted",
+        });
+
+        //Go to spe1submission collection add submitted form
+        db.collection("spe2submissions").add({
+          studentID: studentID,
+          userID: user.uid,
+          studentName: nameOfUser,
+          teamCode: teamCode,
+          classCode: classCode,
+          unitCode: spe2UnitCode,
+          trimesterCode: trimesterCode,
+          answers: fsValue,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        //Go to feed update user submitted spe form
+        db.collection("feed").add({
+          userID: user.uid,
+          studentID: studentID,
+          studentName: nameOfUser,
+          unitCode: spe2UnitCode,
+          classCode: classCode,
+          teamCode: teamCode,
+          submission: "SPE 2",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      setUploadData(false);
+    }
+  }, [fsValue]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -112,44 +153,7 @@ function SPEOne() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(fsValue);
-
-    //Go to user's collection update their spe submission status
-    try {
-      db.collection("users").doc(user.uid).update({
-        survey2Status: "submitted",
-      });
-
-      //Go to spe1submission collection add submitted form
-      db.collection("spe2submissions").add({
-        studentID: studentID,
-        userID: user.uid,
-        studentName: nameOfUser,
-        teamCode: teamCode,
-        classCode: classCode,
-        unitCode: spe2UnitCode,
-        trimesterCode: trimesterCode,
-        answers: fsValue,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-
-      //Go to feed update user submitted spe form
-      db.collection("feed").add({
-        userID: user.uid,
-        studentID: studentID,
-        studentName: nameOfUser,
-        unitCode: spe2UnitCode,
-        classCode: classCode,
-        teamCode: teamCode,
-        submission: "SPE 2",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    } catch (err) {
-      console.log(err);
-    }
   }
-
-  // console.log(SPEQuestions);
 
   if (loading) {
     return (
@@ -192,6 +196,8 @@ function SPEOne() {
           nameOfUser={nameOfUser}
           studentID={studentID}
           fsValue={fsValue}
+          setFsValue={setFsValue}
+          setUploadData={setUploadData}
           formNumber={2}
         />
       )}
@@ -199,4 +205,4 @@ function SPEOne() {
   );
 }
 
-export default SPEOne;
+export default SPETwo;
