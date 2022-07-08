@@ -11,21 +11,20 @@ function TableRow({
   action,
   teamName,
 }) {
-  // function handleDownload(){
-  //   //Download form according to the user selected with their unique ID
-  //   console.log(`Download ${name}'s survey1 with ID of: ${memberId}`)
-  // }
 
   return (
     <tr>
       <td className="p-4 text-gray-700 whitespace-nowrap">{group}</td>
-      <td className="p-4 text-gray-700 whitespace-nowrap">{teamName}</td>
+      <td className="p-4 text-gray-700 whitespace-nowrap">{teamName ? teamName 
+      : 
+       <span className="bg-red-100 text-red-700 px-3 py-1.5 rounded text-xs font-medium">Team name not added yet</span>}</td> 
       <td className="p-4 font-medium whitespace-nowrap">{memberId}</td>
       <td className="p-4 font-medium whitespace-nowrap">{name}</td>
       <td className="p-4 text-gray-700 whitespace-nowrap">{email}</td>
+      {survey1Status ? 
       <StatusTag
         status={survey1Status.charAt(0).toUpperCase() + survey1Status.slice(1)}
-      />
+      />: "No status"}
       {/* <td className="p-4 text-gray-700 whitespace-nowrap">
         <button 
           onClick={handleDownload}
@@ -34,9 +33,11 @@ function TableRow({
           {survey1Status === 'submitted' ? action : 'Not available'}
         </button>
       </td> */}
+      {survey2Status ? 
       <StatusTag
         status={survey2Status.charAt(0).toUpperCase() + survey2Status.slice(1)}
       />
+      : "No status"}
       {/* <td className="p-4 text-gray-700 whitespace-nowrap">
       <button 
           onClick={handleDownload}

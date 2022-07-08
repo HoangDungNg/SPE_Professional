@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db } from "../../firebase";
 import firebase from "firebase/compat/app";
 import toast from "react-hot-toast";
+import $ from "jquery"
 
 function TeamInfo({
   teamNo,
@@ -16,7 +17,6 @@ function TeamInfo({
   setTeamName,
 }) {
   const [csvFile, setCsvFile] = useState("");
-  const [csvArray, setCsvArray] = useState([]);
 
   const submitSuccessMsg = (msg, toastHandler = toast) => {
     toastHandler.success(msg, {
@@ -28,7 +28,7 @@ function TeamInfo({
     });
   };
 
-  const processCSV = (str, delim = ",") => {
+  const processCSV = (str, e, delim = ",") => {
     const headers = str.slice(0, str.indexOf("\n") - 1).split(delim);
     const allRows = str.slice(str.indexOf("\n") + 1).split("\n");
 
@@ -54,16 +54,45 @@ function TeamInfo({
         return {
           teamCode: id,
           classCode: newArray.find((item) => item.TeamID === id).ClassCode,
-          trimesterCode: newArray.find((item) => item.TeamID === id)
-            .TeachPeriod,
+          trimesterCode: newArray.find((item) => item.TeamID === id).TeachPeriod,
           unitCode: newArray.find((item) => item.TeamID === id).UnitCode,
         };
       }
     );
 
+    // console.log(result)
+    
+
     //Add empty teams first
     result.forEach((team) => {
-      db.collection("teamTest")
+      
+      //For adding team code to class collection
+      db.collection("class")
+      .where("unitCode", "==", team.unitCode)
+      .where("classCode", "==", team.classCode)
+      .where("trimesterCode", "==", team.trimesterCode)
+      .get()
+      .then((snapshot) => {
+        const [data] = snapshot.docs.map((doc) => doc.data())
+        const [id] = snapshot.docs.map((doc) => doc.id)
+
+        //Compare data uploaded with data on database
+        data.teams.forEach(dataTeam => {
+
+          //If data on database not added then update team
+          if(dataTeam !== team.teamCode){
+            db.collection("class")
+            .doc(id)
+            .update(
+              "teams",
+              firebase.firestore.FieldValue.arrayUnion(team.teamCode)
+            )
+          }
+        })
+      })
+
+      //For adding team members teams collection
+      db.collection("teams")
         .where("teamCode", "==", team.teamCode)
         .where("classCode", "==", team.classCode)
         .where("trimesterCode", "==", team.trimesterCode)
@@ -72,19 +101,55 @@ function TeamInfo({
         .then((snapshot) => {
           const data = snapshot.docs.map((doc) => doc.data());
 
+          console.log(data)
+
           if (data.length === 0) {
-            console.log("No data found, add");
-            db.collection("teamTest").add({
+            console.log("No data found, add template first");
+            db.collection("teams").add({
               teamName: "",
               teamCode: team.teamCode,
               classCode: team.classCode,
               trimesterCode: team.trimesterCode,
               unitCode: team.unitCode,
+              teamID: ""
             });
+
+            console.log("Update template")
+            newArray.forEach((student) => {
+              db.collection("teams")
+                .where("unitCode", "==", student.UnitCode)
+                .where("trimesterCode", "==", student.TeachPeriod)
+                .where("classCode", "==", student.ClassCode)
+                .where("teamCode", "==", student.TeamID)
+                .get()
+                .then((snapshot) => {
+                  const data = snapshot.docs.map((doc) => doc.data());
+                  const [id] = snapshot.docs.map((doc) => doc.id);
+
+                  // If data found update
+                  if (data.length !== 0) {
+
+                    console.log(student.ClassCode)
+
+                    db.collection("teams")
+                      .doc(id)
+                      .update({
+                        teamID: id,
+                        members: firebase.firestore.FieldValue.arrayUnion({
+                          studentNo: student.PersonID,
+                          studentName: student.GivenName + " " + student.Surname,
+                          [`${student.UnitCode}survey1Status`]: "not submitted",
+                          [`${student.UnitCode}survey2Status`]: "not submitted"
+                        }),
+                      });
+                  }
+                });
+            });
+
           } else {
             console.log("Data found, update");
             newArray.forEach((student) => {
-              db.collection("teamTest")
+              db.collection("teams")
                 .where("unitCode", "==", student.UnitCode)
                 .where("trimesterCode", "==", student.TeachPeriod)
                 .where("classCode", "==", student.ClassCode)
@@ -97,7 +162,7 @@ function TeamInfo({
                   // If data found update
                   if (data.length !== 0) {
                     console.log("Data found, updated data");
-                    db.collection("teamTest")
+                    db.collection("teams")
                       .doc(id)
                       .update({
                         members: firebase.firestore.FieldValue.arrayUnion({
@@ -113,8 +178,10 @@ function TeamInfo({
         });
     });
 
-    //Add according to the team with students
+    //Reset the field value
+    $("#csvFile").val(null)
 
+    //Toast message
     submitSuccessMsg("Students and teams added successfully!");
   };
 
@@ -124,7 +191,7 @@ function TeamInfo({
 
     reader.onload = function (e) {
       const text = e.target.result;
-      processCSV(text);
+      processCSV(text, e);
     };
 
     reader.readAsText(file);
@@ -157,10 +224,10 @@ function TeamInfo({
           Upload
         </button>
       </div>
-      <div class="relative flex py-5 items-center">
-        <div class="flex-grow border-t border-gray-400"></div>
-        <span class="flex-shrink mx-4 text-gray-400">OR</span>
-        <div class="flex-grow border-t border-gray-400"></div>
+      <div className="relative flex py-5 items-center">
+        <div className="flex-grow border-t border-gray-400"></div>
+        <span className="flex-shrink mx-4 text-gray-400">OR</span>
+        <div className="flex-grow border-t border-gray-400"></div>
       </div>
       <label className="block mt-4 text-left mb-2 text-sm font-semibold text-gray-600">
         Team number:

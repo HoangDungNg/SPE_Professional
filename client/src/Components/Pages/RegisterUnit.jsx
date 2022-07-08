@@ -146,6 +146,7 @@ function RegisterUnit() {
                 Please enter the unit code without spacing (eg. ICT302), trimester code with year without spacing (eg. TMA2022) 
                 and select the how many classes this unit is having.
             </p>
+            
           <form className="mt-6 items-center md:flex flex-col">
             <div className="flex flex-col w-full">
                 {/* <div class="w-full mx-2"> */}

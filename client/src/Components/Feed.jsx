@@ -19,7 +19,7 @@ function Feed() {
   }, []);
 
   return (
-    <div className=" mb-4 bg-white rounded-lg max-h-[46.875rem] overflow-auto no-scrollbar divide-y divider-gray-200">
+    <div className=" mb-4 bg-white rounded-lg max-h-[46.875rem] overflow-auto divide-y divider-gray-200 scrollbar">
       {feed &&
         feed.map((eachFeed, index) => (
           <div className="flex flex-row bg-white p-2" key={index}>

@@ -5,7 +5,7 @@ import { svgIcons } from "../../js/svgIcons";
 import { AiOutlineDownload } from "react-icons/ai";
 import { CSVLink } from "react-csv";
 
-function SectionButton({ title, content, unitCode, link, finalResult }) {
+function SectionButton({ title, content, unitCode, link, finalResult, disable }) {
 
   //Headers for CSV file
   const headers = [
@@ -30,8 +30,8 @@ function SectionButton({ title, content, unitCode, link, finalResult }) {
       title === "Add/Update form for SPE 2" ||
       title === "Upload student details file" ||
       title.includes`Set up a new due date` ? (
-        <div className="block bg-white p-4 border border-gray-100 drop-shadow-xl rounded-xl focus:outline-none focus:ring hover:cursor-pointer hover:border-red-600 hover:ring-1 hover:ring-red-600">
-          <Link to={link}>
+        // <div className="block bg-white lg:p-4 md:p-6 border border-gray-100 drop-shadow-xl rounded-xl focus:outline-none focus:ring hover:cursor-pointer hover:border-red-600 hover:ring-1 hover:ring-red-600">
+          <Link to={link} className="block bg-white lg:p-4 md:p-6 border border-gray-100 drop-shadow-xl rounded-xl focus:outline-none focus:ring hover:cursor-pointer hover:border-red-600 hover:ring-1 hover:ring-red-600">
             <span className="inline-block p-3 rounded-lg bg-gray-50">
               {title === "Add/Update form for SPE 1" ||
               title === "Add/Update form for SPE 2" ||
@@ -50,20 +50,21 @@ function SectionButton({ title, content, unitCode, link, finalResult }) {
               {content}
             </p>
           </Link>
-        </div>
+        // </div>
       ) : finalResult ? (
-        <CSVLink {...csvReport}>
+        
+        <CSVLink {...csvReport} className={`${!disable ? "pointer-events-none" : null}`}>
           <div className="block bg-white p-4 border border-gray-100 drop-shadow-xl rounded-xl focus:outline-none focus:ring hover:cursor-pointer hover:border-red-600 hover:ring-1 hover:ring-red-600">
             <span className="inline-block p-3 rounded-lg bg-gray-50">
               {title ===
-              "Download output file (only available after due date)" ? (
+              "Download output file (only available after all student submitted spe 1)" ? (
                 <AiOutlineDownload size={20} />
               ) : null}
             </span>
 
             <h6 className="mt-2 font-bold">{title}</h6>
 
-            <p className="hidden sm:mt-1 sm:text-sm sm:text-gray-600 sm:block">
+            <p className="hidden sm:mt-1 sm:text-sm sm:text-gray-600 sm:block max-w-md mx-auto">
               {content}
             </p>
           </div>

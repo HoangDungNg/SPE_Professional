@@ -9,7 +9,7 @@ function SectionContent({ content, userRole, attendingUnits }) {
         <div>     
           <section>
             <div className="px-4 pb-5 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-2 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-3">
                 <SectionButton
                   title={"Add/Update form for SPE 1"}
                   link={"/addSpe1"}
@@ -33,7 +33,7 @@ function SectionContent({ content, userRole, attendingUnits }) {
         <div>
           <section>
             <div className=" px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-2 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-3">
                 {
                   //If the user logged in is student only allow them to view SPE form 1 and 2
                   //If the user logged in is lecturer or admin they are allow to see everything

@@ -19,6 +19,8 @@ import RegisterUnit from "./Pages/RegisterUnit";
 import RegisterTeam from "./Pages/RegisterTeam";
 import SPEOne from "../Components/Pages/SpeOne";
 import Class from "./Pages/Class";
+import RegisterStud from "./Pages/RegisterStud";
+import UpdateTeam from "./Pages/UpdateTeam";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -183,9 +185,11 @@ function Content() {
           </Route>
           <Route path="/spe2">
             <Route path=":spe2UnitCode" element={<SpeTwo />} /> 
-          </Route>
+          </Route>         
+          <Route path="/registerStud" element={<RegisterStud />} />
           <Route path="/registerUnit" element={<RegisterUnit />} />
           <Route path="/registerTeam" element={<RegisterTeam />} />
+          <Route path="/updateTeam" element={<UpdateTeam />} />
           <Route path="/addSPE1" element={<AddSPE1 />} />
           <Route path="/addSPE2" element={<AddSPE2 />} />
           <Route path="/group"> 

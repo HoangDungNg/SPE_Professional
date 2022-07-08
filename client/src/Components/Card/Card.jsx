@@ -9,9 +9,35 @@ function Card({
   handleChange,
   student
 }) {
+
+  const radioButtonDetails = [
+    {
+      rating: "1",
+      ratingText: "Very poor contribution",
+    },
+    {
+      rating: "2",
+      ratingText: "Poor contribution",
+    },
+    {
+      rating: "3",
+      ratingText: "Acceptable contribution",
+    },
+    {
+      rating: "4",
+      ratingText: "Good contribution",
+    },
+    {
+      rating: "5",
+      ratingText: "Excellent contribution",
+    }
+  ]
+
+
   return (
-    <div className="card mx-auto bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5">
-      <div className="px-7">
+    <div className="card bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5">
+      {/* {console.log(checkedState)} */}
+      <div className="px-7 w-full">
         <p className="text-left">{question}</p>
       </div> 
       <div className="overflow-x-auto overflow-y-hidden">
@@ -22,7 +48,18 @@ function Card({
             onChange={handleChange}
             className="radioGroup flex flex-row justify-around mt-[20px] text-center bg-[#F8F8FB]"
           >
-            <RatingButton
+            {radioButtonDetails.map((button, index) => 
+              <RatingButton
+                key={index}
+                rating={button.rating}
+                ratingText={button.ratingText}
+                id={id}
+                index={index}
+                student={student}
+                fieldset={`fs${id}`}
+              />
+            )}
+            {/* <RatingButton
               rating="1"
               ratingText={"Very poor contribution"}
               id={id}
@@ -51,7 +88,7 @@ function Card({
               ratingText={"Excellent contribution"}
               id={id}
               student={student}
-            />
+            /> */}
           </fieldset>
         ) : (
           <textarea

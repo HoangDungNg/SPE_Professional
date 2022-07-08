@@ -7,6 +7,8 @@ import { Link, useParams } from "react-router-dom";
 import firebase from "firebase/compat/app";
 
 function SPETwo() {
+  const [updateTeam, setUpdateTeam] = useState({})
+  const [team, setTeam] = useState("")
   const [uploadData, setUploadData] = useState(false);
   const [classCode, setClassCode] = useState("")
   const [trimesterCode, setTrimesterCode] = useState("");
@@ -19,6 +21,40 @@ function SPETwo() {
   const [studentID, setStudentID] = useState("");
   const [loading, setLoading] = useState(true);
   const { spe2UnitCode } = useParams();
+
+  var stud = {};
+
+  //When unitCode, classCode, and trimesterCode are set, update the state if initial data from firebase
+  useEffect(() => {
+    db.collection("teams")
+      .where("unitCode", "==", unitCode)
+      .where("classCode", "==", classCode)
+      .where("trimesterCode", "==", trimesterCode)
+      .get()
+      .then((snapshot) => {
+        const data = snapshot.docs.map((doc) => doc.data())
+
+        data.forEach((team) => {
+          team.members.forEach((member) => {
+            if(member.studentNo === studentID){
+              setUpdateTeam(team)
+            }
+          })
+        })
+      })
+  },[unitCode, classCode, trimesterCode])
+
+  useEffect(() => {
+    if(!updateTeam) return
+
+    //Update the survey1Status to submitted stored in state
+    updateTeam.members?.forEach(member => {
+      if(member.studentNo === studentID){
+        member[`${unitCode}survey2Status`] = "submitted"
+      }
+    })
+
+  },[updateTeam])
 
   useEffect(() => {
     //This prevents stacking of 2 different unit's SPE questions
@@ -36,6 +72,8 @@ function SPETwo() {
             setNameofUser(name);
             setStudentID(studentID);
             setFsValue({ student1ID: studentID, student1Name: name });
+            stud['student1ID'] = studentID
+            stud['student1Name'] = name 
           }
         });
 
@@ -76,27 +114,39 @@ function SPETwo() {
             const studentID = data.studentID;
             return studentID
           }
-        }).then((studentID) => {
+        })
+        .then((studentID) => {
           try{
             db.collection("teams")
             .where("unitCode", "==", unitCode)
             .where("trimesterCode", "==", "TMA2022")
             .get()
             .then((snapshot) => {
-              const [data] = snapshot.docs.map((doc) => doc.data())
+              const data = snapshot.docs.map((doc) => doc.data())
 
               data.forEach((team) => {
                 team.members.forEach((member) => {
                   if (member.studentNo === studentID) {
+                    setTeam(team)
                     setClassCode(team.classCode);
                     setTrimesterCode(team.trimesterCode);
                     setTeamCode(team.teamCode);
+
+                    var count = 2;
+
+                    team.members.forEach((member, index) => {
+                      if(member.studentNo !== studentID){
+                        stud[`student${count}Name`] = member.studentName
+                        stud[`student${count}ID`] = member.studentNo
+                        count++
+                      }
+                      setFsValue({...fsValue, ...stud})
+                    })
                   }
                 })
               })
             })
-          }
-          catch(err) {
+          } catch(err) {
             console.log(err)
           }
         });
@@ -106,13 +156,33 @@ function SPETwo() {
   }, [unitCode])
 
   useEffect(() => {
+
     if (uploadData === true) {
-      //Uncomment below after calculation
-      //Go to user's collection update their spe submission status
+
       try {
-        db.collection("users").doc(user.uid).update({
-          survey2Status: "submitted",
-        });
+
+        //Update whole team collection with new surveyStatus
+        db.collection("teams")
+        .where("unitCode", "==", unitCode)
+        .where("classCode", "==", classCode)
+        .where("trimesterCode", "==", trimesterCode)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.docs.map((doc) => doc.data())
+
+          data.forEach((team) => {
+            team.members.forEach((member) => {
+              if(member.studentNo === studentID){
+
+                if(updateTeam){
+                  db.collection("teams")
+                  .doc(team.teamID)
+                  .update(updateTeam)
+                }
+              }
+            })
+          })
+        })
 
         //Go to spe1submission collection add submitted form
         db.collection("spe2submissions").add({
@@ -144,7 +214,7 @@ function SPETwo() {
 
       setUploadData(false);
     }
-  }, [fsValue]);
+  }, [fsValue, updateTeam]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -199,6 +269,7 @@ function SPETwo() {
           setFsValue={setFsValue}
           setUploadData={setUploadData}
           formNumber={2}
+          team={team}
         />
       )}
     </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 function IntroCard({ SPENumber, unitCode }) {
   return (
-    <div className=" mx-auto bg-[#FFFFFF] rounded-lg text-xl my-4 w-3/5">
+    <div className=" mx-auto bg-[#FFFFFF] rounded-lg text-xl my-4 lg:w-3/5 md:w-5/5">
       <div className="rounded-t-lg bg-[#E12945] h-2.5">{/*bg-[#607C8A]*/}</div> 
 
       <div className="divide-y divide-slate-200">

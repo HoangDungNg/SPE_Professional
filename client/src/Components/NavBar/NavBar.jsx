@@ -109,7 +109,7 @@ function NavBar() {
       id="sideNav"
       className="flex flex-[20] flex-col justify-between h-screen bg-white border-r w-80"
     >
-      <div className="px-4 py-6">
+      <div className="px-4 py-6 overflow-auto mb-10 scrollbar">
         <img
           src="https://pbs.twimg.com/profile_images/1387990771291148290/sRyAuuCS_400x400.jpg"
           alt="Murdoch logo"
@@ -139,7 +139,10 @@ function NavBar() {
                     id="groupBtn"
                     className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700"
                   >
-                    {svgIcons[3].speIcon}
+                    <div>
+                      {svgIcons[3].speIcon}
+                    </div>
+                    
                     <span className="ml-3 text-sm font-medium">
                       Self & Peer Evaluation for {unit.unitCode}
                     </span>
@@ -215,6 +218,17 @@ function NavBar() {
           }
 
           {
+            userDetails.role === "admin" ? (
+              <NavButton
+                link={"/registerStud"}
+                icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+                text={"Add/Update student info"}
+              />
+            )
+            : null
+          }
+
+          {
             //Navigation button for Register units
             userDetails.role === "student" ? null : (
               <NavButton
@@ -235,6 +249,14 @@ function NavBar() {
           }
 
           {
+            <NavButton 
+              link={"/updateTeam"}
+              icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+              text={"Update team info"}
+            />
+          }
+
+          {
             //Navigation buttons for addSPE1 and addSPE2
             userDetails.role === "student" ? null : (
               <details className="group">
@@ -242,7 +264,10 @@ function NavBar() {
                   id="formBtn"
                   className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700"
                 >
-                  {svgIcons[7].formIcon} {svgIcons[7].formText}{" "}
+                  <div>
+                    {svgIcons[7].formIcon}
+                  </div>
+                   {svgIcons[7].formText}{" "}
                   {svgIcons[1].groupCatDropDownIcon}
                 </summary>
                 <nav className="mt-1.5 ml-8 flex flex-col">
@@ -292,21 +317,24 @@ function NavBar() {
         </nav>
       </div>
 
-      <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
+      <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 mt-2">
         <a
           href="/#"
           className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
         >
-          <Avatar src={userDetails.photoUrl}>
-            {user.email[0].toUpperCase()}
-          </Avatar>
+          {
+            userDetails.email &&
+            <Avatar src={userDetails.photoUrl}>
+              {userDetails.email[0].toUpperCase()}
+            </Avatar>
+          }
 
           <div className="ml-1.5 text-left">
             <p className="text-xs">
               <strong className="block font-semibold">
                 {userDetails.name}
               </strong>
-              <span> {user.email} </span>
+              <span>{userDetails.email}</span>
             </p>
           </div>
         </a>

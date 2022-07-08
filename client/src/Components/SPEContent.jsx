@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import IntroCard from "./Card/IntroCard";
 import EachStudSPE from "./EachStudSPE";
 import toast from "react-hot-toast";
 import $ from "jquery";
+import { CheckBtnContext } from "../context/CheckBtnContext";
 
 function SPEContent({
   SPEQuestions,
@@ -43,6 +44,8 @@ function SPEContent({
       studentName: "",
     },
   ];
+
+  var checkedArr =[];
 
   const sucessMsg = (msg, toastHandler = toast) => {
     toastHandler.success(msg, {
@@ -111,7 +114,6 @@ function SPEContent({
 
     var radioArr = [];
     var txtArr = [];
-    var checkedArr =[];
     var filledArr = [];
 
     if (cardID === 1) {
@@ -131,8 +133,10 @@ function SPEContent({
       
       //Set the checked array with only checked radio buttons
       $("*[id*=radioBtn]:checked").each((i,e) => {
-        checkedArr.push(e.name)
+        checkedArr.push(e.id)
       })
+
+      
 
       //Set the filled array with on filled text area
       $("*[id*=txtarea]").each((i,e) => {
@@ -184,7 +188,7 @@ function SPEContent({
       
       //Set the checked array with only checked radio buttons
       $("*[id*=radioBtn]:checked").each((i,e) => {
-        checkedArr.push(e.name)
+        checkedArr.push(e.id)
       })
 
       //Set the filled array with on filled text area
@@ -235,7 +239,7 @@ function SPEContent({
       
       //Set the checked array with only checked radio buttons
       $("*[id*=radioBtn]:checked").each((i,e) => {
-        checkedArr.push(e.name)
+        checkedArr.push(e.id)
       })
 
       //Set the filled array with on filled text area
@@ -286,7 +290,7 @@ function SPEContent({
       
       //Set the checked array with only checked radio buttons
       $("*[id*=radioBtn]:checked").each((i,e) => {
-        checkedArr.push(e.name)
+        checkedArr.push(e.id)
       })
 
       //Set the filled array with on filled text area
@@ -337,7 +341,7 @@ function SPEContent({
       
       //Set the checked array with only checked radio buttons
       $("*[id*=radioBtn]:checked").each((i,e) => {
-        checkedArr.push(e.name)
+        checkedArr.push(e.id)
       })
 
       //Set the filled array with on filled text area
@@ -389,7 +393,7 @@ function SPEContent({
       
       //Set the checked array with only checked radio buttons
       $("*[id*=radioBtn]:checked").each((i,e) => {
-        checkedArr.push(e.name)
+        checkedArr.push(e.id)
       })
 
       //Set the filled array with on filled text area
@@ -442,7 +446,7 @@ function SPEContent({
         <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 text-white">
           <h2>Self & Peer Evaluation form {formNumber}</h2>
         </div>
-        <div className=" p-8 flex flex-col items-center">
+        <div className=" p-8 flex flex-col items-center w-full">
           <div id="SPEContainer" className="flex flex-col items-center">
             <div id="cards">
               <form
@@ -453,18 +457,18 @@ function SPEContent({
                 encType="multipart/form-data"
                 id="myForm1"
               >
-                {formDisplay()}
+
+              {formDisplay()}
 
                 <div
                   id="btnContainer"
-                  className={`flex flex-row w-3/5 my-4 mx-auto ${
-                    cardID === 0 ? "justify-center" : "justify-between"
-                  } `}
+                  className="flex flex-row w-3/5 my-4 mx-auto justify-center"
                 >
-                  {cardID === 0 ? null : (
+                  {/* {cardID === 0 ? null : (
                     <button
                       type="button"
                       onClick={() => {
+                        handlePrevClick();
                         setCardID((currPage) => currPage - 1);
                         scrollUp();
                       }}
@@ -498,7 +502,7 @@ function SPEContent({
                         Prev
                       </span>
                     </button>
-                  )}
+                  )} */}
 
                   {cardID !== 6 ? (
                     <button
