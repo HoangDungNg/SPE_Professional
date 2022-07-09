@@ -443,7 +443,7 @@ function SPEContent({
 
   return (
       <div className="flex items-center flex-col overflow-auto scroll-smooth pb-10" id="SPEContent">
-        <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 text-white">
+        <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 text-white sticky top-0">
           <h2>Self & Peer Evaluation form {formNumber}</h2>
         </div>
         <div className=" p-8 flex flex-col items-center w-full">

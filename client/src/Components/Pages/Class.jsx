@@ -350,7 +350,8 @@ function Class({ userInfo, groupName, groupNum }) {
         </div>
       ) : (
         <div className="flex flex-col flex-[80] h-screen overflow-auto">
-          <div className="bg-[#E12945] text-white h-10 mb-14 flex justify-center items-center">
+          {/* <div className="bg-[#E12945] text-white h-10 mb-14 flex justify-center items-center"> */}
+          <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 mb-14 text-white sticky top-0">
             <h2>
               {unitId} {classId} team details
             </h2>

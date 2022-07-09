@@ -1,8 +1,17 @@
 const plugin = require("tailwindcss/plugin");
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {},
+  theme: { 
+    screens: {
+    'xs': '475px',
+    '2xs': '375px',
+    '3xs': '360px',
+    '4xs': '28px',
+    ...defaultTheme.screens,
+  },
+},
   extend: {
     fontFamily: {
       Montserrat: ['"Montserrat", sans-serif'],

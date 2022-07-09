@@ -140,6 +140,7 @@ function RegisterUnit() {
         </div>
 
         {/* <h1 className="text-3xl font-semibold text-center text-gray-800">Register units</h1> */}
+        <div className="flex items-center p-8">
         <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md">
             <h2 className="text-3xl font-semibold text-center text-gray-800">Register/Update units</h2>
             <p className="mt-3 text-left text-gray-600 ">
@@ -223,6 +224,7 @@ function RegisterUnit() {
               </span>
             </button>
           </form>
+        </div>
         </div>
       </div>
     </div>

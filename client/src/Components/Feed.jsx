@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
 import { db } from "../firebase";
-import firebase from "firebase/compat/app";
 
 function Feed() {
   const [feed, setFeed] = useState([]);

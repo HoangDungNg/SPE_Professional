@@ -15,6 +15,9 @@ function Home() {
   // var isLoggedIn = true;
   const [userDetails, setUserDetails] = useState("");
   const user = useSelector(selectUser);
+  const [screenSize, setScreenSize] = useState("");
+  const [open, setOpen] = useState(true);
+  const [mobileScreen, setMobileScreen] = useState(false);
 
   useEffect(() => {
     if (!user.uid) return;
@@ -47,10 +50,39 @@ function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    // console.log(window.innerWidth);
+
+    //Check the device accessed to the portal is mobile device
+    if (window.innerWidth <= 768) {
+      console.log("check width");
+      setOpen(false);
+      setMobileScreen(true);
+    }
+
+    function handleResize() {
+      if (window.innerWidth <= 768) {
+        setOpen(false);
+        setMobileScreen(true);
+      } else {
+        setOpen(true);
+        setMobileScreen(false);
+      }
+
+      // console.log(window.innerWidth);
+      setScreenSize(window.innerWidth);
+ 
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [screenSize]);
+
   return (
     <div className="flex flex-[80] h-screen justify-center">
       <div className="flex flex-col w-full">
-        <div className="flex pl-10 justify-center items-center bg-[#E12945] h-16 text-white">
+        {/* <div className="flex pl-10 justify-center items-center bg-[#E12945] h-16 text-white"> */}
+        <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 text-white sticky top-0">
           <h2>Home</h2>
         </div>
         {

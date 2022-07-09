@@ -202,10 +202,11 @@ function RegisterTeam() {
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
       <div className=" w-full pb-10 overflow-auto">
         {/* <Toaster position="bottom-right" reverse={false} /> */}
-        <div className="bg-[#E12945] text-white h-10 flex justify-center items-center">
+        <div className="bg-[#E12945] text-white h-10 flex justify-center items-center sticky top-0">
           <h2>Register Team</h2>
         </div>
 
+        <div className="flex items-center p-8">
         <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto mb-10 bg-white rounded-md shadow-lg">
           <h2 className="text-3xl font-semibold text-center text-gray-800">
             Register/Update team
@@ -319,6 +320,7 @@ function RegisterTeam() {
               )}
             </div>
           </form>
+        </div>
         </div>
       </div>
     </div>

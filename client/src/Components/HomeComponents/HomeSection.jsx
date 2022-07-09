@@ -8,7 +8,7 @@ function HomeSection({ title, userRole, attendingUnits }) {
       <div
         className={`${
           userRole === "student" ? "flex-[100%]" : "flex-[70%]"
-        } h-screen overflow-auto no-scrollbar`}
+        } h-screen overflow-auto no-scrollbar items-start`}
       >
         <div className="flex pl-10 py-8 justify-start items-center">
           <h1>
@@ -48,7 +48,7 @@ function HomeSection({ title, userRole, attendingUnits }) {
         )}
       </div>
       {userRole === "student" ? null : (
-        <div className="flex-[30%] h-screen">
+        <div className="flex-[30%] h-screen lg:flex md:hidden sm:hidden xs:hidden 2xs:hidden 3xs:hidden 4xs:hidden">
           <div className="px-10 overflow-auto">
             <div className="flex pl-10 py-8 justify-start items-center">
               <h1>

@@ -39,7 +39,7 @@ function Login() {
           })
         );
       })
-      .catch((error) => alert(error));
+      .catch((error) => alert("Email or password is incorrect, please try again."));
   }
   return (
     <div className="">
@@ -106,12 +106,6 @@ function Login() {
               <label htmlFor="password" className="text-sm text-gray-600">
                 Password
               </label>
-              <a
-                href="/"
-                className="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline"
-              >
-                Forgot password?
-              </a>
             </div>
 
             <input
