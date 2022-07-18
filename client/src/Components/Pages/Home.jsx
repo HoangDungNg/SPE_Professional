@@ -98,7 +98,7 @@ function Home() {
           // :
            (
             <>
-              <HomeSection title={"Home"} userRole={userDetails.role} attendingUnits={userDetails.attendingUnits} />
+              <HomeSection userRole={userDetails.role} attendingUnits={userDetails.attendingUnits} />
               {/* <HomeSection title={"Control"} attendingUnits={userDetails.attendingUnits} /> */}
               {/* <HomeSection title={"Dashboard"} /> */}
               {/* <HomeSection title={"Output"} /> */}

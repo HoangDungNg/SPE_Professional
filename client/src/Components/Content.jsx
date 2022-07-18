@@ -21,6 +21,8 @@ import SPEOne from "../Components/Pages/SpeOne";
 import Class from "./Pages/Class";
 import RegisterStud from "./Pages/RegisterStud";
 import UpdateTeam from "./Pages/UpdateTeam";
+import RegisterLect from "./Pages/RegisterLect";
+import UserDetails from "./Pages/UserDetails";
 
 function Content() {
   // const [login, setLogin] = useState(false);
@@ -186,6 +188,7 @@ function Content() {
           <Route path="/spe2">
             <Route path=":spe2UnitCode" element={<SpeTwo />} /> 
           </Route>         
+          <Route path="/registerLect" element={<RegisterLect />} />
           <Route path="/registerStud" element={<RegisterStud />} />
           <Route path="/registerUnit" element={<RegisterUnit />} />
           <Route path="/registerTeam" element={<RegisterTeam />} />
@@ -199,6 +202,7 @@ function Content() {
             <Route path=":classId" element={<Class userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} /> 
           </Route>    
           <Route path="/class/:unitId/:classId" element={<Class userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
+          <Route path="/userDetails" element={<UserDetails />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" reverse={false} />

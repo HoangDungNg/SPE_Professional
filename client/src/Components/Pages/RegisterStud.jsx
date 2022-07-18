@@ -17,7 +17,7 @@ function RegisterStud() {
     attendingUnits: "",
   });
 
-  
+
 
   const [csvFile, setCsvFile] = useState("");
 //   const [userInfo, setUserInfo] = useState([]);
@@ -171,15 +171,15 @@ var batch = db.batch();
         // console.log(id)
 
         if (data === undefined) {
+          
           //Register user
           console.log("Register user");
-          auth
-            .createUserWithEmailAndPassword(
+          auth.createUserWithEmailAndPassword(
               studentInfo.email,
               studentInfo.password
             )
             .then((user) => {
-              db.collection("users").add({
+              db.collection("users").doc(user.user.uid).set({
                 id: user.user.uid,
                 email: studentInfo.email,
                 role: "student",
@@ -189,7 +189,22 @@ var batch = db.batch();
                   ? [studentInfo.attendingUnits]
                   : []
               });
-            }).catch((err) => {
+
+              return user
+
+            }).then(() => {
+
+              auth.currentUser.updateProfile({
+                displayName: studentInfo.name,
+              }).then(() => {
+                // Update successful
+                console.log("Added display name to user auth profile")
+              }).catch((error) => {
+                // An error occurred
+                console.log("error")
+              })
+            })
+            .catch((err) => {
               console.log(err)
               alert(err)
               setErrorCaught(true)

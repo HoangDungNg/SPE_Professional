@@ -19,16 +19,17 @@ function HomeSection({ title, userRole, attendingUnits }) {
           </h1>
         </div>
 
-        {userRole === "student" ? (
-          <SectionContent
-            content={"Control"}
-            userRole={userRole}
-            attendingUnits={attendingUnits}
-          />
-        ) : (
+        {
+          userRole === "student" ? (
+            <SectionContent
+              content={"Home"}
+              userRole={userRole}
+              attendingUnits={attendingUnits}
+            />
+        ) : userRole === "lecturer" ? (
           <>
             <SectionContent
-              content={title}
+              content={"Home"}
               userRole={userRole}
               attendingUnits={attendingUnits}
             />
@@ -45,7 +46,17 @@ function HomeSection({ title, userRole, attendingUnits }) {
               attendingUnits={attendingUnits}
             />
           </>
-        )}
+        ) : userRole === "admin" ? (
+          <>
+            <SectionContent
+                content={"AdminControl"}
+                userRole={userRole}
+                attendingUnits={attendingUnits}
+              />
+          </>
+        ) : null
+      
+      }
       </div>
       {userRole === "student" ? null : (
         <div className="flex-[30%] h-screen lg:flex md:hidden sm:hidden xs:hidden 2xs:hidden 3xs:hidden 4xs:hidden">

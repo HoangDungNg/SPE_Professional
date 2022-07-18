@@ -72,31 +72,33 @@ function NavBar() {
   useEffect(() => {
     if (!userDetails) return;
 
-    try {
-      userDetails.attendingUnits.forEach((unit) => {
-        db.collection("module")
-          .where("unitCode", "==", unit)
-          .where("trimesterCode", "==", "TMA2022")
-          .get()
-          .then((snapshot) => {
-            const data = snapshot.docs.map((doc) => doc.data());
-            // console.log(data);
-            data.forEach((unit) => {
-              // console.log(unit)
+    //If user is admin only allow admin to add users and unit, update users
+    if(userDetails.role !== 'admin'){
+      try {
+        userDetails.attendingUnits.forEach((unit) => {
+          db.collection("module")
+            .where("unitCode", "==", unit)
+            .where("trimesterCode", "==", "TMA2022")
+            .get()
+            .then((snapshot) => {
+              const data = snapshot.docs.map((doc) => doc.data());
+              // console.log(data);
+              data.forEach((unit) => {
 
-              setUnits((navUnit) => [
-                ...navUnit,
-                {
-                  unitCode: unit.unitCode,
-                  classCode: unit.classes,
-                  trimesterCode: unit.trimesterCode,
-                },
-              ]);
+                setUnits((navUnit) => [
+                  ...navUnit,
+                  {
+                    unitCode: unit.unitCode,
+                    classCode: unit.classes,
+                    trimesterCode: unit.trimesterCode,
+                  },
+                ]);
+              });
             });
-          });
-      });
-    } catch (err) {
-      console.log(err);
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, [userDetails]);
 
@@ -165,8 +167,9 @@ function NavBar() {
                   text={svgIcons[0].homeText}
                   handleClick={() => setOpen(false)}
                 />
-
+                {console.log(units)}
                 {
+                  
                   units &&
                     units.map((unit, index) => (
                       <details className="group" key={index}>
@@ -217,8 +220,6 @@ function NavBar() {
                             {svgIcons[1].groupCatDropDownIcon}
                           </summary>
 
-                          {/* {console.log(unit)} */}
-
                           <nav className="mt-1.5 ml-8 flex flex-col">
                             {unit.classCode.map((eachClass, index) => (
                               // console.log(`/${unit.unitCode}/${eachClass}`)
@@ -268,6 +269,7 @@ function NavBar() {
                 }
 
                 {
+
                   <NavButton
                     link={"/updateTeam"}
                     icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
@@ -317,7 +319,7 @@ function NavBar() {
 
                   <nav className="mt-1.5 ml-8 flex flex-col">
                     <NavButton
-                      link={"/details"}
+                      link={"/userDetails"}
                       icon={svgIcons[5].detailsIcon}
                       text={svgIcons[5].detailsText}
                       handleClick={() => setOpen(false)}
@@ -436,11 +438,18 @@ function NavBar() {
               }
 
               {userDetails.role === "admin" ? (
-                <NavButton
-                  link={"/registerStud"}
-                  icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
-                  text={"Add/Update student info"}
-                />
+                <>
+                  <NavButton
+                    link={"/registerStud"}
+                    icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+                    text={"Add/Update student info"}
+                  />
+                  <NavButton
+                    link={"/registerLect"}
+                    icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+                    text={"Add/Update lecturer info"}
+                  />
+                </>
               ) : null}
 
               {
@@ -464,11 +473,14 @@ function NavBar() {
               }
 
               {
+                userDetails.role !== "admin" ?
                 <NavButton
                   link={"/updateTeam"}
                   icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
                   text={"Update team info"}
                 />
+                :
+                null
               }
 
               {
@@ -509,7 +521,7 @@ function NavBar() {
 
                 <nav className="mt-1.5 ml-8 flex flex-col">
                   <NavButton
-                    link={"/details"}
+                    link={"/userDetails"}
                     icon={svgIcons[5].detailsIcon}
                     text={svgIcons[5].detailsText}
                   />
