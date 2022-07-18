@@ -72,33 +72,33 @@ function Content() {
   }, []);
 
   //Get the unit ICT302 
-  useEffect(() => {
-    try {
-      db.collection("unit")
-        .doc("ICT302")
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            // console.log(doc.data())
+  // useEffect(() => {
+  //   try {
+  //     db.collection("unit")
+  //       .doc("ICT302")
+  //       .get()
+  //       .then((doc) => {
+  //         if (doc.exists) {
+  //           // console.log(doc.data())
 
-            //Set unit group number
-            doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
+  //           //Set unit group number
+  //           doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
 
-            //Set unit group names
-            doc.data().group.map((group) => setUnitGroupName((unitGroup) => [...unitGroup, group.groupName]))          
+  //           //Set unit group names
+  //           doc.data().group.map((group) => setUnitGroupName((unitGroup) => [...unitGroup, group.groupName]))          
 
-            //Set unit group members
-            doc.data().group.map((group) => {
-             return group.member.map((member) => {
-                return setMembers((members) => [...members, member])
-              })
-            });
-          }
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  //           //Set unit group members
+  //           doc.data().group.map((group) => {
+  //            return group.member.map((member) => {
+  //               return setMembers((members) => [...members, member])
+  //             })
+  //           });
+  //         }
+  //       });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, []);
 
    useEffect(() => {
     if(!members) return;
@@ -195,9 +195,9 @@ function Content() {
           <Route path="/updateTeam" element={<UpdateTeam />} />
           <Route path="/addSPE1" element={<AddSPE1 />} />
           <Route path="/addSPE2" element={<AddSPE2 />} />
-          <Route path="/group"> 
+          {/* <Route path="/group"> 
             <Route path=":groupId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
-          </Route>    
+          </Route>     */}
           <Route path="/class"> 
             <Route path=":classId" element={<Class userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} /> 
           </Route>    

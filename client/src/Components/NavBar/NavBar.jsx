@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import { UserContext } from '../../context/UserContext'
+import firebase from "firebase/compat/app";
 import { svgIcons } from "../../js/svgIcons";
 import NavButton from "./NavButton";
 import { useDispatch } from "react-redux";
@@ -10,16 +11,19 @@ import { selectUser } from "../../features/userSlice";
 import { Avatar } from "@mui/material";
 import { GiBookshelf } from "react-icons/gi";
 import { AiOutlineEdit } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState("");
-  const [unitGroup, setUnitGroup] = useState([]);
   const [units, setUnits] = useState([]);
   const [screenSize, setScreenSize] = useState("");
   const [open, setOpen] = useState(true);
   const [mobileScreen, setMobileScreen] = useState(false);
+  const currentUser = firebase.auth().currentUser;
+
+  console.log(currentUser)
 
   //UseEffect for getting user's email, name, role and photoUrl from firebase
   useEffect(() => {
@@ -42,25 +46,6 @@ function NavBar() {
               photoUrl: photoUrl,
               attendingUnits: attendingUnits,
             });
-          }
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  //UseEffect for getting the module groups under the specified unit
-  useEffect(() => {
-    try {
-      db.collection("unit")
-        .doc("ICT302")
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            const groupData = doc.data().group;
-            groupData.map((group) =>
-              setUnitGroup((unitGroup) => [...unitGroup, group.groupNumber])
-            );
           }
         });
     } catch (err) {
@@ -157,7 +142,7 @@ function NavBar() {
               />
 
               <div className="px-5 pt-5 font-bold">
-                Welcome, {userDetails.name}!
+                Welcome, {currentUser.name}!
               </div>
 
               <nav className="flex flex-col mt-6 space-y-1">
@@ -542,25 +527,25 @@ function NavBar() {
           </div>
 
           <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 mt-2">
-            <a
-              href="/#"
+            <Link
+              to="/userDetails"
               className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
             >
-              {userDetails.email && (
+              {currentUser.email && (
                 <Avatar src={userDetails.photoUrl}>
-                  {userDetails.email[0].toUpperCase()}
+                  {currentUser.email[0].toUpperCase()}
                 </Avatar>
               )}
 
               <div className="ml-1.5 text-left">
                 <p className="text-xs">
                   <strong className="block font-semibold">
-                    {userDetails.name}
+                    {currentUser && currentUser.displayName}
                   </strong>
-                  <span>{userDetails.email}</span>
+                  <span>{currentUser && currentUser.email}</span>
                 </p>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       )}

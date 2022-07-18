@@ -92,10 +92,10 @@ function UserDetails() {
 
     if (currentUser !== null) {
 
-        console.log(currentUser)
+        // console.log(currentUser)
 
         if(updateUserInfo.email !== ''){
-            console.log(updateUserInfo.email)
+            // console.log(updateUserInfo.email)
 
             // //Update user auth email
             currentUser.updateEmail(updateUserInfo.email)
@@ -133,9 +133,20 @@ function UserDetails() {
         }
 
         if(updateUserInfo.name !== ''){
+
+          currentUser.updateProfile({
+            displayName: updateUserInfo.name
+          })
+          .then(() => {
             db.collection("users").doc(currentUser.uid)
             .update({ name: updateUserInfo.name})
             submitSuccessMsg("Name updated successfully!");
+          })
+          .catch((error) => {
+            // An error ocurred
+            console.log(error);
+            submitErrorMsg("Error updating name.");
+          });
         }
         
 
@@ -206,7 +217,7 @@ function UserDetails() {
           </p>
           <p className="mt-3 text-left text-gray-600">
             <strong className="text-lg">Please note: </strong>
-            You will be logged out of the system if you change your email.
+            Please do not change email and password at the same time.
           </p>
 
           <form className="mt-6 items-center md:flex flex-col">
