@@ -9,6 +9,9 @@ import { selectUser } from "../../features/userSlice";
 function RegisterStud() {
   const user = useSelector(selectUser);
 
+
+  const [students, setStudents] = useState([])
+  const [userArr, setUserArr] = useState([])
   const [studentInfo, setStudentInfo] = useState({
     email: "",
     password: "",
@@ -36,120 +39,187 @@ var batch = db.batch();
     });
   };
 
-//   const processCSV = (str, delim = ",") => {
-//     const headers = str.slice(0, str.indexOf("\n") - 1).split(delim);
-//     const allRows = str.slice(str.indexOf("\n") + 1).split("\n");
+  useEffect(() => {
+    if(!userArr) return;
 
-//     const rows = allRows.map((row) => row.replace("\r", ""));
+    console.log(students.length)
+    console.log(userArr.length)
 
-//     const newArray = rows.map((row) => {
-//       const values = row.split(delim);
-//       const eachObj = headers.reduce((obj, header, index) => {
-//         obj[header] = values[index];
-//         return obj;
-//       }, {});
-//       return eachObj;
-//     });
-//     // console.log(newArray)
+    var batch = db.batch();
 
-//     newArray.pop(); //Get ride of the last empty record
-//     // console.log(newArray);
+    //If user array is not empty then run this block of code
+    if(userArr.length !== 0){
+      if(userArr.length === students.length){
+        console.log("Upload data");
+  
+        //Batch upload user to doc
+        userArr.forEach((student) => {
+          console.log(student)
+          var docRef = db.collection("testUsers").doc(student.id);
 
-//     var userInfo = [];
+          batch.set(docRef, {
+            id: student.id,
+            email: student.email,
+            role: student.role,
+            studentID: student.studentID,
+            name: student.name,
+            photoUrl: student.photoUrl,
+            attendingUnits: student.attendingUnits
+          });
+        });
+  
+        //Commit after batch upload
+        batch.commit();
+  
+        //Set array back to empty
+        setUserArr([]);
+      }
+    }
+    
 
-//     newArray.forEach( async (student) => {
-//         //   console.log(student.StudentNo);
-//         //   console.log(student.GivenName + " " + student.Surname);
-//         //   console.log(student.Email);
-//         //   console.log(student.Password);
-//         //   console.log(student.AttendingUnit)
+    console.log(userArr)
+  },[userArr])
 
-//       db.collection("testUsers")
-//         .where("studentID", "==", student.StudentNo)
-//         .where("email", "==", student.Email)
-//         .get()
-//         .then((snapshot) => {
-//           const [data] = snapshot.docs.map((doc) => doc.data());
-//           const [id] = snapshot.docs.map((doc) => doc.id);
-//         //   console.log(id)
-//         //   console.log(data)
-//           return [data, id];
-//         })
-//         .then(([data, id]) => {
+  const processCSV = (str, delim = ",") => {
+    const headers = str.slice(0, str.indexOf("\n") - 1).split(delim);
+    const allRows = str.slice(str.indexOf("\n") + 1).split("\n");
 
-//           if (data === undefined) {
+    const rows = allRows.map((row) => row.replace("\r", ""));
 
-//             //Register user
-//             console.log("Register user");
-//             auth.createUserWithEmailAndPassword(
-//                 student.Email,
-//                 student.Password
-//               )
-//             .then((user) => {
+    const newArray = rows.map((row) => {
+      const values = row.split(delim);
+      const eachObj = headers.reduce((obj, header, index) => {
+        obj[header] = values[index];
+        return obj;
+      }, {});
+      return eachObj;
+    });
+    // console.log(newArray)
+    setStudents(newArray)
+    newArray.pop(); //Get ride of the last empty record
+    console.log(newArray);
 
-//                 var docRef = db.collection("testUsers").doc(user.user.id)
+    var userInfo = [];
 
-//                 batch.set(docRef, student);
+    newArray.forEach((student) => {
+          console.log(student.StudentID);
+          console.log(student.GivenName + " " + student.Surname);
+          console.log(student.Email);
+          console.log(student.UnitCode)
 
-//                 // db.collection("testUsers").add({
-//                 //     id: user.user.uid,
-//                 //     email: student.Email,
-//                 //     role: "student",
-//                 //     studentID: student.StudentNo,
-//                 //     name: student.GivenName + " " + student.Surname,
-//                 //     attendingUnits: student.AttendingUnit
-//                 //         ? [student.AttendingUnit]
-//                 //         : [],
-//                 //     group: "",
-//                 //     survey1Status: "not submitted",
-//                 //     survey2Status: "not submitted",
-//                 //     });
+      // db.collection("testUsers")
+      //   .where("studentID", "==", student.StudentID)
+      //   .where("email", "==", student.Email)
+      //   .get()
+      //   .then((snapshot) => {
+      //     const [data] = snapshot.docs.map((doc) => doc.data());
+      //     const [id] = snapshot.docs.map((doc) => doc.id);
+      //       console.log(id)
+      //       console.log(data)
+      //     return [data, id];
+      //   })
+      //   .then(([data, id]) => {
 
-//             }).catch((err) => {
-//                 console.log(err)
-//             })
-//           } 
-//           else {
-//             //Update user
-//             console.log("Update user");
+          // if (data === undefined) {
 
-//             // db.collection("users")
-//             //   .doc(id)
-//             //   .update({
-//             //     email: studentInfo.email,
-//             //     attendingUnits: firebase.firestore.FieldValue.arrayUnion(
-//             //       studentInfo.attendingUnits
-//             //     ),
-//             //   });
-//           }
-//         })
-//         .catch((err) => {
-//             console.log(err)
-//         });
+            //Register user
+            console.log("Register user");
+            auth.createUserWithEmailAndPassword(
+                student.Email,
+                student.StudentID
+              )
+            .then((user) => {
+
+
+
+              setUserArr((prev) => [
+                ...prev,
+                {
+                  id: user.user.uid,
+                  studentID: student.StudentID,
+                  name: student.GivenName + " " + student.Surname,
+                  email: student.Email,
+                  role: "student",
+                  photoUrl: "",
+                  attendingUnits: student.UnitCode 
+                  ? [student.UnitCode]
+                  : []
+                }
+              ]);
+
+              db.collection("testUsers").doc(user.user.uid).set({
+                id: "",
+                studentID: "",
+                name: "",
+                email: "",
+                role: "",
+                photoUrl: "",
+                attendingUnits: []
+              });
+
+                // var docRef = db.collection("testUsers").doc(user.user.id)
+
+                // batch.set(docRef, student);
+
+                // db.collection("testUsers").add({
+                //     id: user.user.uid,
+                //     email: student.Email,
+                //     role: "student",
+                //     studentID: student.StudentNo,
+                //     name: student.GivenName + " " + student.Surname,
+                //     attendingUnits: student.AttendingUnit
+                //         ? [student.AttendingUnit]
+                //         : [],
+                //     group: "",
+                //     survey1Status: "not submitted",
+                //     survey2Status: "not submitted",
+                //     });
+
+            }).catch((err) => {
+                console.log(err)
+            })
+          // } 
+        //   else {
+        //     //Update user
+        //     console.log("Update user");
+
+        //     // db.collection("users")
+        //     //   .doc(id)
+        //     //   .update({
+        //     //     email: studentInfo.email,
+        //     //     attendingUnits: firebase.firestore.FieldValue.arrayUnion(
+        //     //       studentInfo.attendingUnits
+        //     //     ),
+        //     //   });
+        //   }
+        // })
+        // .catch((err) => {
+        //     console.log(err)
+        // });
         
-//     })
+    })
 
     
 
-//     // console.log(userInfo)
+    // console.log(userInfo)
 
-//     //Add according to the team with students
+    //Add according to the team with students
 
-//     // submitSuccessMsg("Students and teams added successfully!");
-//   };
+    // submitSuccessMsg("Students and teams added successfully!");
+  };
 
 
-//   function handleSubmit() {
-//     const file = csvFile;
-//     const reader = new FileReader();
+  function handleSubmit() {
+    const file = csvFile;
+    const reader = new FileReader();
 
-//     reader.onload = function (e) {
-//       const text = e.target.result;
-//       processCSV(text);
-//     };
+    reader.onload = function (e) {
+      const text = e.target.result;
+      processCSV(text);
+    };
 
-//     reader.readAsText(file);
-//   }
+    reader.readAsText(file);
+  }
 
   function register(e) {
     e.preventDefault();
@@ -238,6 +308,8 @@ var batch = db.batch();
 
       setErrorCaught(false)
   }
+
+
   return (
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
       <div className=" w-full pb-10 overflow-auto">
@@ -257,7 +329,7 @@ var batch = db.batch();
 
           <form className="mt-6 items-center md:flex flex-col">
             <div className="flex flex-col w-full">
-              {/* <label className="block mt-4 text-left mb-2 text-sm font-semibold text-gray-600">
+              <label className="block mt-4 text-left mb-2 text-sm font-semibold text-gray-600">
                 Upload CSV:
               </label>
 
@@ -284,7 +356,7 @@ var batch = db.batch();
                 <div className="flex-grow border-t border-gray-400"></div>
                 <span className="flex-shrink mx-4 text-gray-400">OR</span>
                 <div className="flex-grow border-t border-gray-400"></div>
-              </div> */}
+              </div>
               <label className="block text-left mb-2 text-sm font-semibold text-gray-600">
                 Email:
               </label>

@@ -527,7 +527,6 @@ function NavBar() {
           </div>
 
           <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 mt-2">
-            {console.log(currentUser?.photoURL)}
             <Link
               to="/userDetails"
               className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
