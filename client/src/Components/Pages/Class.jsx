@@ -15,7 +15,7 @@ function Class({ userInfo, groupName, groupNum }) {
   const [finalResult, setFinalResult] = useState([]);
   // const [studentAns, setStudentAns] = useState([]);
   const [studentNotAdded, setStudentNotAdded] = useState(true)
-  const [isDownloadable, setIsDownloadable] = useState(false)
+  const [isDownloadable, setIsDownloadable] = useState(true)
 
   //Get the unit
   useEffect(() => {
@@ -33,23 +33,22 @@ function Class({ userInfo, groupName, groupNum }) {
         .get()
         .then((snapshot) => {
           const data = snapshot.docs.map((doc) => doc.data());
-          console.log(data);
+          // console.log(data);
 
           if (data.length === 0) {
             setInterval(() => setLoading(false), 500);
           } 
           else if (data.length !== 0) {
             data.forEach((team) => {
+
               team.members.forEach((member) => {
 
                 //Disable download button if 1 of the member did not submit
                 if(member[`${unitId}survey1Status`] === "not submitted"){
                   setIsDownloadable(false)
                 }
-                else{
-                  setIsDownloadable(true)
-                }
 
+                //Check if the student is added to the system 
                 db.collection("users")
                   .where("studentID", "==", member.studentNo)
                   .get()
@@ -73,8 +72,7 @@ function Class({ userInfo, groupName, groupNum }) {
                       setStudentNotAdded(false)
                     }
                     else if (data === undefined){ 
-                      setStudentNotAdded(true)                    
-                      console.log("undefined, turn on some state")
+                      setStudentNotAdded(true)
                     }
                   });
               });
@@ -89,6 +87,8 @@ function Class({ userInfo, groupName, groupNum }) {
 
   useEffect(() => {
 
+    if(!unitId) return;
+
     //Get spe1 submissions
     db.collection("spe1submissions")
       .where("unitCode", "==", unitId)
@@ -97,16 +97,184 @@ function Class({ userInfo, groupName, groupNum }) {
         const spe1Data = snapshot.docs.map((doc) => doc.data());
 
         var studentDataArr = [];
+        let ansAllInfoArr = [];
+        var result;
 
         //Store all data retrieved from spe 1 submissions into array
-        spe1Data.forEach((student) => {
-          studentDataArr.push(student)
+        // spe1Data.forEach((student) => {
+        //   studentDataArr.push(student)
+        // })
+
+        for(var i = 0; i < spe1Data.length; i++) {
+          processStud(i)
+        }  
+
+        function processStud(index){
+  
+          let ansInfoArr = [];
+
+          //Function for adding all names into array
+          function addNameToArr(num, index, nameKey){
+            for(var j = 0; j < ansInfoArr.length; j++){
+              if(ansInfoArr[j][`student${num}ID`]){
+                ansInfoArr[j][`student${num}Name`] = spe1Data[index].answers[nameKey]                
+              }
+            }
+          }
+
+          //Function for adding all average score into array
+          function addAvgToArr(num, index, avgKey){
+            for(var k = 0; k < ansInfoArr.length; k++){
+              if(ansInfoArr[k][`student${num}ID`]){
+                ansInfoArr[k][`student${num}Avg`] = spe1Data[index].answers[avgKey]                
+              }
+            }
+          }
+
+          for (var IDkey in spe1Data[index].answers) {
+            if (IDkey.includes("ID")) {
+              ansInfoArr.push({ [IDkey]: spe1Data[index].answers[IDkey], teamCode: spe1Data[index].teamCode });
+            }
+          }
+
+          for (var nameKey in spe1Data[index].answers) {
+
+            if (nameKey.includes("student1Name")) {     
+              
+              addNameToArr(1, index, nameKey)
+
+            }
+            else if(nameKey.includes("student2Name")){
+
+              addNameToArr(2, index, nameKey)
+
+            }
+            else if(nameKey.includes("student3Name")){
+
+              addNameToArr(3, index, nameKey)
+
+            }
+            else if(nameKey.includes("student4Name")){
+
+              addNameToArr(4, index, nameKey)
+
+            }
+            else if(nameKey.includes("student5Name")){
+
+              addNameToArr(5, index, nameKey)
+
+            }
+            else if(nameKey.includes("student6Name")){
+
+              addNameToArr(6, index, nameKey)
+
+            }
+          }
+
+          // console.log(ansInfoArr)
+          
+          for (var avgKey in spe1Data[index].answers) {
+
+            if (avgKey.includes("student1Avg")) {
+
+              addAvgToArr(1, index, avgKey)
+
+            }
+            else if(avgKey.includes("student2Avg")){
+
+              addAvgToArr(2, index, avgKey)
+
+            }
+            else if(avgKey.includes("student3Avg")){
+
+              addAvgToArr(3, index, avgKey)
+
+            }
+            else if(avgKey.includes("student4Avg")){
+
+              addAvgToArr(4, index, avgKey)
+
+            }
+            else if(avgKey.includes("student5Avg")){
+
+              addAvgToArr(5, index, avgKey)
+
+            }
+            else if(avgKey.includes("student6Avg")){
+
+              addAvgToArr(6, index, avgKey)
+
+            }
+          }
+
+          ansInfoArr.forEach((item) => {
+            for (let i = 1; i < 7; i++) {
+              const obj = {
+                ...item,
+                studentID: item[`student${i}ID`],
+                studentName: item[`student${i}Name`],
+                SPE1Avg: item[`student${i}Avg`],
+              };
+              delete obj[`student${i}ID`];
+              delete obj[`student${i}Name`];
+              delete obj[`student${i}Avg`];
+  
+              if (
+                obj.studentID !== undefined ||
+                obj.studentName !== undefined ||
+                obj.SPE1Avg !== undefined
+              ) {
+       
+                ansAllInfoArr.push(obj)
+                
+              }
+            }
+          });
+
+          
+
+          // //Convert string studentAvg to number
+          for(var l = 0; l < ansAllInfoArr.length; l++) {
+            ansAllInfoArr[l].SPE1Avg = parseFloat(ansAllInfoArr[l].SPE1Avg)
+          }
+
+          // console.log(ansAllInfoArr)
+
+            result = [
+              ...ansAllInfoArr
+                .reduce((a, b) => {
+                  if (a.has(b.studentID)){
+                    const obj = a.get(b.studentID);
+                    obj.SPE1Avg += b.SPE1Avg;
+                    a.set(b.studentID, obj);
+                  } 
+                  else {
+                    a.set(b.studentID, {
+                      studentID: b.studentID,                 
+                      studentName: b.studentName,
+                      SPE1Avg: b.SPE1Avg,
+                      teamCode: b.teamCode
+                    });
+                  }
+                  return a;
+                }, new Map())
+                .values(),
+            ];
+        }
+
+        //Calculate average score of each students
+        result.forEach(student => {
+          if(student['SPE1Avg']){
+            student.SPE1Avg = (student.SPE1Avg / 6).toFixed(2)
+          }
         })
 
-        //Return the array and pass to the next
-        return studentDataArr
+        // console.log(result)
 
-      }).then((studentDataArr) => {
+        //Return the array and pass to the next
+        return result
+
+      }).then((spe1Result) => {
 
         db.collection("spe2submissions")
         .where("unitCode", "==", unitId)
@@ -115,29 +283,10 @@ function Class({ userInfo, groupName, groupNum }) {
           const spe2data = snapshot.docs.map((doc) => doc.data());
 
 
-          var data = [];
-
-          //Get the studentDataArr passed from previous block and store to data array
-          studentDataArr.forEach((student) => {
-            data.push(student)
-          })
-
-          //Store all data retrieved from spe 2 submissions into data array
-          spe2data.forEach((student) => {
-            data.push(student)
-          })
-
-          //Return all data from spe1 and spe2 submissions
-          return data
-        })
-        .then((data) => {
-
-          //Data from previous block is retrieved here
-  
           let ansAllInfoArr = [];
           var result;
-          
-          for(var i = 0; i < data.length; i++) {
+
+          for(var i = 0; i < spe2data.length; i++) {
             processStud(i)
           }      
   
@@ -149,7 +298,7 @@ function Class({ userInfo, groupName, groupNum }) {
             function addNameToArr(num, index, nameKey){
               for(var j = 0; j < ansInfoArr.length; j++){
                 if(ansInfoArr[j][`student${num}ID`]){
-                  ansInfoArr[j][`student${num}Name`] = data[index].answers[nameKey]                
+                  ansInfoArr[j][`student${num}Name`] = spe2data[index].answers[nameKey]                
                 }
               }
             }
@@ -158,18 +307,18 @@ function Class({ userInfo, groupName, groupNum }) {
             function addAvgToArr(num, index, avgKey){
               for(var k = 0; k < ansInfoArr.length; k++){
                 if(ansInfoArr[k][`student${num}ID`]){
-                  ansInfoArr[k][`student${num}Avg`] = data[index].answers[avgKey]                
+                  ansInfoArr[k][`student${num}Avg`] = spe2data[index].answers[avgKey]                
                 }
               }
             }
   
-            for (var IDkey in data[index].answers) {
+            for (var IDkey in spe2data[index].answers) {
               if (IDkey.includes("ID")) {
-                ansInfoArr.push({ [IDkey]: data[index].answers[IDkey], teamCode: data[index].teamCode });
+                ansInfoArr.push({ [IDkey]: spe2data[index].answers[IDkey], teamCode: spe2data[index].teamCode });
               }
             }
   
-            for (var nameKey in data[index].answers) {
+            for (var nameKey in spe2data[index].answers) {
   
               if (nameKey.includes("student1Name")) {     
                 
@@ -203,9 +352,9 @@ function Class({ userInfo, groupName, groupNum }) {
               }
             }
 
-            console.log(ansInfoArr)
+            // console.log(ansInfoArr)
             
-            for (var avgKey in data[index].answers) {
+            for (var avgKey in spe2data[index].answers) {
   
               if (avgKey.includes("student1Avg")) {
 
@@ -245,7 +394,7 @@ function Class({ userInfo, groupName, groupNum }) {
                   ...item,
                   studentID: item[`student${i}ID`],
                   studentName: item[`student${i}Name`],
-                  studentAvg: item[`student${i}Avg`],
+                  SPE2Avg: item[`student${i}Avg`],
                 };
                 delete obj[`student${i}ID`];
                 delete obj[`student${i}Name`];
@@ -254,7 +403,7 @@ function Class({ userInfo, groupName, groupNum }) {
                 if (
                   obj.studentID !== undefined ||
                   obj.studentName !== undefined ||
-                  obj.studentAvg !== undefined
+                  obj.SPE2Avg !== undefined
                 ) {
          
                   ansAllInfoArr.push(obj)
@@ -265,42 +414,81 @@ function Class({ userInfo, groupName, groupNum }) {
   
             // //Convert string studentAvg to number
             for(var l = 0; l < ansAllInfoArr.length; l++) {
-              ansAllInfoArr[l].studentAvg = parseFloat(ansAllInfoArr[l].studentAvg)
+              ansAllInfoArr[l].SPE2Avg = parseFloat(ansAllInfoArr[l].SPE2Avg)
             }
-  
-              result = [
-                ...ansAllInfoArr
-                  .reduce((a, b) => {
-                    if (a.has(b.studentID)){
-                      const obj = a.get(b.studentID);
-                      obj.studentAvg += b.studentAvg;
-                      a.set(b.studentID, obj);
-                    } 
-                    else {
-                      a.set(b.studentID, {
-                        studentID: b.studentID,                 
-                        studentName: b.studentName,
-                        studentAvg: b.studentAvg,
-                        teamCode: b.teamCode
-                      });
-                    }
-                    return a;
-                  }, new Map())
-                  .values(),
-              ];
+
+            // console.log(ansAllInfoArr)
+
+            result = [
+              ...ansAllInfoArr
+                .reduce((a, b) => {
+                  if (a.has(b.studentID)){
+                    const obj = a.get(b.studentID);
+                    // console.log(obj.SPE2Avg)
+                    obj.SPE2Avg += b.SPE2Avg;
+                    a.set(b.studentID, obj);
+                  } 
+                  else {
+                    a.set(b.studentID, {
+                      studentID: b.studentID,                 
+                      studentName: b.studentName,
+                      SPE2Avg: b.SPE2Avg,
+                      teamCode: b.teamCode
+                    });
+                  }
+                  return a;
+                }, new Map())
+                .values(),
+            ];
+
+            //Calculate average score of each students
+            result.forEach(student => {
+              if(student['SPE2Avg']){
+                student.SPE2Avg = (student.SPE2Avg / 6).toFixed(2)
+              }
+            })
           }
+          // console.log(result)
   
-          //Calculate average score of each students
-          result.forEach(student => {
-            if(student['studentAvg']){
-              student.studentAvg = (student.studentAvg / 6).toFixed(2)
-            }
+          
+
+          // console.log(spe1Result)
+          // console.log(result)
+
+          let arrToFilter = [];
+
+          //Push spe 1 results to array to filter
+          spe1Result.forEach((record) => {
+            arrToFilter.push(record)
           })
+
+          //Push spe 2 results to array to filter
+          result.forEach((record) => {
+            arrToFilter.push(record)
+          })
+
+          // console.log(arrToFilter)
+
+          //Filter the array so that spe1Avg and spe2Avg belongs to the same person without repeated object
+          const finalArr = arrToFilter.reduce((acc, val, ind) => {
+              const index = acc.findIndex(el => el.studentID === val.studentID);
+              if(index !== -1){
+                const key = Object.keys(val)[2];
+                acc[index][key] = val[key];
+              } else {
+                acc.push(val);
+              };
+              return acc;
+          }, []);
+         
+
+          // console.log(finalArr);
+
+          setFinalResult(finalArr);
+        })
   
-          console.log(result)
-  
-          setFinalResult(result);
-        });
+        //   setFinalResult(result);
+        // });
       })
   },[unitId]);
 
@@ -314,7 +502,6 @@ function Class({ userInfo, groupName, groupNum }) {
 
   return (
     <div className="flex flex-col flex-[80] h-screen justify-center overflow-auto scroll-smooth">
-      {/* {console.log(students)} */}
       {students.length === 0 || studentNotAdded ? (
         <div className="h-screen w-full flex flex-col justify-center items-center bg-[#E6ECEF]">
           {studentNotAdded ? <h1>Please add all students for this class</h1> : <h1>No teams added yet</h1> }
@@ -357,9 +544,15 @@ function Class({ userInfo, groupName, groupNum }) {
             </h2>
           </div>
           <h1>
-            Teams in {unitId} {classId}
+          <span className="underline underline-offset-1 decoration-[#E12945]">
+            Teams
+          </span> 
+          <span>
+          &nbsp;in {unitId} {classId}
+          </span>  
+           
           </h1>
-          <div className="p-10 mb-20">
+          <div className="p-10">
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm divide-y divide-gray-200 bg-white rounded-md">
                 <thead>
@@ -370,7 +563,9 @@ function Class({ userInfo, groupName, groupNum }) {
                     <TableHead title={"Name"} />
                     <TableHead title={"Email"} />
                     <TableHead title={"Form 1 Status"} />
+                    <TableHead title={"Action"} />
                     <TableHead title={"Form 2 Status"} />
+                    <TableHead title={"Action"} />
                   </tr>
                 </thead>
 

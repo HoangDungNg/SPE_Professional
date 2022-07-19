@@ -64,7 +64,7 @@ function HomeSection({ title, userRole, attendingUnits }) {
             <div className="flex pl-10 py-8 justify-start items-center">
               <h1>
                 <span className="underline underline-offset-1 decoration-[#E12945]">
-                  Recent
+                  Submission
                 </span>{" "}
                 activities
               </h1>

@@ -21,6 +21,7 @@ function UserDetails() {
     name: "",
     email: "",
     password: "",
+    photoUrl: ""
   });
 
   const [errorCaught, setErrorCaught] = useState(false);
@@ -64,6 +65,7 @@ function UserDetails() {
               userId: data.studentID,
               name: data.name,
               role: data.role,
+              photoUrl: currentUser.photoURL
             });
           } else {
             setUserInfo({
@@ -79,14 +81,14 @@ function UserDetails() {
   function updateDetails(e) {
     e.preventDefault();
 
-    db.collection("users")
-      .doc(user.uid)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          // console.log(doc.data())
-        }
-      });
+    // db.collection("users")
+    //   .doc(user.uid)
+    //   .get()
+    //   .then((doc) => {
+    //     if (doc.exists) {
+    //       // console.log(doc.data())
+    //     }
+    //   });
 
     
 
@@ -149,6 +151,21 @@ function UserDetails() {
           });
         }
         
+        if(updateUserInfo.photoUrl !== ''){
+          currentUser.updateProfile({
+            photoURL: updateUserInfo.photoUrl
+          })
+          .then(() => {
+            db.collection("users").doc(currentUser.uid)
+            .update({ photoUrl: updateUserInfo.photoUrl})
+            submitSuccessMsg("Photo updated successfully!");
+          })
+          .catch((error) => {
+            // An error ocurred
+            console.log(error);
+            submitErrorMsg("Error updating photo URL.");
+          });
+        }
 
     
 
@@ -185,6 +202,7 @@ function UserDetails() {
         name: "",
         email: "",
         password: "",
+        photoUrl: ""
     });
 
     setErrorCaught(false);
@@ -293,6 +311,20 @@ function UserDetails() {
                   setUpdateUserInfo({
                     ...updateUserInfo,
                     password: e.target.value,
+                  })
+                }
+              />
+
+              <InputSection
+                labelText={"Photo URL"}
+                inputType="text"
+                inputValue={updateUserInfo.photoUrl}
+                inputID={"studentImgInput"}
+                disable={false}
+                onChange={(e) =>
+                  setUpdateUserInfo({
+                    ...updateUserInfo,
+                    photoUrl: e.target.value,
                   })
                 }
               />

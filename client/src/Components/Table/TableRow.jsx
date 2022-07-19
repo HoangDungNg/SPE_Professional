@@ -1,4 +1,6 @@
 import React from "react";
+import sendSPE1Email from "../../js/sendSPE1Email";
+import sendSPE2Email from "../../js/sendSPE2Email";
 import StatusTag from "./StatusTag";
 
 function TableRow({
@@ -25,27 +27,27 @@ function TableRow({
       <StatusTag
         status={survey1Status.charAt(0).toUpperCase() + survey1Status.slice(1)}
       />: "No status"}
-      {/* <td className="p-4 text-gray-700 whitespace-nowrap">
-        <button 
-          onClick={handleDownload}
-          className={`${survey1Status === 'submitted' ? 'text-sky-500 hover:underline hover:decoration-sky-500 decoration-2' : 'text-gray-500 pointer-events-none'}`}
+      <td className="p-4 text-gray-700 whitespace-nowrap">
+        <button
+          onClick={() => sendSPE1Email(name, email, "Self & Peer Evaluation 1 not submitted")}
+          className={`${survey1Status !== 'submitted' ? 'text-sky-500 hover:underline hover:decoration-sky-500 decoration-2' : 'text-gray-500 pointer-events-none'}`}
         >
-          {survey1Status === 'submitted' ? action : 'Not available'}
+          Send Email
         </button>
-      </td> */}
+      </td>
       {survey2Status ? 
       <StatusTag
         status={survey2Status.charAt(0).toUpperCase() + survey2Status.slice(1)}
       />
       : "No status"}
-      {/* <td className="p-4 text-gray-700 whitespace-nowrap">
+      <td className="p-4 text-gray-700 whitespace-nowrap">
       <button 
-          onClick={handleDownload}
-          className={`${survey2Status === 'submitted' ? 'text-sky-500 hover:underline hover:decoration-sky-500 decoration-2' : 'text-gray-500 pointer-events-none'}`}
+          onClick={() => sendSPE2Email(name, email, "Self & Peer Evaluation 2 not submitted")}
+          className={`${survey2Status !== 'submitted' ? 'text-sky-500 hover:underline hover:decoration-sky-500 decoration-2' : 'text-gray-500 pointer-events-none'}`}
         >
-          {survey2Status === 'submitted' ? action : 'Not available'}
+          Send Email
         </button>
-      </td> */}
+      </td>
     </tr>
   );
 }

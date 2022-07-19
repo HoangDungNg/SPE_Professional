@@ -114,7 +114,7 @@ function Feed() {
 
           <div className="bg-white p-4">
               <div className="text-gray-600 m-2 flex flex-col">
-                <span className="font-semibold">Recent activities only available for lecturers only</span>
+                <span className="font-semibold">Submission activities only available for lecturers only</span>
               </div>
           </div>
       }

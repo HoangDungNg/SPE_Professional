@@ -240,7 +240,6 @@ var batch = db.batch();
   }
   return (
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
-        {/* {userInfo && console.log(userInfo)} */}
       <div className=" w-full pb-10 overflow-auto">
         <div className="bg-[#E12945] text-white h-10 flex justify-center items-center">
           <h2>Add/Update Student</h2>
