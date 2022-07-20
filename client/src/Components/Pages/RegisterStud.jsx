@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { auth, db } from "../../firebase";
-import { auth2, db2 } from "../../firebase2App"
+import { auth2 } from "../../firebase2App"
 import firebase from "firebase/compat/app";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
