@@ -531,18 +531,18 @@ function NavBar() {
               to="/userDetails"
               className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
             >
-              {currentUser.email && (
-                <Avatar src={currentUser?.photoURL}>
-                  {currentUser.email[0].toUpperCase()}
+              {userDetails.email && (
+                <Avatar src={userDetails.photoURL}>
+                  {userDetails.email[0].toUpperCase()}
                 </Avatar>
               )}
 
               <div className="ml-1.5 text-left">
                 <p className="text-xs">
                   <strong className="block font-semibold">
-                    {currentUser && currentUser.displayName}
+                    {userDetails && userDetails.name}
                   </strong>
-                  <span>{currentUser && currentUser.email}</span>
+                  <span>{userDetails && userDetails.email}</span>
                 </p>
               </div>
             </Link>

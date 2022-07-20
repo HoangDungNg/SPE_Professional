@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { auth, db } from "../../firebase";
+import { auth2, db2 } from "../../firebase2App"
 import firebase from "firebase/compat/app";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
+import { login } from "../../features/userSlice";
+import { useDispatch } from "react-redux";
+import $ from "jquery"
+import { admin } from "../../admin.js"
 
 function RegisterStud() {
   const user = useSelector(selectUser);
-
-
+  const dispatch = useDispatch();
+  const [csvFile, setCsvFile] = useState("");
+  const [errorCaught, setErrorCaught] = useState(false)
   const [students, setStudents] = useState([])
   const [userArr, setUserArr] = useState([])
   const [studentInfo, setStudentInfo] = useState({
@@ -19,14 +25,6 @@ function RegisterStud() {
     name: "",
     attendingUnits: "",
   });
-
-
-
-  const [csvFile, setCsvFile] = useState("");
-//   const [userInfo, setUserInfo] = useState([]);
-  const [errorCaught, setErrorCaught] = useState(false)
-
-var batch = db.batch();
 
 
   const submitSuccessMsg = (msg, toastHandler = toast) => {
@@ -39,23 +37,29 @@ var batch = db.batch();
     });
   };
 
+  const submitErrorMsg = (msg, toastHandler = toast) => {
+    toastHandler.error(msg, {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+  };
+
+
   useEffect(() => {
     if(!userArr) return;
-
-    console.log(students.length)
-    console.log(userArr.length)
 
     var batch = db.batch();
 
     //If user array is not empty then run this block of code
     if(userArr.length !== 0){
       if(userArr.length === students.length){
-        console.log("Upload data");
   
         //Batch upload user to doc
         userArr.forEach((student) => {
-          console.log(student)
-          var docRef = db.collection("testUsers").doc(student.id);
+          var docRef = db.collection("users").doc(student.id);
 
           batch.set(docRef, {
             id: student.id,
@@ -73,11 +77,12 @@ var batch = db.batch();
   
         //Set array back to empty
         setUserArr([]);
+        
+        //Set CSV input field back to empty
+        setCsvFile("")
+        $("#csvFile").val('')
       }
     }
-    
-
-    console.log(userArr)
   },[userArr])
 
   const processCSV = (str, delim = ",") => {
@@ -94,43 +99,32 @@ var batch = db.batch();
       }, {});
       return eachObj;
     });
-    // console.log(newArray)
     setStudents(newArray)
     newArray.pop(); //Get ride of the last empty record
-    console.log(newArray);
 
     var userInfo = [];
 
     newArray.forEach((student) => {
-          console.log(student.StudentID);
-          console.log(student.GivenName + " " + student.Surname);
-          console.log(student.Email);
-          console.log(student.UnitCode)
 
-      // db.collection("testUsers")
-      //   .where("studentID", "==", student.StudentID)
-      //   .where("email", "==", student.Email)
-      //   .get()
-      //   .then((snapshot) => {
-      //     const [data] = snapshot.docs.map((doc) => doc.data());
-      //     const [id] = snapshot.docs.map((doc) => doc.id);
-      //       console.log(id)
-      //       console.log(data)
-      //     return [data, id];
-      //   })
-      //   .then(([data, id]) => {
+      db.collection("users")
+        .where("studentID", "==", student.StudentID)
+        .where("email", "==", student.Email)
+        .get()
+        .then((snapshot) => {
+          const [data] = snapshot.docs.map((doc) => doc.data());
+          const [id] = snapshot.docs.map((doc) => doc.id);
+            console.log(id)
 
-          // if (data === undefined) {
+          if (data === undefined) {
 
             //Register user
             console.log("Register user");
-            auth.createUserWithEmailAndPassword(
+
+            auth2.createUserWithEmailAndPassword(
                 student.Email,
                 student.StudentID
               )
             .then((user) => {
-
-
 
               setUserArr((prev) => [
                 ...prev,
@@ -147,7 +141,7 @@ var batch = db.batch();
                 }
               ]);
 
-              db.collection("testUsers").doc(user.user.uid).set({
+              db.collection("users").doc(user.user.uid).set({
                 id: "",
                 studentID: "",
                 name: "",
@@ -157,47 +151,52 @@ var batch = db.batch();
                 attendingUnits: []
               });
 
-                // var docRef = db.collection("testUsers").doc(user.user.id)
+              auth.signInWithEmailAndPassword(admin.email, admin.password)
+              .then((userAuth) => {
+                dispatch(
+                  login({
+                    email: userAuth.user.email,
+                    uid: userAuth.user.uid,
+                    displayName: userAuth.user.displayName,
+                    photoUrl: userAuth.user.photoURL,
+                  })
+                );
+              })
+              .catch((err) => console.log(err));
 
-                // batch.set(docRef, student);
-
-                // db.collection("testUsers").add({
-                //     id: user.user.uid,
-                //     email: student.Email,
-                //     role: "student",
-                //     studentID: student.StudentNo,
-                //     name: student.GivenName + " " + student.Surname,
-                //     attendingUnits: student.AttendingUnit
-                //         ? [student.AttendingUnit]
-                //         : [],
-                //     group: "",
-                //     survey1Status: "not submitted",
-                //     survey2Status: "not submitted",
-                //     });
+              setErrorCaught(false)
 
             }).catch((err) => {
-                console.log(err)
+              console.log(err)
+              setErrorCaught(true)
             })
-          // } 
-        //   else {
-        //     //Update user
-        //     console.log("Update user");
+          }
+          else{
 
-        //     // db.collection("users")
-        //     //   .doc(id)
-        //     //   .update({
-        //     //     email: studentInfo.email,
-        //     //     attendingUnits: firebase.firestore.FieldValue.arrayUnion(
-        //     //       studentInfo.attendingUnits
-        //     //     ),
-        //     //   });
-        //   }
-        // })
-        // .catch((err) => {
-        //     console.log(err)
-        // });
+            //Update user doc
+            db.collection("users").doc(id).update({
+              email: student.Email,
+              studentID: student.StudentID,
+              name: student.GivenName + " " + student.Surname,
+              attendingUnits: firebase.firestore.FieldValue.arrayUnion(student.UnitCode)
+            })
+          } 
+
+          
+           //Reset state to empty after updating
+           setCsvFile("")
+           $("#csvFile").val('')
+        })
+
         
     })
+
+    if(errorCaught === false){
+      submitSuccessMsg("Added/Updated students successfully")
+    }
+    else{
+      submitErrorMsg("Error adding/updating student")
+    }
 
     
 
@@ -233,17 +232,14 @@ var batch = db.batch();
       .then((snapshot) => {
         const [data] = snapshot.docs.map((doc) => doc.data());
         const [id] = snapshot.docs.map((doc) => doc.id);
-        // console.log(id)
         return [data, id];
       })
       .then(([data, id]) => {
-        // console.log(data)
-        // console.log(id)
 
+        //If data not found register user
         if (data === undefined) {
           
           //Register user
-          console.log("Register user");
           auth.createUserWithEmailAndPassword(
               studentInfo.email,
               studentInfo.password
@@ -260,51 +256,82 @@ var batch = db.batch();
                   : []
               });
 
-              return user
-
-            }).then(() => {
-
-              auth.currentUser.updateProfile({
-                displayName: studentInfo.name,
-              }).then(() => {
-                // Update successful
-                console.log("Added display name to user auth profile")
-              }).catch((error) => {
-                // An error occurred
-                console.log("error")
+              auth.signInWithEmailAndPassword(admin.email, admin.password)
+              .then((userAuth) => {
+                dispatch(
+                  login({
+                    email: userAuth.user.email,
+                    uid: userAuth.user.uid,
+                    displayName: userAuth.user.displayName,
+                    photoUrl: userAuth.user.photoURL,
+                  })
+                );
               })
-            })
-            .catch((err) => {
+              .catch((error) => console.log(error));
+
+              submitSuccessMsg('Student added!')
+              
+              setStudentInfo({
+                email: "",
+                password: "",
+                studentId: "",
+                name: "",
+                attendingUnits: "",
+              })
+
+            }).catch((err) => {
               console.log(err)
               alert(err)
-              setErrorCaught(true)
             });
-        } else {
-          //Update user
-          console.log("Update user");
+        } 
+        else{
+          submitSuccessMsg("Student already registered, updated attending units")
 
+          //If user already registered update only attendingUnits
           db.collection("users")
             .doc(id)
             .update({
-              email: studentInfo.email,
               attendingUnits: firebase.firestore.FieldValue.arrayUnion(
                 studentInfo.attendingUnits
               ),
-            });
+          });
+
+          setStudentInfo({
+            email: "",
+            password: "",
+            studentId: "",
+            name: "",
+            attendingUnits: "",
+          })
         }
+        // else { //If user found in database update user
+          //Update user
+          // console.log("Update user");
+
+          // db.collection("users")
+          //   .doc(id)
+          //   .update({
+          //     attendingUnits: firebase.firestore.FieldValue.arrayUnion(
+          //       studentInfo.attendingUnits
+          //     ),
+          // });
+        // }
       });
     
-      if(errorCaught === false){
-        submitSuccessMsg('Student added!')
+      // if(errorCaught === false){
+      //   submitSuccessMsg('Student added!')
 
-        setStudentInfo({
-          email: "",
-          password: "",
-          studentId: "",
-          name: "",
-          attendingUnits: "",
-        })
-      }
+      //   setStudentInfo({
+      //     email: "",
+      //     password: "",
+      //     studentId: "",
+      //     name: "",
+      //     attendingUnits: "",
+      //   })
+      // }
+      // else if(errorCaught === true){
+      //   submitErrorMsg("Student already registered")
+      // }
 
       setErrorCaught(false)
   }
