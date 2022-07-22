@@ -464,45 +464,6 @@ function SPEContent({
                   id="btnContainer"
                   className="flex flex-row w-3/5 my-4 mx-auto justify-center"
                 >
-                  {/* {cardID === 0 ? null : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handlePrevClick();
-                        setCardID((currPage) => currPage - 1);
-                        scrollUp();
-                      }}
-                      disabled={cardID === 0}
-                      className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group  focus:outline-none focus:ring"
-                    >
-                      <span className="absolute left-0 transition-transform -translate-x-full group-hover:translate-x-4">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="icon icon-tabler icon-tabler-arrow-narrow-left"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path
-                            stroke="none"
-                            d="M0 0h24v24H0z"
-                            fill="none"
-                          ></path>
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                          <line x1="5" y1="12" x2="9" y2="16"></line>
-                          <line x1="5" y1="12" x2="9" y2="8"></line>
-                        </svg>
-                      </span>
-                      <span className="text-sm font-medium transition-all group-hover:ml-4">
-                        Prev
-                      </span>
-                    </button>
-                  )} */}
 
                   {cardID !== 6 ? (
                     <button
@@ -539,7 +500,6 @@ function SPEContent({
                     </button>
                   ) : (
                     <button
-                      // type="submit"
                       type="button"
                       onClick={(e) => handleNextClick(e)}
                       className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"
@@ -566,31 +526,6 @@ function SPEContent({
                     </button>
                   )}
                 </div>
-
-                {/* <button
-                  type="submit"
-                  className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"
-                >
-                  <span className="absolute right-0 transition-transform translate-x-full group-hover:-translate-x-4">
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </span>
-                  <span className="text-sm font-medium transition-all group-hover:mr-4">
-                    Submit
-                  </span>
-                </button> */}
               </form>
             </div>
           </div>

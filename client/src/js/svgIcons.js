@@ -18,7 +18,7 @@ const svgIcons = [
       </svg>
     ),
 
-    homeText: <span className="ml-3 text-sm font-medium"> Home </span>,
+    homeText: <span className="text-sm font-medium"> Home </span>,
   },
   {
     groupCatIcon: (
@@ -160,7 +160,7 @@ const svgIcons = [
       </svg>
     ),
 
-    detailsText: <span className="ml-3 text-sm font-medium"> Details </span>,
+    detailsText: <span className="text-sm font-medium">Details</span>,
   },
   {
     logoutIcon: (

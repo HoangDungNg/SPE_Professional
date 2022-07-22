@@ -125,14 +125,13 @@ function NavBar() {
     <div>
       {mobileScreen ? (
         !open ? (
-          <div className="bg-[#E12945] h-10 w-10 flex justify-center items-center font-bold duration-500" onClick={() => setOpen(true)}>
-            <span className="text-xl">&#9776;</span>
+          <div className="bg-[#E12945] hover:bg-red-800 h-10 w-10 flex justify-center items-center font-bold duration-500" onClick={() => setOpen(true)}>
+            <span className="text-xl hover:cursor-pointer ">&#9776;</span>
           </div>
         ) : (
           <div className="w-screen duration-500">
             <div className="text-6xl flex justify-end" onClick={() => setOpen(false)}>
-              <span className="flex justify-center items-center">&times;</span>
-              
+              <span className="px-3 flex justify-center items-center rounded-full hover:bg-white hover:cursor-pointer">&times;</span>
             </div>
             <div className="px-4 pt-6 pb-32 mb-10 overflow-auto scrollbar h-screen duration-500">
               <img
@@ -142,7 +141,7 @@ function NavBar() {
               />
 
               <div className="px-5 pt-5 font-bold">
-                Welcome, {currentUser.name}!
+                Welcome, {userDetails.name}!
               </div>
 
               <nav className="flex flex-col mt-6 space-y-1">
@@ -152,7 +151,6 @@ function NavBar() {
                   text={svgIcons[0].homeText}
                   handleClick={() => setOpen(false)}
                 />
-                {console.log(units)}
                 {
                   
                   units &&
@@ -207,10 +205,8 @@ function NavBar() {
 
                           <nav className="mt-1.5 ml-8 flex flex-col">
                             {unit.classCode.map((eachClass, index) => (
-                              // console.log(`/${unit.unitCode}/${eachClass}`)
                               <NavButton
                                 key={index}
-                                // link={`/class/${index + 1}`}
                                 link={`/class/${unit.unitCode}/${eachClass}`}
                                 icon={svgIcons[2].groupIcon}
                                 text={eachClass}
@@ -223,12 +219,20 @@ function NavBar() {
                 }
 
                 {userDetails.role === "admin" ? (
+                  <>
                   <NavButton
                     link={"/registerStud"}
                     icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
-                    text={"Add/Update student info"}
+                    text={"Register/Update student"}
                     handleClick={() => setOpen(false)}
                   />
+                  <NavButton
+                    link={"/registerLect"}
+                    icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+                    text={"Register/Update lecturer"}
+                    handleClick={() => setOpen(false)}
+                  />
+                </>
                 ) : null}
 
                 {
@@ -245,22 +249,25 @@ function NavBar() {
 
                 {
                   //Navigation button for Register teams
-                  <NavButton
-                    link={"/registerTeam"}
-                    icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
-                    text={"Register/Update teams"}
-                    handleClick={() => setOpen(false)}
-                  />
+                  userDetails.role !== "student" ? (
+                    <NavButton
+                      link={"/registerTeam"}
+                      icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+                      text={"Register/Update teams"}
+                      handleClick={() => setOpen(false)}
+                    />
+                  ) : null
                 }
 
                 {
-
-                  <NavButton
-                    link={"/updateTeam"}
-                    icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
-                    text={"Update team info"}
-                    handleClick={() => setOpen(false)}
-                  />
+                  userDetails.role !== "admin" ? (
+                    <NavButton
+                      link={"/updateTeam"}
+                      icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
+                      text={"Update team info"}
+                      handleClick={() => setOpen(false)}
+                    />
+                  ) : null
                 }
 
                 {
@@ -315,7 +322,6 @@ function NavBar() {
                         type="submit"
                         id="logoutBtn"
                         className="flex items-center w-full px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-                        // onClick={logoutofPortal}
                       >
                         {svgIcons[6].logoutIcon} {svgIcons[6].logoutText}
                       </button>
@@ -408,10 +414,8 @@ function NavBar() {
 
                         <nav className="mt-1.5 ml-8 flex flex-col">
                           {unit.classCode.map((eachClass, index) => (
-                            // console.log(`/${unit.unitCode}/${eachClass}`)
                             <NavButton
                               key={index}
-                              // link={`/class/${index + 1}`}
                               link={`/class/${unit.unitCode}/${eachClass}`}
                               icon={svgIcons[2].groupIcon}
                               text={eachClass}
@@ -427,12 +431,12 @@ function NavBar() {
                   <NavButton
                     link={"/registerStud"}
                     icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
-                    text={"Add/Update student info"}
+                    text={"Register/Update student"}
                   />
                   <NavButton
                     link={"/registerLect"}
                     icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
-                    text={"Add/Update lecturer info"}
+                    text={"Register/Update lecturer"}
                   />
                 </>
               ) : null}
@@ -450,11 +454,13 @@ function NavBar() {
 
               {
                 //Navigation button for Register teams
+                userDetails.role !== "student" ? (
                 <NavButton
                   link={"/registerTeam"}
                   icon={<AiOutlineEdit size={20} color="#9B9FA9" />}
                   text={"Register/Update teams"}
                 />
+                ) : null
               }
 
               {
@@ -532,7 +538,7 @@ function NavBar() {
               className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
             >
               {userDetails.email && (
-                <Avatar src={userDetails.photoURL}>
+                <Avatar src={userDetails.photoUrl}>
                   {userDetails.email[0].toUpperCase()}
                 </Avatar>
               )}
