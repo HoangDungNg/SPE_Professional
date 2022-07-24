@@ -11,7 +11,6 @@ function IntroCard({ SPENumber, unitCode }) {
             Self and Peer Evaluation {SPENumber} for {unitCode}
           </span>
         </div>
-        {/* <div className="border border-[#dadce0] width-full"></div> */}
 
         <div>
           {/* Take in email from database */}

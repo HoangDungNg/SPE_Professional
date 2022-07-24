@@ -12,6 +12,12 @@ const firebaseConfig = {
   storageBucket: "speportal-60e3d.appspot.com",
   messagingSenderId: "399861999748",
   appId: "1:399861999748:web:c77847300a7308fd54fad1"
+  // apiKey: "AIzaSyBGZ5d65Z6j1dDPIbc18nduyaR1Urj57KM",
+  // authDomain: "speprofessionalportal.firebaseapp.com",
+  // projectId: "speprofessionalportal",
+  // storageBucket: "speprofessionalportal.appspot.com",
+  // messagingSenderId: "687501623949",
+  // appId: "1:687501623949:web:40f32db1d02125268e58c4"
 };
 
 // Initialize Firebase

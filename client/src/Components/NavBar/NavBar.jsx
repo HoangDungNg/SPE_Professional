@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { UserContext } from '../../context/UserContext'
-import firebase from "firebase/compat/app";
 import { svgIcons } from "../../js/svgIcons";
 import NavButton from "./NavButton";
 import { useDispatch } from "react-redux";
@@ -21,9 +19,6 @@ function NavBar() {
   const [screenSize, setScreenSize] = useState("");
   const [open, setOpen] = useState(true);
   const [mobileScreen, setMobileScreen] = useState(false);
-  const currentUser = firebase.auth().currentUser;
-
-  // console.log(currentUser)
 
   //UseEffect for getting user's email, name, role and photoUrl from firebase
   useEffect(() => {
@@ -67,7 +62,6 @@ function NavBar() {
             .get()
             .then((snapshot) => {
               const data = snapshot.docs.map((doc) => doc.data());
-              // console.log(data);
               data.forEach((unit) => {
 
                 setUnits((navUnit) => [
@@ -98,14 +92,12 @@ function NavBar() {
 
     //Check the device accessed to the portal is mobile device
     if (window.innerWidth <= 820) {
-      console.log("check width");
       setOpen(false);
       setMobileScreen(true);
     }
 
     function handleResize() {
       if (window.innerWidth <= 820) {
-        console.log("check width");
         setOpen(false);
         setMobileScreen(true);
       } else {
@@ -409,8 +401,6 @@ function NavBar() {
                           </span>
                           {svgIcons[1].groupCatDropDownIcon}
                         </summary>
-
-                        {/* {console.log(unit)} */}
 
                         <nav className="mt-1.5 ml-8 flex flex-col">
                           {unit.classCode.map((eachClass, index) => (

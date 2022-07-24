@@ -68,13 +68,10 @@ function UpdateTeam() {
       .then((snapshot) => {
         const data = snapshot.docs.map((doc) => doc.data());
 
-        console.log(data);
-
         data.forEach((eachClass) => {
           if (eachClass.teams.length !== 0) {
             eachClass.teams.forEach((team) => {
               setTeamCode((prev) => [...prev, team]);
-              // setShowDropdown(true);
             });
           }
         });
@@ -83,8 +80,6 @@ function UpdateTeam() {
 
   const updateTeamInfo = (e) => {
     e.preventDefault();
-
-    console.log("button clicked");
 
     db.collection("teams")
       .where("unitCode", "==", selectedUnit)

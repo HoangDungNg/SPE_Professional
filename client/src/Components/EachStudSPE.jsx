@@ -14,7 +14,6 @@ function EachStudSPE({
   return (
     <div className="flex flex-col items-center w-full">
       {nameOfUser ? (
-        // <div className="w-full mx-auto">
           <div className="card bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5">
             <h1 className="text-3xl font-semibold text-center text-gray-800 underline w-full">
               Self Evaluation
@@ -39,9 +38,7 @@ function EachStudSPE({
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
-        // </div>
       ) : (
-        // <div className="w-full mx-auto">
           <div className="card bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5 mx-auto">
             <h1 className="text-3xl font-semibold text-center text-gray-800 underline underline-offset-0">
               Evaluation of other group members
@@ -54,7 +51,6 @@ function EachStudSPE({
               disabled
               onChange={handleChange}
               value={fsValue[student + "Name"] === undefined ? "" : fsValue[student + "Name"]}
-              // value={fsValue}
               name={`${student}Name`}
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
@@ -70,7 +66,6 @@ function EachStudSPE({
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
-        // </div>
       )}
       <CheckBtnProvider>
         {SPEQuestions.map((question, index) => {

@@ -53,9 +53,12 @@ function RegisterStud() {
 
     var batch = db.batch();
 
+    
+
     //If user array is not empty then run this block of code
     if(userArr.length !== 0){
       if(userArr.length === students.length){
+
   
         //Batch upload user to doc
         userArr.forEach((student) => {
@@ -120,7 +123,7 @@ function RegisterStud() {
             //Register user
             console.log("Register user");
 
-            auth2.createUserWithEmailAndPassword(
+            auth.createUserWithEmailAndPassword(
                 student.Email,
                 student.StudentID
               )
@@ -151,19 +154,6 @@ function RegisterStud() {
                 attendingUnits: []
               });
 
-              auth.signInWithEmailAndPassword(admin.email, admin.password)
-              .then((userAuth) => {
-                dispatch(
-                  login({
-                    email: userAuth.user.email,
-                    uid: userAuth.user.uid,
-                    displayName: userAuth.user.displayName,
-                    photoUrl: userAuth.user.photoURL,
-                  })
-                );
-              })
-              .catch((err) => console.log(err));
-
               setErrorCaught(false)
 
             }).catch((err) => {
@@ -180,16 +170,29 @@ function RegisterStud() {
               name: student.GivenName + " " + student.Surname,
               attendingUnits: firebase.firestore.FieldValue.arrayUnion(student.UnitCode)
             })
-          } 
-
+          }
           
            //Reset state to empty after updating
            setCsvFile("")
            $("#csvFile").val('')
         })
-
         
     })
+
+    // auth.signOut()
+
+    // auth2.signInWithEmailAndPassword(admin.email, admin.password)
+    // .then((userAuth) => {
+    //   dispatch(
+    //     login({
+    //       email: userAuth.user.email,
+    //       uid: userAuth.user.uid,
+    //       displayName: userAuth.user.displayName,
+    //       photoUrl: userAuth.user.photoURL,
+    //     })
+    //   );
+    // })
+    // .catch((err) => console.log(err));
 
     if(errorCaught === false){
       submitSuccessMsg("Added/Updated students successfully")
@@ -197,14 +200,6 @@ function RegisterStud() {
     else{
       submitErrorMsg("Error adding/updating student")
     }
-
-    
-
-    // console.log(userInfo)
-
-    //Add according to the team with students
-
-    // submitSuccessMsg("Students and teams added successfully!");
   };
 
 
@@ -232,9 +227,9 @@ function RegisterStud() {
       .then((snapshot) => {
         const [data] = snapshot.docs.map((doc) => doc.data());
         const [id] = snapshot.docs.map((doc) => doc.id);
-        return [data, id];
-      })
-      .then(([data, id]) => {
+        // return [data, id];
+
+        console.log(data)
 
         //If data not found register user
         if (data === undefined) {
@@ -245,6 +240,22 @@ function RegisterStud() {
               studentInfo.password
             )
             .then((user) => {
+              console.log(user.user.uid)
+              console.log(studentInfo.email)
+              console.log(studentInfo.studentId)
+              console.log(studentInfo.name)
+              console.log(studentInfo.attendingUnits)
+
+              // db.collection("users").doc("testuid").set({
+              //   id: "testID",
+              //   email:"testemail",
+              //   role: "student",
+              //   studentID:"studentId",
+              //   name: "name",
+              //   attendingUnits:[studentInfo.attendingUnits]
+              // });
+
+
               db.collection("users").doc(user.user.uid).set({
                 id: user.user.uid,
                 email: studentInfo.email,
@@ -256,18 +267,18 @@ function RegisterStud() {
                   : []
               });
 
-              auth.signInWithEmailAndPassword(admin.email, admin.password)
-              .then((userAuth) => {
-                dispatch(
-                  login({
-                    email: userAuth.user.email,
-                    uid: userAuth.user.uid,
-                    displayName: userAuth.user.displayName,
-                    photoUrl: userAuth.user.photoURL,
-                  })
-                );
-              })
-              .catch((error) => console.log(error));
+              // auth.signInWithEmailAndPassword(admin.email, admin.password)
+              // .then((userAuth) => {
+              //   dispatch(
+              //     login({
+              //       email: userAuth.user.email,
+              //       uid: userAuth.user.uid,
+              //       displayName: userAuth.user.displayName,
+              //       photoUrl: userAuth.user.photoURL,
+              //     })
+              //   );
+              // })
+              // .catch((error) => console.log(error));
 
               submitSuccessMsg('Student added!')
               
@@ -304,34 +315,11 @@ function RegisterStud() {
             attendingUnits: "",
           })
         }
-        // else { //If user found in database update user
-          //Update user
-          // console.log("Update user");
+      })
+      // .then(([data, id]) => {
 
-          // db.collection("users")
-          //   .doc(id)
-          //   .update({
-          //     attendingUnits: firebase.firestore.FieldValue.arrayUnion(
-          //       studentInfo.attendingUnits
-          //     ),
-          // });
-        // }
-      });
-    
-      // if(errorCaught === false){
-      //   submitSuccessMsg('Student added!')
-
-      //   setStudentInfo({
-      //     email: "",
-      //     password: "",
-      //     studentId: "",
-      //     name: "",
-      //     attendingUnits: "",
-      //   })
-      // }
-      // else if(errorCaught === true){
-      //   submitErrorMsg("Student already registered")
-      // }
+        
+      // });
 
       setErrorCaught(false)
   }
@@ -453,7 +441,6 @@ function RegisterStud() {
                 name=""
                 id="unitInput"
               />
-              {/* <button onClick={register}>Register</button> */}
             </div>
             <button
               onClick={register}

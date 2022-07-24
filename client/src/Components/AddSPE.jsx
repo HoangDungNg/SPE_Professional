@@ -88,7 +88,6 @@ function AddSPE({ speFormName, speNo }) {
       })
       .then((docID) => {
         if (docID === undefined) {
-          console.log("Doc ID not found, data added to firebase");
           db.collection(speFormName)
             .doc(docID)
             .set({
@@ -98,7 +97,6 @@ function AddSPE({ speFormName, speNo }) {
               questions: allQuestionsArr.map((input) => input),
             });
         } else {
-          console.log("Doc ID found, data updated");
           db.collection(speFormName)
             .doc(docID)
             .update({
@@ -211,7 +209,6 @@ function AddSPE({ speFormName, speNo }) {
       .get()
       .then((snapshot) => {
         const [docID] = snapshot.docs.map((doc) => doc.id);
-        console.log(docID);
         return docID;
       })
       .then((docID) => {
@@ -235,7 +232,6 @@ function AddSPE({ speFormName, speNo }) {
           <h2>Add/Update SPE {speNo} form</h2>
         </div>
 
-        {/* <div className="px-32 pb-32 pt-24"> */}
         <div className="flex items-center p-8">
           <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md">
             <h2 className="text-3xl font-semibold text-center text-gray-800">
@@ -287,7 +283,6 @@ function AddSPE({ speFormName, speNo }) {
                   />
 
                   <button
-                    // type="submit"
                     type="button"
                     onClick={(e) => handleUpdateDueDate(e)}
                     className="relative ml-5 p-2 inline-flex items-center overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"
@@ -323,7 +318,7 @@ function AddSPE({ speFormName, speNo }) {
                   size="50"
                   placeholder="Please enter the trimester code without spacing (Eg.TMA2022)"
                 />
-                {/* </div> */}
+
                 {ratingArr.map((item, i) => {
                   return (
                     <div className="flex flex-col w-full" key={i}>
@@ -430,7 +425,6 @@ function AddSPE({ speFormName, speNo }) {
               </div>
 
               <button
-                // type="submit"
                 type="button"
                 onClick={(e) => handleSubmit(e)}
                 className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"
@@ -460,7 +454,6 @@ function AddSPE({ speFormName, speNo }) {
         </div>
       </div>
     </div>
-    // </div>
   );
 }
 

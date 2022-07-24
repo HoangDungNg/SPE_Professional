@@ -3,16 +3,8 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { db } from "../../firebase";
 import HomeSection from "../HomeComponents/HomeSection";
-// import Content from './Content';
-// import Login from './Login';
-// import NavBar from './NavBar/NavBar';
-// import { SPE1Questions, SPE2Questions } from '../js/list'
 
 function Home() {
-  //homepage: './' for package.json
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // console.log(isLoggedIn);
-  // var isLoggedIn = true;
   const [userDetails, setUserDetails] = useState("");
   const user = useSelector(selectUser);
   const [screenSize, setScreenSize] = useState("");
@@ -51,11 +43,9 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // console.log(window.innerWidth);
 
     //Check the device accessed to the portal is mobile device
     if (window.innerWidth <= 768) {
-      console.log("check width");
       setOpen(false);
       setMobileScreen(true);
     }
@@ -69,7 +59,6 @@ function Home() {
         setMobileScreen(false);
       }
 
-      // console.log(window.innerWidth);
       setScreenSize(window.innerWidth);
  
     }
@@ -81,40 +70,16 @@ function Home() {
   return (
     <div className="flex flex-[80] h-screen justify-center">
       <div className="flex flex-col w-full">
-        {/* <div className="flex pl-10 justify-center items-center bg-[#E12945] h-16 text-white"> */}
         <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 text-white sticky top-0">
           <h2>Home</h2>
         </div>
         {
-          //If user logged in is student only allow them to see the control section
-          //If user logged in is lecturer or admin allow them to see every section
-          // userDetails && userDetails.role === "student" ? (
-          //   <HomeSection
-          //     title={"Control"}
-          //     userRole={userDetails.role}
-          //     attendingUnits={userDetails.attendingUnits}
-          //   />
-          // ) 
-          // :
-           (
-            <>
-              <HomeSection userRole={userDetails.role} attendingUnits={userDetails.attendingUnits} />
-              {/* <HomeSection title={"Control"} attendingUnits={userDetails.attendingUnits} /> */}
-              {/* <HomeSection title={"Dashboard"} /> */}
-              {/* <HomeSection title={"Output"} /> */}
-            </>
-          )
+          <>
+            <HomeSection userRole={userDetails.role} attendingUnits={userDetails.attendingUnits} />
+          </>
         }
       </div>
     </div>
-
-    // !isLoggedIn ? <Login />
-    // :
-    // <div className='flex flex-row items-center'>
-    //   <div className='flex flex-[80] h-screen justify-center overflow-auto'>
-    //     <h1>home page</h1>
-    //   </div>
-    // </div>
   );
 }
 

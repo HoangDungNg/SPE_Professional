@@ -34,7 +34,6 @@ function SectionButton({ title, content, unitCode, link, finalResult, disable })
       title === "Register/Update lecture information" ||
       title === "Register Units" ||
       title.includes`Set up a new due date` ? (
-        // <div className="block bg-white lg:p-4 md:p-6 border border-gray-100 drop-shadow-xl rounded-xl focus:outline-none focus:ring hover:cursor-pointer hover:border-red-600 hover:ring-1 hover:ring-red-600">
           <Link to={link} className="block bg-white lg:p-4 md:p-6 border border-gray-100 drop-shadow-xl rounded-xl focus:outline-none focus:ring hover:cursor-pointer hover:border-red-600 hover:ring-1 hover:ring-red-600">
             <span className="inline-block p-3 rounded-lg bg-gray-50">
               {title === "Add/Update form for SPE 1" ||
@@ -57,7 +56,6 @@ function SectionButton({ title, content, unitCode, link, finalResult, disable })
               {content}
             </p>
           </Link>
-        // </div>
       ) : finalResult ? (
         
         <CSVLink {...csvReport} className={`${!disable ? "pointer-events-none" : null}`}>

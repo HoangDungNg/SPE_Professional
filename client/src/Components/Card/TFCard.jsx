@@ -1,12 +1,6 @@
 import React from "react";
 
 function TFCard({ tfquestion, id, handleChange, value }) {
-  // const [txtValue, setValue] = useState("");
-
-    // function onChangeTest(e){
-    //     setValue(e.target.value);
-    //     console.log($('#txtarea0').val());
-    // }
 
   return (
     <div>

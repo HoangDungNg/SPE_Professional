@@ -7,27 +7,10 @@ import { auth, db } from "../../firebase";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [name, setName] = useState("");
-  // const [profilePic, setProfilePic] = useState("");
-  // const [isRegistered, setIsRegistered] = useState(true);
-  // const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
-
-  // function handleClick() {
-  //   setIsRegistered((currState) => !currState);
-  // }
-
-  // function handleRegister(){
-  //   auth.createUserWithEmailAndPassword(email, password).then((cred) => {
-  //           db.collection('users').doc(cred.user.uid).set({
-  //             name: name,     
-  //         }, (err) => console.log(err));
-  //     })
-  // }
 
   async function handleSignIn(e) {
     e.preventDefault();
-    // console.log("Entered fields: " + JSON.stringify({ username, password }));
     auth.signInWithEmailAndPassword(email, password)
       .then((userAuth) => {
         dispatch(
@@ -43,7 +26,6 @@ function Login() {
   }
   return (
     <div className="">
-      {/* {modal && <Modal setModal={setModal} />} */}
       <div className="bg-white ">
         <div className="flex justify-center h-screen">
           <div
@@ -125,17 +107,6 @@ function Login() {
             </button>
           </div>
         </form>
-
-        {/* <p className="mt-6 text-sm text-center text-gray-400">
-          Don&#x27;t have an account yet?{" "}
-          <span
-            onClick={handleClick}
-            className="text-blue-500 focus:outline-none focus:underline hover:underline hover:cursor-pointer"
-          >
-            Sign up
-          </span>
-          .
-        </p> */}
       </div>
     </div>
           </div>

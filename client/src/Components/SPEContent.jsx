@@ -136,8 +136,6 @@ function SPEContent({
         checkedArr.push(e.id)
       })
 
-      
-
       //Set the filled array with on filled text area
       $("*[id*=txtarea]").each((i,e) => {
         if(e.value !== ""){
@@ -156,7 +154,6 @@ function SPEContent({
   
         Object.keys(fsValue).forEach(key => {
           if(key.includes("Rating")){
-            // console.log(fsValue[key])
             count++;
             studentArr.push(parseFloat(fsValue[key]))
           }
@@ -260,7 +257,6 @@ function SPEContent({
   
         Object.keys(fsValue).forEach(key => {
           if(key.includes("student3") && key.includes("Rating")){
-            // console.log(fsValue[key])
             count++;
             studentArr.push(parseFloat(fsValue[key]))
           }
@@ -311,7 +307,6 @@ function SPEContent({
   
         Object.keys(fsValue).forEach(key => {
           if(key.includes("student4") && key.includes("Rating")){
-            // console.log(fsValue[key])
             count++;
             studentArr.push(parseFloat(fsValue[key]))
           }
@@ -362,7 +357,6 @@ function SPEContent({
   
         Object.keys(fsValue).forEach(key => {
           if(key.includes("student5") && key.includes("Rating")){
-            // console.log(fsValue[key])
             count++;
             studentArr.push(parseFloat(fsValue[key]))
           }
@@ -415,7 +409,6 @@ function SPEContent({
   
         Object.keys(fsValue).forEach(key => {
           if(key.includes("student6") && key.includes("Rating")){
-            // console.log(fsValue[key])
             count++;
             studentArr.push(parseFloat(fsValue[key]))
           }
@@ -531,7 +524,6 @@ function SPEContent({
           </div>
         </div>
       </div>
-    // </div>
   );
 }
 

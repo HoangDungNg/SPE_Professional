@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 import RatingButton from "./RatingButton";
 
 function Card({
@@ -36,7 +35,6 @@ function Card({
 
   return (
     <div className="card bg-[#FFFFFF] rounded-lg text-xl p-6 my-4 w-3/5">
-      {/* {console.log(checkedState)} */}
       <div className="px-7 w-full">
         <p className="text-left">{question}</p>
       </div> 
@@ -59,36 +57,6 @@ function Card({
                 fieldset={`fs${id}`}
               />
             )}
-            {/* <RatingButton
-              rating="1"
-              ratingText={"Very poor contribution"}
-              id={id}
-              student={student}
-            />
-            <RatingButton
-              rating="2"
-              ratingText={"Poor contribution"}
-              id={id}
-              student={student}
-            />
-            <RatingButton
-              rating="3"
-              ratingText={"Acceptable contribution"}
-              id={id}
-              student={student}
-            />
-            <RatingButton
-              rating="4"
-              ratingText={"Good contribution"}
-              id={id}
-              student={student}
-            />
-            <RatingButton
-              rating="5"
-              ratingText={"Excellent contribution"}
-              id={id}
-              student={student}
-            /> */}
           </fieldset>
         ) : (
           <textarea

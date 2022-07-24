@@ -24,8 +24,6 @@ const sendSPE1Email = async (name, email, message) => {
     );
 
     if (response.status === 200) {
-      console.log("Successfully sent message.");
-
       submitSuccessMsg("Email sent successfully!");
     }
   } catch (error) {

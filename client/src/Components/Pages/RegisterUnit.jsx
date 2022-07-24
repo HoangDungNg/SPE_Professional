@@ -73,8 +73,6 @@ function RegisterUnit() {
           });
 
           submitSuccessMsg("Module added successfully!")
-
-          console.log("Module not found, module added to firebase.");
         } else {
           //If there is record, update record
           module.doc(id).update({
@@ -84,8 +82,6 @@ function RegisterUnit() {
           });
 
           submitSuccessMsg("Module updated successfully!")
-
-          console.log("Module found, updated module on firebase.");
         }
       })
       .then(() => {
@@ -111,8 +107,6 @@ function RegisterUnit() {
                 .then((snapshot) => {
                   const [id] = snapshot.docs.map((doc) => doc.id);
 
-                  console.log(id);
-
                   if (id === undefined) {
                     classCollection.add({
                       unitCode: unitCode,
@@ -120,10 +114,7 @@ function RegisterUnit() {
                       classCode: classID,
                       teams: [],
                     });
-
-                    console.log("Class not found, class added to firebase.");
                   } else {
-                    console.log("Class found, return");
                     return;
                   }
                 });
@@ -138,8 +129,6 @@ function RegisterUnit() {
         <div className="bg-[#E12945] text-white h-10 flex justify-center items-center">
           <h2>Register/Update Unit</h2>
         </div>
-
-        {/* <h1 className="text-3xl font-semibold text-center text-gray-800">Register units</h1> */}
         <div className="flex items-center p-8">
         <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md">
             <h2 className="text-3xl font-semibold text-center text-gray-800">Register/Update units</h2>
@@ -150,7 +139,6 @@ function RegisterUnit() {
             
           <form className="mt-6 items-center md:flex flex-col">
             <div className="flex flex-col w-full">
-                {/* <div class="w-full mx-2"> */}
                     <label className="block text-left mb-2 text-sm font-semibold text-gray-600">
                         Unit Code:
                     </label>
@@ -163,9 +151,6 @@ function RegisterUnit() {
                     id=""
                     placeholder="E.g ICT302"
                     />
-                {/* </div> */}
-
-                {/* <div className="w-full mx-2 mt-4 md:mt-0"> */}
                     <label className="block mt-4 text-left mb-2 text-sm font-semibold text-gray-600">
                         Trimester Code:
                     </label>
@@ -179,7 +164,6 @@ function RegisterUnit() {
                     id=""
                     placeholder="E.g TMA2022"
                     />
-                {/* </div> */}
             </div>
 
             <div className="w-full mt-4">
@@ -197,9 +181,7 @@ function RegisterUnit() {
                 </select>
             </div>
 
-            {/* <button onClick={registerUnit}>Register</button> */}
             <button
-            //   type="submit"
                 onClick={registerUnit}
               className="relative mt-6 inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"
             >

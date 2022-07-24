@@ -42,10 +42,8 @@ function TeamInfo({
       }, {});
       return eachObj;
     });
-    // console.log(newArray)
 
     newArray.pop(); //Get ride of the last empty record
-    // console.log(newArray);
 
     //Assuming the csv file is uploaded class by class, (eg. FTA is 1 .csv file FTB is 1 .csv file)
 
@@ -59,10 +57,7 @@ function TeamInfo({
         };
       }
     );
-
-    // console.log(result)
     
-
     //Add empty teams first
     result.forEach((team) => {
       
@@ -76,19 +71,25 @@ function TeamInfo({
         const [data] = snapshot.docs.map((doc) => doc.data())
         const [id] = snapshot.docs.map((doc) => doc.id)
 
-        //Compare data uploaded with data on database
-        data.teams.forEach(dataTeam => {
+        if(data.teams.length === 0 || undefined){
 
-          //If data on database not added then update team
-          if(dataTeam !== team.teamCode){
-            db.collection("class")
+          db.collection("class")
             .doc(id)
             .update(
               "teams",
               firebase.firestore.FieldValue.arrayUnion(team.teamCode)
             )
-          }
-        })
+        }
+
+        //Compare data uploaded with data on database
+        if(data.teams.length > 0){
+          db.collection("class")
+            .doc(id)
+            .update(
+              "teams",
+              firebase.firestore.FieldValue.arrayUnion(team.teamCode)
+            )
+        }
       })
 
       //For adding team members teams collection
@@ -101,10 +102,7 @@ function TeamInfo({
         .then((snapshot) => {
           const data = snapshot.docs.map((doc) => doc.data());
 
-          console.log(data)
-
           if (data.length === 0) {
-            console.log("No data found, add template first");
             db.collection("teams").add({
               teamName: "",
               teamCode: team.teamCode,
@@ -114,7 +112,6 @@ function TeamInfo({
               teamID: ""
             });
 
-            console.log("Update template")
             newArray.forEach((student) => {
               db.collection("teams")
                 .where("unitCode", "==", student.UnitCode)
@@ -128,8 +125,6 @@ function TeamInfo({
 
                   // If data found update
                   if (data.length !== 0) {
-
-                    console.log(student.ClassCode)
 
                     db.collection("teams")
                       .doc(id)
@@ -147,7 +142,6 @@ function TeamInfo({
             });
 
           } else {
-            console.log("Data found, update");
             newArray.forEach((student) => {
               db.collection("teams")
                 .where("unitCode", "==", student.UnitCode)
@@ -161,7 +155,6 @@ function TeamInfo({
 
                   // If data found update
                   if (data.length !== 0) {
-                    console.log("Data found, updated data");
                     db.collection("teams")
                       .doc(id)
                       .update({
@@ -213,7 +206,6 @@ function TeamInfo({
           id="csvFile"
           placeholder="Please enter team name"
         />
-        {/* {csvArray && console.log(csvArray)} */}
         <button
           className="px-3 py-3 text-white bg-[#5C7B88] rounded group  focus:outline-none focus:ring"
           onClick={(e) => {
@@ -239,7 +231,6 @@ function TeamInfo({
         value={teamNo}
         onChange={(e) => {
           setTeamNo(e.target.value);
-          console.log(teamNo);
         }}
         name=""
         id=""

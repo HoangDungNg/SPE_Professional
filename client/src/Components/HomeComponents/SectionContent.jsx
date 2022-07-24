@@ -1,10 +1,6 @@
 import React, { Fragment } from "react";
 import SectionButton from "./SectionButton";
 
-//Home Content: Add Spe1 & Spe2
-//Control Content: View SPE1 & SPE2 and set up SPE1 & SPE2
-//Output Content: Download output file
-
 //Home Content: View SPE1 & SPE2 (Student & lecturer only) Done
 //Control Content: Add Spe1 & Spe2 and set up SPE1 & SPE2 (Lecturer only)
 //Output Content: Download output file (Lecturer only)
@@ -18,7 +14,6 @@ function SectionContent({ content, userRole, attendingUnits }) {
           <section>
             <div className="px-4 pb-5 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-3">
-                {/* View SPE 1 and SPE 2 (Student & lecturer only) */}
                 {userRole === "student" || userRole === "lecturer" ? (
                     <>
                     {attendingUnits &&
@@ -41,13 +36,6 @@ function SectionContent({ content, userRole, attendingUnits }) {
                     </>
                     
                 ): null}
-
-
-                {/* <SectionButton
-                  title={"Upload student details file"}
-                  link={"/uploadStudDetails"}
-                  content={"Lorem ipsum dolor sit amet consectetur."}
-                /> */}
               </div>
             </div>
           </section>

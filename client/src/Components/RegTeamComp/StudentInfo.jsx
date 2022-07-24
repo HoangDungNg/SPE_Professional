@@ -16,7 +16,6 @@ function StudentInfo({ students, setStudents, index }) {
           const newArr = [...students];
           newArr[id].studentNo = e.target.value;
           setStudents(newArr);
-          console.log(newArr);
         }}
         name=""
         id={index}
@@ -34,7 +33,6 @@ function StudentInfo({ students, setStudents, index }) {
           const newArr = [...students];
           newArr[id].studentName = e.target.value;
           setStudents(newArr);
-          console.log(newArr);
         }}
         name=""
         id={index}

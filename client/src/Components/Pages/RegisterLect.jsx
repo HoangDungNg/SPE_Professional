@@ -3,11 +3,14 @@ import { auth, db } from "../../firebase";
 import firebase from "firebase/compat/app";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
+import { admin } from "../../admin.js"
+import { login } from "../../features/userSlice";
 
 function RegisterLect() {
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser)
+  const dispatch = useDispatch();
 
   const [lecturerInfo, setlecturerInfo] = useState({
     email: "",
@@ -20,7 +23,6 @@ function RegisterLect() {
   
 
   const [csvFile, setCsvFile] = useState("");
-//   const [userInfo, setUserInfo] = useState([]);
   const [errorCaught, setErrorCaught] = useState(false)
 
 var batch = db.batch();
@@ -49,17 +51,13 @@ var batch = db.batch();
       .then((snapshot) => {
         const [data] = snapshot.docs.map((doc) => doc.data());
         const [id] = snapshot.docs.map((doc) => doc.id);
-        // console.log(id)
         return [data, id];
       })
       .then(([data, id]) => {
-        // console.log(data)
-        // console.log(id)
 
         if (data === undefined) {
           
           //Register user
-          console.log("Register user");
           auth
             .createUserWithEmailAndPassword(
               lecturerInfo.email,
@@ -76,15 +74,30 @@ var batch = db.batch();
                   ? [lecturerInfo.attendingUnits]
                   : []
               });
+
+
             }).catch((err) => {
               console.log(err)
               alert(err)
               setErrorCaught(true)
             });
-        } else {
-          //Update user
-          console.log("Update user");
 
+            // auth.signInWithEmailAndPassword(admin.email, admin.password)
+            // .then((userAuth) => {
+            //   dispatch(
+            //     login({
+            //       email: userAuth.user.email,
+            //       uid: userAuth.user.uid,
+            //       displayName: userAuth.user.displayName,
+            //       photoUrl: userAuth.user.photoURL,
+            //     })
+            //   );
+            // })
+            // .catch((error) => console.log(error));
+
+        } else {
+
+          //Update user
           db.collection("users")
             .doc(id)
             .update({
@@ -95,6 +108,8 @@ var batch = db.batch();
             });
         }
       });
+
+      
     
       if(errorCaught === false){
         submitSuccessMsg('Lecturer added!')
@@ -198,7 +213,6 @@ var batch = db.batch();
                 name=""
                 id="unitInput"
               />
-              {/* <button onClick={register}>Register</button> */}
             </div>
             <button
               onClick={register}

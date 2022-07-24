@@ -22,7 +22,6 @@ function UserProvider({ children }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log("retrieved data: " + JSON.stringify(data.role));
 
         setUser((user) => ({
           username: data.username,
@@ -31,11 +30,6 @@ function UserProvider({ children }) {
           auth: data.user,
           msg: data.msg,
         }));
-
-        //   data.role === "Lecturer" ? setlecturerRole(true) : setStudentRole(true);
-        //   data.role === "Lecturer"
-        //     ? setLecturerData({ username: data.username, role: data.role, user: data.user })
-        //     : setStudentData({ username: data.username, role: data.role, user: data.user });
       });
   };
 

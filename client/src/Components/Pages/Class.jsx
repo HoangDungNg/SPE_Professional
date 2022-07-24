@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { auth, db } from "../../firebase";
+import React, { useEffect, useState } from "react";
+import { db } from "../../firebase";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import TableRow from "../Table/TableRow";
@@ -13,7 +13,6 @@ function Class({ userInfo, groupName, groupNum }) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [finalResult, setFinalResult] = useState([]);
-  // const [studentAns, setStudentAns] = useState([]);
   const [studentNotAdded, setStudentNotAdded] = useState(true)
   const [isDownloadable, setIsDownloadable] = useState(true)
 
@@ -33,7 +32,8 @@ function Class({ userInfo, groupName, groupNum }) {
         .get()
         .then((snapshot) => {
           const data = snapshot.docs.map((doc) => doc.data());
-          // console.log(data);
+
+          console.log(data)
 
           if (data.length === 0) {
             setInterval(() => setLoading(false), 500);
@@ -54,6 +54,8 @@ function Class({ userInfo, groupName, groupNum }) {
                   .get()
                   .then((snapshot) => {
                     const [data] = snapshot.docs.map((doc) => doc.data());
+
+                    console.log(data)
 
                     if(data !== undefined){
                       setStudents((prevData) => [
@@ -99,11 +101,6 @@ function Class({ userInfo, groupName, groupNum }) {
         var studentDataArr = [];
         let ansAllInfoArr = [];
         var result;
-
-        //Store all data retrieved from spe 1 submissions into array
-        // spe1Data.forEach((student) => {
-        //   studentDataArr.push(student)
-        // })
 
         for(var i = 0; i < spe1Data.length; i++) {
           processStud(i)
@@ -170,8 +167,6 @@ function Class({ userInfo, groupName, groupNum }) {
 
             }
           }
-
-          // console.log(ansInfoArr)
           
           for (var avgKey in spe1Data[index].answers) {
 
@@ -238,8 +233,6 @@ function Class({ userInfo, groupName, groupNum }) {
             ansAllInfoArr[l].SPE1Avg = parseFloat(ansAllInfoArr[l].SPE1Avg)
           }
 
-          // console.log(ansAllInfoArr)
-
             result = [
               ...ansAllInfoArr
                 .reduce((a, b) => {
@@ -268,8 +261,6 @@ function Class({ userInfo, groupName, groupNum }) {
             student.SPE1Avg = (student.SPE1Avg / 6).toFixed(2)
           }
         })
-
-        // console.log(result)
 
         //Return the array and pass to the next
         return result
@@ -351,8 +342,6 @@ function Class({ userInfo, groupName, groupNum }) {
 
               }
             }
-
-            // console.log(ansInfoArr)
             
             for (var avgKey in spe2data[index].answers) {
   
@@ -417,14 +406,11 @@ function Class({ userInfo, groupName, groupNum }) {
               ansAllInfoArr[l].SPE2Avg = parseFloat(ansAllInfoArr[l].SPE2Avg)
             }
 
-            // console.log(ansAllInfoArr)
-
             result = [
               ...ansAllInfoArr
                 .reduce((a, b) => {
                   if (a.has(b.studentID)){
                     const obj = a.get(b.studentID);
-                    // console.log(obj.SPE2Avg)
                     obj.SPE2Avg += b.SPE2Avg;
                     a.set(b.studentID, obj);
                   } 
@@ -448,12 +434,6 @@ function Class({ userInfo, groupName, groupNum }) {
               }
             })
           }
-          // console.log(result)
-  
-          
-
-          // console.log(spe1Result)
-          // console.log(result)
 
           let arrToFilter = [];
 
@@ -467,8 +447,6 @@ function Class({ userInfo, groupName, groupNum }) {
             arrToFilter.push(record)
           })
 
-          // console.log(arrToFilter)
-
           //Filter the array so that spe1Avg and spe2Avg belongs to the same person without repeated object
           const finalArr = arrToFilter.reduce((acc, val, ind) => {
               const index = acc.findIndex(el => el.studentID === val.studentID);
@@ -480,15 +458,9 @@ function Class({ userInfo, groupName, groupNum }) {
               };
               return acc;
           }, []);
-         
-
-          // console.log(finalArr);
 
           setFinalResult(finalArr);
         })
-  
-        //   setFinalResult(result);
-        // });
       })
   },[unitId]);
 
@@ -537,7 +509,6 @@ function Class({ userInfo, groupName, groupNum }) {
         </div>
       ) : (
         <div className="flex flex-col flex-[80] h-screen overflow-auto">
-          {/* <div className="bg-[#E12945] text-white h-10 mb-14 flex justify-center items-center"> */}
           <div className="flex justify-center w-full items-center bg-[#E12945] h-10 p-2 mb-14 text-white sticky top-0">
             <h2>
               {unitId} {classId} team details
@@ -569,6 +540,7 @@ function Class({ userInfo, groupName, groupNum }) {
                   </tr>
                 </thead>
 
+                {/* {students && console.log(students)} */}
                 {
                 students && (
                   <tbody className="divide-y divide-gray-100">

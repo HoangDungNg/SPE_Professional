@@ -92,9 +92,6 @@ function RegisterTeam() {
           .then((id) => {
             const [docID] = id;
 
-            console.log(docID);
-            console.log(trimesterCode);
-
             db.collection("class")
               .doc(docID)
               .update(
@@ -103,10 +100,6 @@ function RegisterTeam() {
               );
           })
           .then(() => {
-            console.log(unitCode);
-            console.log(trimesterCode);
-            console.log(classID);
-            console.log(classID + "0" + teamNo);
 
             db.collection("teams")
               .where("unitCode", "==", unitCode)
@@ -116,8 +109,6 @@ function RegisterTeam() {
               .get()
               .then((snapshot) => {
                 const [id] = snapshot.docs.map((doc) => doc.id);
-
-                console.log(id);
 
                 const teamsCollection = db.collection("teams");
 
@@ -141,7 +132,6 @@ function RegisterTeam() {
                   setStudents(emptyStudArr);
 
                   submitSuccessMsg("Team added successfully!");
-                  console.log("Team not found, added team into firebase");
                 } else {
                   teamsCollection.doc(id).update({
                     unitCode: unitCode,
@@ -162,7 +152,6 @@ function RegisterTeam() {
                   setStudents(emptyStudArr);
 
                   submitSuccessMsg("Team updated successfully!");
-                  console.log("Team found, updated team on firebase");
                 }
               });
           });
@@ -201,7 +190,6 @@ function RegisterTeam() {
   return (
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
       <div className=" w-full pb-10 overflow-auto">
-        {/* <Toaster position="bottom-right" reverse={false} /> */}
         <div className="bg-[#E12945] text-white h-10 flex justify-center items-center sticky top-0">
           <h2>Register Team</h2>
         </div>
@@ -292,7 +280,6 @@ function RegisterTeam() {
                 </button>
               ) : (
                 <button
-                  // type="submit"
                   type="button"
                   onClick={registerTeams}
                   className="relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-[#5C7B88] rounded group focus:outline-none focus:ring"

@@ -49,15 +49,12 @@ function UserDetails() {
   useEffect(() => {
     if (!user) return;
 
-    // console.log(user);
-
     db.collection("users")
       .doc(user.uid)
       .get()
       .then((doc) => {
         if (doc.exists) {
           const data = doc.data();
-          //   console.log(data.studentID);
 
           if (data.role !== "admin") {
             setUserInfo({
@@ -81,23 +78,9 @@ function UserDetails() {
   function updateDetails(e) {
     e.preventDefault();
 
-    // db.collection("users")
-    //   .doc(user.uid)
-    //   .get()
-    //   .then((doc) => {
-    //     if (doc.exists) {
-    //       // console.log(doc.data())
-    //     }
-    //   });
-
-    
-
     if (currentUser !== null) {
 
-        // console.log(currentUser)
-
         if(updateUserInfo.email !== ''){
-            // console.log(updateUserInfo.email)
 
             // //Update user auth email
             currentUser.updateEmail(updateUserInfo.email)
@@ -107,8 +90,7 @@ function UserDetails() {
                 db.collection("users").doc(currentUser.uid)
                 .update({ email: updateUserInfo.email})
 
-                // Update successful.
-                // console.log("Update successful");
+                // Update successful
                 submitSuccessMsg("Email updated successfully!");
             })
             .catch((error) => {
@@ -123,8 +105,6 @@ function UserDetails() {
             currentUser.updatePassword(updateUserInfo.password)
             .then(() => {
             // Update successful.
-
-            // console.log("Update successful");
             submitSuccessMsg("Password updated successfully!");
             })
             .catch((error) => {
@@ -171,32 +151,6 @@ function UserDetails() {
 
       
     }
-    //Check if student email exists
-    //If exists update details
-    // db.collection("users")
-    //   .get()
-    //   .then((snapshot) => {
-    //     const [data] = snapshot.docs.map((doc) => doc.data());
-    //     const [id] = snapshot.docs.map((doc) => doc.id);
-    //     // console.log(id)
-    //     return [data, id];
-    //   })
-    //   else {
-    //       //Update user
-    //       console.log("Update user");
-
-    //       db.collection("users")
-    //         .doc(id)
-    //         .update({
-    //           email: studentInfo.email,
-    //           attendingUnits: firebase.firestore.FieldValue.arrayUnion(
-    //             studentInfo.attendingUnits
-    //           ),
-    //         });
-    //     }
-    //   });
-
-    // submitSuccessMsg("Student added!");
 
     setUpdateUserInfo({
         name: "",
@@ -208,20 +162,12 @@ function UserDetails() {
     setErrorCaught(false);
   }
 
-  //   function handleChange(e){
-  //     console.log(e.target.value);
-  //     console.log(e.target)
-
-  //     // setUpdateUserInfo()
-  //   }
-
   return (
     <div className="flex flex-[80] h-screen justify-center overflow-auto">
       <div className=" w-full pb-10 overflow-auto">
         <div className="bg-[#E12945] text-white h-10 flex justify-center items-center">
           <h2>User details</h2>
         </div>
-        {console.log(updateUserInfo)}
 
         <div className="mt-6 w-full max-w-2xl px-6 py-4 mx-auto mb-10 bg-white rounded-md shadow-lg">
           <h2 className="text-3xl font-semibold text-center text-gray-800">

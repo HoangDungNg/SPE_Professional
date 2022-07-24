@@ -25,8 +25,6 @@ import RegisterLect from "./Pages/RegisterLect";
 import UserDetails from "./Pages/UserDetails";
 
 function Content() {
-  // const [login, setLogin] = useState(false);
-  // const [data, setData] = useState({username:'', role:''});
   const user = useSelector(selectUser);
   const [unitGroupName, setUnitGroupName] = useState([])
   const [unitGroupNum, setUnitGroupNum] = useState([])
@@ -71,35 +69,6 @@ function Content() {
     }
   }, []);
 
-  //Get the unit ICT302 
-  // useEffect(() => {
-  //   try {
-  //     db.collection("unit")
-  //       .doc("ICT302")
-  //       .get()
-  //       .then((doc) => {
-  //         if (doc.exists) {
-  //           // console.log(doc.data())
-
-  //           //Set unit group number
-  //           doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
-
-  //           //Set unit group names
-  //           doc.data().group.map((group) => setUnitGroupName((unitGroup) => [...unitGroup, group.groupName]))          
-
-  //           //Set unit group members
-  //           doc.data().group.map((group) => {
-  //            return group.member.map((member) => {
-  //               return setMembers((members) => [...members, member])
-  //             })
-  //           });
-  //         }
-  //       });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, []);
-
    useEffect(() => {
     if(!members) return;
     try {
@@ -118,58 +87,6 @@ function Content() {
       console.log(err)
     }
   }, [members]);
-  
-
-  //Test code
-  // useEffect(() => {
-  //   try {
-  //     db.collection("unit").where("trimesterCode", "==", "TMA2022")
-  //       // .doc("ICT302")
-  //       .get()
-  //       .then((snapshot) => {
-  //         snapshot.docs.map((doc) => {
-  //           // console.log(doc.data().group)
-  //           return doc.data().group.map((group) => console.log(group.member))
-  //         })
-  //       })
-  //       // .then((doc) => {
-  //       //   if (doc.exists) {
-  //       //     console.log(doc.data())
-
-  //           //Set unit group number
-  //           // doc.data().group.map((group) => setUnitGroupNum((unitGroup) => [...unitGroup, group.groupNumber]))
-
-  //           //Set unit group names
-  //           // doc.data().group.map((group) => setUnitGroupName((unitGroup) => [...unitGroup, group.groupName]))          
-
-  //           //Set unit group members
-  //           // doc.data().group.map((group) => {
-  //           //   group.member.map((member) => {
-  //           //     setMembers((members) => [...members, member])
-  //           //   })
-  //           // });
-  //         // }
-  //       // });
-  //     // const teamId = db.collection("unit").where("unitCode", "==", "ICT302").get()
-  //     // .then((snapshot) => {
-  //     //   const id = snapshot.docs.map((doc) => (
-  //     //     doc.id
-  //     //   ));
-  //     //   console.log(id)
-  //     // });
-  //     // db.collection(teamId).get().then((snapshot) => {
-  //     //   console.log(snapshot)
-  //       // const id = snapshot.docs.map((doc) => (
-  //       //   doc.id
-  //       // ));
-  //       // console.log(id)
-  //     // });
-      
-
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, []);
 
   return (
     <div className="app_body h-screen overflow-hidden">
@@ -195,9 +112,6 @@ function Content() {
           <Route path="/updateTeam" element={<UpdateTeam />} />
           <Route path="/addSPE1" element={<AddSPE1 />} />
           <Route path="/addSPE2" element={<AddSPE2 />} />
-          {/* <Route path="/group"> 
-            <Route path=":groupId" element={<Group userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} />
-          </Route>     */}
           <Route path="/class"> 
             <Route path=":classId" element={<Class userInfo={userInfo} groupName={unitGroupName} groupNum={unitGroupNum} />} /> 
           </Route>    
